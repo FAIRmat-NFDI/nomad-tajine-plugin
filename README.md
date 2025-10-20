@@ -1,3 +1,10 @@
+![](https://github.com/FAIRmat-NFDI/nomad-tajine-plugin/actions/workflows/actions.yml/badge.svg)
+![](https://coveralls.io/repos/github/FAIRmat-NFDI/nomad-tajine-plugin/badge.svg?branch=main)
+![](https://github.com/FAIRmat-NFDI/nomad-tajine-plugin/actions/workflows/python-publish.yml/badge.svg)
+![](https://img.shields.io/pypi/pyversions/nomad-tajine-plugin)
+![](https://img.shields.io/pypi/l/nomad-tajine-plugin)
+![](https://img.shields.io/pypi/v/nomad-tajine-plugin)
+
 # nomad-tajine-plugin
 
 An example plugin showing how NOMAD can be used outside of material science for curating food recipes.
