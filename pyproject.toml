@@ -14,14 +14,16 @@ classifiers = [
 ]
 name = "nomad-tajine-plugin"
 description = "An example plugin showing how NOMAD can be used outside of material science for curating food recipes."
-version = "0.1.0"
+dynamic = ["version"]
 readme = "README.md"
 requires-python = ">=3.10"
 authors = [
     { name = "Hampus Näsström", email = "hampus.naesstroem@physik.hu-berlin.de" },
+    { name = "FAIRmat", email = "fairmat@physik.hu-berlin.de" },
 ]
 maintainers = [
     { name = "Hampus Näsström", email = "hampus.naesstroem@physik.hu-berlin.de" },
+    { name = "FAIRmat", email = "fairmat@physik.hu-berlin.de" },
 ]
 license = { file = "LICENSE" }
 dependencies = [
@@ -31,6 +33,9 @@ dependencies = [
 
 [project.urls]
 Repository = "https://github.com/FAIRmat-NFDI/nomad-tajine-plugin"
+Homepage = "https://github.com/FAIRmat-NFDI/nomad-tajine-plugin"
+"Bug Tracker" = "https://github.com/FAIRmat-NFDI/nomad-tajine-plugin/issues"
+Documentation = "https://FAIRmat-NFDI.github.io/nomad-tajine-plugin/"
 
 [project.optional-dependencies]
 dev = ["ruff", "pytest", "structlog"]
@@ -109,6 +114,8 @@ package-dir = { "" = "src" }
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+[tool.setuptools_scm]
 
 [project.entry-points.'nomad.plugin']
 parser_entry_point = "nomad_tajine_plugin.parsers:parser_entry_point"
