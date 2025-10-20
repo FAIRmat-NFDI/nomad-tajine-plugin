@@ -33,9 +33,9 @@ dependencies = [
 
 [project.urls]
 Repository = "https://github.com/FAIRmat-NFDI/nomad-tajine-plugin"
-Homepage = "https://github.com/FAIRmat-NFDI/nomad-tajine-plugin"
+Homepage = "https://fairmat-nfdi.github.io/nomad-tajine-plugin/"
 "Bug Tracker" = "https://github.com/FAIRmat-NFDI/nomad-tajine-plugin/issues"
-Documentation = "https://FAIRmat-NFDI.github.io/nomad-tajine-plugin/"
+Documentation = "https://fairmat-nfdi.github.io/nomad-tajine-plugin/"
 
 [project.optional-dependencies]
 dev = ["ruff", "pytest", "structlog"]
