@@ -131,7 +131,7 @@ class RecipeStep(ActivityStep):
     )
 
 
-class Recipe(Schema, BaseSection):
+class Recipe(BaseSection, Schema):
     m_def = Section(
         label='Cooking Recipe',
         categories=[UseCaseElnCategory],
