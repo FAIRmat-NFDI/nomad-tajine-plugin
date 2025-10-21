@@ -49,10 +49,10 @@ class Ingredient(EntityReference):
 
     unit = Quantity(
         type=MEnum('tea spoon', 'piece'),
-        a_eln=ELNAnnotation(component=ELNComponentEnum.NumberEditQuantity),
+        a_eln=ELNAnnotation(component=ELNComponentEnum.EnumEditQuantity),
     )
 
-    quantity_si = Quantity()  # in [g], calculate from quantity, unit and density etc
+    quantity_si = Quantity(type=float)  # in [g], calculate from quantity, unit and density etc
 
     lab_id = Quantity(
         type=str,

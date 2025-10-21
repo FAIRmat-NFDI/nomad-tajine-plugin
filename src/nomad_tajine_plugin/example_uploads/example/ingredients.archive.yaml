@@ -1,0 +1,28 @@
+data:
+  m_def: 'nomad_tajine_plugin.schema_packages.schema_package.Recipe'
+  name: 'Moroccan Chicken Tagine'
+  summary: 'A traditional Moroccan dish of chicken pieces braised with spices, garlic, onion, olives, and preserved lemons. It is company-worthy yet easy to throw together.'
+  cuisine: 'Moroccan'
+  duration: 60  # total prep + cooking time # fill from normalizer across all steps
+  number_of_servings: 5
+  difficulty: 'medium'
+  authors: 'Chef Uday'
+  diet: 'non-vegetarian' # could be from ontology reasoning?
+  # nutrition_value: 480  # estimated kcal per serving # supposed to come from normalizers
+
+  # ingedrients: fill from normalizer across all steps
+  # tools: fill from normalizer across all steps
+    
+  steps:
+    - instruction: 'Season both sides of chicken with salt and pepper. Heat oil in Dutch oven over medium-high heat and brown chicken skin side down until golden, about 5 minutes.'
+      duration: 5
+      temperature: 180
+      tools:
+        - name: 'Dutch oven'
+          type: 'Cookware'
+          description: 'Used for browning chicken'
+      ingredients:
+      - ingredient_type:
+          name: 'Ground Ginger'
+        quantity: 1
+        unit: tablespoon
