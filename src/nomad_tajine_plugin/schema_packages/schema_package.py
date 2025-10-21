@@ -6,6 +6,8 @@ from nomad.datamodel.data import UseCaseElnCategory
 from nomad.datamodel.metainfo.basesections import (
     Activity,
     ActivityStep,
+    ArchiveSection,
+    Entity,
     Instrument,
     System,
 )
@@ -31,19 +33,36 @@ configuration = config.get_plugin_entry_point(
 m_package = SchemaPackage()
 
 
-class Ingredient(System):
+class IngredientType(Entity):
+    pass
+
+
+class Ingredient(ArchiveSection):
     quantity = Quantity(
         type=float,
         a_eln=ELNAnnotation(component=ELNComponentEnum.NumberEditQuantity),
         # unit='minute',        # TODO: add custom units to pint custom unit registry
     )
 
-    semantic_concept = Quantity(
-        type=str,  # TODO: discuss with ontology group
+    unit = Quantity(
+        type=MEnum('tea spoon', 'piece'),
+        a_eln=ELNAnnotation(component=ELNComponentEnum.NumberEditQuantity),
     )
+
+    quantity_si = Quantity()  # in [g], calculate from quantity, unit and density etc
+
+    # semantic_concept = Quantity(
+    #     type=str,  # TODO: discuss with ontology group
+    # )
+
+    ingredient_type = Quantity(type=IngredientType)
 
     # preparation_notes = Quantity() or SubSection() TODO: discuss
     # TODO: discuss references
+
+
+# class IngredientTypeReference():
+#     pass
 
 
 class Tool(Instrument):
