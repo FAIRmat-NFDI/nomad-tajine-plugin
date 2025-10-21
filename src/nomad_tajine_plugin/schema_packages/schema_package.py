@@ -2,6 +2,14 @@ from typing import (
     TYPE_CHECKING,
 )
 
+from nomad.datamodel.metainfo.basesections import (
+    ActivityStep,
+    BaseSection,
+    Entity,
+    Instrument,
+)
+from nomad.metainfo.metainfo import Section, SubSection
+
 if TYPE_CHECKING:
     from nomad.datamodel.datamodel import (
         EntryArchive,
@@ -11,28 +19,182 @@ if TYPE_CHECKING:
     )
 
 from nomad.config import config
-from nomad.datamodel.data import Schema
+from nomad.datamodel.data import ArchiveSection, Schema, UseCaseElnCategory
 from nomad.datamodel.metainfo.annotations import ELNAnnotation, ELNComponentEnum
-from nomad.metainfo import Quantity, SchemaPackage
+from nomad.metainfo import MEnum, Quantity, SchemaPackage
 
 configuration = config.get_plugin_entry_point(
-    'nomad_tajine_plugin.schema_packages:schema_package_entry_point'
+    'nomad_tajine_plugin.schema_packages:schema_tajine_entry_point'
 )
 
 m_package = SchemaPackage()
 
 
-class NewSchemaPackage(Schema):
+class IngredientType(Entity):
+    pass
+
+
+class Ingredient(ArchiveSection):
     name = Quantity(
         type=str, a_eln=ELNAnnotation(component=ELNComponentEnum.StringEditQuantity)
     )
-    message = Quantity(type=str)
+
+    quantity = Quantity(
+        type=float,
+        a_eln=ELNAnnotation(component=ELNComponentEnum.NumberEditQuantity),
+        # unit='minute',        # TODO: add custom units to pint custom unit registry
+    )
+
+    unit = Quantity(
+        type=MEnum('tea spoon', 'piece'),
+        a_eln=ELNAnnotation(component=ELNComponentEnum.EnumEditQuantity),
+    )
+
+    quantity_si = Quantity(
+        type=float,
+        unit='gram',
+    )  # in [g], calculate from quantity, unit and density etc
+
+    # semantic_concept = Quantity(
+    #     type=str,  # TODO: discuss with ontology group
+    # )
+
+    ingredient_type = Quantity(type=IngredientType)
+
+    # preparation_notes = Quantity() or SubSection() TODO: discuss
+    # TODO: discuss references
+
+
+# class IngredientTypeReference():
+#     pass
+
+
+class Tool(Instrument):
+    type = Quantity(
+        type=str, a_eln=ELNAnnotation(component=ELNComponentEnum.StringEditQuantity)
+    )
+
+    description = Quantity(
+        type=str, a_eln=ELNAnnotation(component=ELNComponentEnum.StringEditQuantity)
+    )
+
+
+class RecipeStep(ActivityStep):
+    duration = Quantity(
+        type=float,
+        a_eln=ELNAnnotation(
+            component=ELNComponentEnum.NumberEditQuantity, defaultDisplayUnit='minute'
+        ),
+        unit='minute',
+    )
+
+    temperature = Quantity(
+        type=float,
+        default=20.0,
+        a_eln=ELNAnnotation(
+            component=ELNComponentEnum.NumberEditQuantity, defaultDisplayUnit='celsius'
+        ),
+        unit='celsius',
+    )
+
+    tools = SubSection(
+        section_def=Tool,
+        description='',
+        repeats=True,
+    )
+
+    ingredients = SubSection(
+        section_def=Ingredient,
+        description='',
+        repeats=True,
+    )
+
+    instruction = Quantity(
+        type=str, a_eln=ELNAnnotation(component=ELNComponentEnum.StringEditQuantity)
+    )
+
+
+class Recipe(Schema, BaseSection):
+    m_def = Section(
+        label='Cooking Recipe',
+        categories=[UseCaseElnCategory],
+    )
+
+    name = Quantity(
+        type=str, a_eln=ELNAnnotation(component=ELNComponentEnum.StringEditQuantity)
+    )
+
+    duration = Quantity(
+        type=float,
+        a_eln=ELNAnnotation(
+            component=ELNComponentEnum.NumberEditQuantity, defaultDisplayUnit='minute'
+        ),
+        unit='minute',
+    )
+
+    authors = Quantity(
+        type=str, a_eln=ELNAnnotation(component=ELNComponentEnum.StringEditQuantity)
+    )
+
+    difficulty = Quantity(
+        type=MEnum(
+            'easy',
+            'medium',
+            'hard',
+        ),
+        a_eln=ELNAnnotation(component=ELNComponentEnum.EnumEditQuantity),
+    )
+
+    number_of_servings = Quantity(
+        type=int, a_eln=ELNAnnotation(component=ELNComponentEnum.NumberEditQuantity)
+    )
+
+    summary = Quantity(
+        type=str, a_eln=ELNAnnotation(component=ELNComponentEnum.StringEditQuantity)
+    )
+
+    cuisine = Quantity(
+        type=str, a_eln=ELNAnnotation(component=ELNComponentEnum.StringEditQuantity)
+    )
+
+    nutrition_value = Quantity(
+        type=float,
+        a_eln=ELNAnnotation(
+            component=ELNComponentEnum.NumberEditQuantity,
+            defaultDisplayUnit='kcal',
+        ),
+        unit='kcal',
+    )
+
+    diet = Quantity(
+        type=MEnum(
+            'non-vegetarian',
+            'vegetarian',
+            'vegan',
+        ),
+        a_eln=ELNAnnotation(component=ELNComponentEnum.EnumEditQuantity),
+    )  # TODO: add more options / complexity
+
+    tools = SubSection(
+        section_def=Tool,
+        description='',
+        repeats=True,
+    )
+
+    steps = SubSection(
+        section_def=RecipeStep,
+        description='',
+        repeats=True,
+    )
+
+    ingredients = SubSection(
+        section_def=Ingredient,
+        description='',
+        repeats=True,
+    )
 
     def normalize(self, archive: 'EntryArchive', logger: 'BoundLogger') -> None:
         super().normalize(archive, logger)
-
-        logger.info('NewSchema.normalize', parameter=configuration.parameter)
-        self.message = f'Hello {self.name}!'
 
 
 m_package.__init_metainfo__()

@@ -119,7 +119,7 @@ where = ["src"]
 
 [project.entry-points.'nomad.plugin']
 parser_entry_point = "nomad_tajine_plugin.parsers:parser_entry_point"
-schema_package_entry_point = "nomad_tajine_plugin.schema_packages:schema_package_entry_point"
+schema_tajine_entry_point = "nomad_tajine_plugin.schema_packages:schema_tajine_entry_point"
 
 app_entry_point = "nomad_tajine_plugin.apps:app_entry_point"
 example_upload_entry_point = "nomad_tajine_plugin.example_uploads:example_upload_entry_point"
