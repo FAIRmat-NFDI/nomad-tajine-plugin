@@ -100,8 +100,7 @@ class RecipeStep(ActivityStep):
     duration = Quantity(
         type=float,
         a_eln=ELNAnnotation(
-            component=ELNComponentEnum.NumberEditQuantity,
-            defaultDisplayUnit='minute'
+            component=ELNComponentEnum.NumberEditQuantity, defaultDisplayUnit='minute'
         ),
         unit='minute',
     )
@@ -110,8 +109,8 @@ class RecipeStep(ActivityStep):
         type=float,
         default=20.0,
         a_eln=ELNAnnotation(
-            component=ELNComponentEnum.NumberEditQuantity,
-            defaultDisplayUnit='celsius'),
+            component=ELNComponentEnum.NumberEditQuantity, defaultDisplayUnit='celsius'
+        ),
         unit='celsius',
     )
 
@@ -145,8 +144,7 @@ class Recipe(BaseSection, Schema):
     duration = Quantity(
         type=float,
         a_eln=ELNAnnotation(
-            component=ELNComponentEnum.NumberEditQuantity,
-            defaultDisplayUnit='minute'
+            component=ELNComponentEnum.NumberEditQuantity, defaultDisplayUnit='minute'
         ),
         unit='minute',
     )
