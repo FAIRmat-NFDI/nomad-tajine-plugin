@@ -21,9 +21,15 @@ recipe_app_entry_point = AppEntryPoint(
     name='Recipe App',
     description='This is an app for visualizing recipes from the nomad-tajine plugin.',
     app=App(
-        label='recipes',
-        path='recipe_app',
+        label='Recipes',
+        path='recipes',
+        description='Search recipes, ingredients, and kitchen tools',
         category='Use Cases',
+        readme="""This app allows you to search **recipes** within NOMAD.
+        The filter menu on the left and the shown  default columns are specifically designed
+        for exploring recipes and their ingredients. The dashboard directly shows useful
+        interactive statistics about the data.
+        """,
         search_quantities=SearchQuantities(include=[f'data.*#{SCHEMA}']),
         filters_locked={'section_defs.definition_qualified_name': [SCHEMA]},
         columns=[
@@ -36,6 +42,7 @@ recipe_app_entry_point = AppEntryPoint(
                 quantity=f'data.duration#{SCHEMA}',
                 label='Duration',
                 selected=True,
+                unit='minute',
             ),
             Column(
                 quantity=f'data.authors#{SCHEMA}',
@@ -54,8 +61,9 @@ recipe_app_entry_point = AppEntryPoint(
             ),
             Column(
                 quantity=f'data.nutrition_value#{SCHEMA}',
-                label='Calories (kcal)',
+                label='Calories',
                 selected=True,
+                unit='kcal',
             ),
         ],
 
@@ -160,3 +168,4 @@ recipe_app_entry_point = AppEntryPoint(
     ),
 )
 
+# macronutrients: fat, proteins, ..
