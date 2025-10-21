@@ -1,8 +1,8 @@
 from nomad.config.models.plugins import ExampleUploadEntryPoint
 
-example_upload_entry_point = ExampleUploadEntryPoint(
-    title='New Example Upload',
-    category='Examples',
-    description='Description of this example upload.',
-    path='example_uploads/getting_started',
+tajine_example_upload_entry_point = ExampleUploadEntryPoint(
+    title='Tajine Example',
+    category='Use Cases',
+    description='A simple example for a recipe for a Moroccan chicken tagine.',
+    resources=['example_uploads/example/tajine.archive.yaml'],
 )
