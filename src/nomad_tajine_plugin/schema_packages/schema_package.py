@@ -59,14 +59,19 @@ class Tool(Instrument):
 class RecipeStep(ActivityStep):
     duration = Quantity(
         type=float,
-        a_eln=ELNAnnotation(component=ELNComponentEnum.NumberEditQuantity),
+        a_eln=ELNAnnotation(
+            component=ELNComponentEnum.NumberEditQuantity,
+            defaultDisplayUnit='minute'
+        ),
         unit='minute',
     )
 
     temperature = Quantity(
         type=float,
         default=20.0,
-        a_eln=ELNAnnotation(component=ELNComponentEnum.NumberEditQuantity),
+        a_eln=ELNAnnotation(
+            component=ELNComponentEnum.NumberEditQuantity,
+            defaultDisplayUnit='celsius'),
         unit='celsius',
     )
 
@@ -99,7 +104,10 @@ class Recipe(Schema, Activity):
 
     duration = Quantity(
         type=float,
-        a_eln=ELNAnnotation(component=ELNComponentEnum.NumberEditQuantity),
+        a_eln=ELNAnnotation(
+            component=ELNComponentEnum.NumberEditQuantity,
+            defaultDisplayUnit='minute'
+        ),
         unit='minute',
     )
 
@@ -130,7 +138,10 @@ class Recipe(Schema, Activity):
 
     nutrition_value = Quantity(
         type=float,
-        a_eln=ELNAnnotation(component=ELNComponentEnum.NumberEditQuantity),
+        a_eln=ELNAnnotation(
+            component=ELNComponentEnum.NumberEditQuantity,
+            defaultDisplayUnit='kcal',
+        ),
         unit='kcal',
     )
 
