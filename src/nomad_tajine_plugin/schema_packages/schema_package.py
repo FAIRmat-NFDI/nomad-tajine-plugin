@@ -6,6 +6,7 @@ from nomad.datamodel.metainfo.basesections import (
     ActivityStep,
     BaseSection,
     Entity,
+    EntityReference,
     Instrument,
 )
 from nomad.metainfo.metainfo import Section, SubSection
@@ -34,7 +35,7 @@ class IngredientType(Entity):
     pass
 
 
-class Ingredient(ArchiveSection):
+class Ingredient(EntityReference):
     name = Quantity(
         type=str, a_eln=ELNAnnotation(component=ELNComponentEnum.StringEditQuantity)
     )
@@ -55,14 +56,30 @@ class Ingredient(ArchiveSection):
         unit='gram',
     )  # in [g], calculate from quantity, unit and density etc
 
-    # semantic_concept = Quantity(
-    #     type=str,  # TODO: discuss with ontology group
-    # )
+    lab_id = Quantity(
+        type=str,
+        description="""An ID string that is unique at least for the lab that produced this
+            data.""",
+        a_eln=dict(component='StringEditQuantity', label='ingredient ID'),
+    )
 
-    ingredient_type = Quantity(type=IngredientType)
+    reference = Quantity(
+        type=IngredientType,
+        description='A reference to a ingredient type entry.',
+        a_eln=ELNAnnotation(
+            component='ReferenceEditQuantity',
+            label='ingredient type reference',
+        ),
+    )
 
     # preparation_notes = Quantity() or SubSection() TODO: discuss
     # TODO: discuss references
+
+    def normalize(self, archive, logger: 'BoundLogger'):
+        if not self.lab_id:
+            self.lab_id = self.name
+
+        super().normalize(archive, logger)
 
 
 # class IngredientTypeReference():
