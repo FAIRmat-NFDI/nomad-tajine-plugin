@@ -3,12 +3,10 @@ from typing import (
 )
 
 from nomad.datamodel.metainfo.basesections import (
-    Activity,
     ActivityStep,
     BaseSection,
     Entity,
     Instrument,
-    System,
 )
 from nomad.metainfo.metainfo import Section, SubSection
 
