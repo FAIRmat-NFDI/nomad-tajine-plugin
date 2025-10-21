@@ -11,7 +11,6 @@ from nomad.config.models.ui import (
     MenuItemTerms,
     SearchQuantities,
     WidgetHistogram,
-    WidgetPeriodicTable,
     WidgetScatterPlot,
 )
 
@@ -26,9 +25,9 @@ recipe_app_entry_point = AppEntryPoint(
         description='Search recipes, ingredients, and kitchen tools',
         category='Use Cases',
         readme="""This app allows you to search **recipes** within NOMAD.
-        The filter menu on the left and the shown  default columns are specifically designed
-        for exploring recipes and their ingredients. The dashboard directly shows useful
-        interactive statistics about the data.
+        The  menu on the left and the shown default columns are specifically 
+        designed for exploring recipes and their ingredients. The dashboard 
+        directly shows useful interactive statistics about the recipes.
         """,
         search_quantities=SearchQuantities(include=[f'data.*#{SCHEMA}']),
         filters_locked={'section_defs.definition_qualified_name': [SCHEMA]},
@@ -66,7 +65,6 @@ recipe_app_entry_point = AppEntryPoint(
                 unit='kcal',
             ),
         ],
-
         menu=Menu(
             title='Recipe filters',
             items=[
@@ -121,27 +119,25 @@ recipe_app_entry_point = AppEntryPoint(
                 WidgetHistogram(
                     title='Duration',
                     x=AxisQuantity(
-                        search_quantity= f'data.duration#{SCHEMA}',
-                        unit='minute'
+                        search_quantity=f'data.duration#{SCHEMA}', unit='minute'
                     ),
                     n_bins=100,
                     autorange=True,
                     layout={
                         'md': Layout(w=6, h=4, x=0, y=0, minW=3, minH=3),
-                        'lg': Layout(w=6, h=5, x=0, y=0, minW=5, minH=4)
+                        'lg': Layout(w=6, h=5, x=0, y=0, minW=5, minH=4),
                     },
                 ),
                 WidgetHistogram(
                     title='Calories',
                     x=AxisQuantity(
-                        search_quantity= f'data.nutrition_value#{SCHEMA}',
-                        unit='kcal'
+                        search_quantity=f'data.nutrition_value#{SCHEMA}', unit='kcal'
                     ),
                     n_bins=100,
                     autorange=True,
                     layout={
                         'md': Layout(w=6, h=4, x=6, y=0, minW=3, minH=3),
-                        'lg': Layout(w=6, h=5, x=6, y=0, minW=5, minH=4)
+                        'lg': Layout(w=6, h=5, x=6, y=0, minW=5, minH=4),
                     },
                 ),
                 WidgetScatterPlot(
@@ -149,7 +145,7 @@ recipe_app_entry_point = AppEntryPoint(
                     x=Axis(
                         search_quantity=f'data.duration#{SCHEMA}',
                         title='Duration',
-                        unit='minute'
+                        unit='minute',
                     ),
                     y=Axis(
                         search_quantity=f'data.nutrition_value#{SCHEMA}',
@@ -160,7 +156,7 @@ recipe_app_entry_point = AppEntryPoint(
                     autorange=True,
                     layout={
                         'md': Layout(w=6, h=4, x=12, y=0, minW=3, minH=3),
-                        'lg': Layout(w=6, h=5, x=12, y=0, minW=6, minH=6)
+                        'lg': Layout(w=6, h=5, x=12, y=0, minW=6, minH=6),
                     },
                 ),
             ],
