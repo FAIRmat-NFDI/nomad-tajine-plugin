@@ -5,6 +5,7 @@ from typing import (
 from nomad.datamodel.metainfo.basesections import (
     ActivityStep,
     BaseSection,
+    ArchiveSection,
     Entity,
     EntityReference,
     Instrument,
@@ -48,13 +49,10 @@ class Ingredient(EntityReference):
 
     unit = Quantity(
         type=MEnum('tea spoon', 'piece'),
-        a_eln=ELNAnnotation(component=ELNComponentEnum.EnumEditQuantity),
+        a_eln=ELNAnnotation(component=ELNComponentEnum.NumberEditQuantity),
     )
 
-    quantity_si = Quantity(
-        type=float,
-        unit='gram',
-    )  # in [g], calculate from quantity, unit and density etc
+    quantity_si = Quantity()  # in [g], calculate from quantity, unit and density etc
 
     lab_id = Quantity(
         type=str,
