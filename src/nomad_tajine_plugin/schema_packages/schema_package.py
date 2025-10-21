@@ -20,7 +20,7 @@ if TYPE_CHECKING:
     )
 
 from nomad.config import config
-from nomad.datamodel.data import ArchiveSection, Schema, UseCaseElnCategory
+from nomad.datamodel.data import Schema, UseCaseElnCategory
 from nomad.datamodel.metainfo.annotations import ELNAnnotation, ELNComponentEnum
 from nomad.metainfo import MEnum, Quantity, SchemaPackage
 
@@ -58,8 +58,8 @@ class Ingredient(EntityReference):
 
     lab_id = Quantity(
         type=str,
-        description="""An ID string that is unique at least for the lab that produced this
-            data.""",
+        description="""An ID string that is unique at least for the lab that produced
+            this data.""",
         a_eln=dict(component='StringEditQuantity', label='ingredient ID'),
     )
 
