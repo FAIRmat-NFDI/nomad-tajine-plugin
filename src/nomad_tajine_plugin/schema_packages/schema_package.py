@@ -2,14 +2,12 @@ from typing import (
     TYPE_CHECKING,
 )
 
-from nomad.datamodel.data import UseCaseElnCategory
 from nomad.datamodel.metainfo.basesections import (
     Activity,
     ActivityStep,
-    ArchiveSection,
+    BaseSection,
     Entity,
     Instrument,
-    System,
 )
 from nomad.metainfo.metainfo import Section, SubSection
 
@@ -22,7 +20,7 @@ if TYPE_CHECKING:
     )
 
 from nomad.config import config
-from nomad.datamodel.data import Schema
+from nomad.datamodel.data import ArchiveSection, Schema, UseCaseElnCategory
 from nomad.datamodel.metainfo.annotations import ELNAnnotation, ELNComponentEnum
 from nomad.metainfo import MEnum, Quantity, SchemaPackage
 
@@ -38,6 +36,10 @@ class IngredientType(Entity):
 
 
 class Ingredient(ArchiveSection):
+    name = Quantity(
+        type=str, a_eln=ELNAnnotation(component=ELNComponentEnum.StringEditQuantity)
+    )
+
     quantity = Quantity(
         type=float,
         a_eln=ELNAnnotation(component=ELNComponentEnum.NumberEditQuantity),
@@ -110,7 +112,7 @@ class RecipeStep(ActivityStep):
     )
 
 
-class Recipe(Schema, Activity):
+class Recipe(Schema, BaseSection):
     m_def = Section(
         label='Cooking Recipe',
         categories=[UseCaseElnCategory],
