@@ -2,21 +2,12 @@ from typing import (
     TYPE_CHECKING,
 )
 
-<<<<<<< HEAD
 from nomad.datamodel.metainfo.basesections import (
     ActivityStep,
     BaseSection,
     Entity,
     EntityReference,
     Instrument,
-=======
-from nomad.datamodel.data import UseCaseElnCategory
-from nomad.datamodel.metainfo.basesections import (
-    Activity,
-    ActivityStep,
-    Instrument,
-    System,
->>>>>>> f153270 (schema v0.1)
 )
 from nomad.metainfo.metainfo import Section, SubSection
 
@@ -185,14 +176,10 @@ class Recipe(BaseSection, Schema):
 
     nutrition_value = Quantity(
         type=float,
-<<<<<<< HEAD
         a_eln=ELNAnnotation(
             component=ELNComponentEnum.NumberEditQuantity,
             defaultDisplayUnit='kcal',
         ),
-=======
-        a_eln=ELNAnnotation(component=ELNComponentEnum.NumberEditQuantity),
->>>>>>> f153270 (schema v0.1)
         unit='kcal',
     )
 
