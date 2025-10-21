@@ -1,3 +1,125 @@
 data:
-  m_def: nomad_tajine_plugin.schema_packages.schema_package.NewSchemaPackage
-  name: Markus
+  m_def: 'nomad_tajine_plugin.schema_packages.schema_package.Recipe'
+  name: 'Moroccan Chicken Tagine'
+  summary: 'A traditional Moroccan dish of chicken pieces braised with spices, garlic, onion, olives, and preserved lemons. It is company-worthy yet easy to throw together.'
+  cuisine: 'Moroccan'
+  duration: 60  # total prep + cooking time
+  number_of_servings: 5
+  difficulty: 'medium'
+  authors: 'Chef Uday'
+  diet: 'non-vegetarian'
+  nutrition_value: 480  # estimated kcal per serving
+
+  ingredients:
+    - name: 'Paprika'
+      quantity: 1
+      semantic_concept: 'Spice'
+    - name: 'Ground Cumin'
+      quantity: 1
+      semantic_concept: 'Spice'
+    - name: 'Cayenne Pepper'
+      quantity: 0.25
+      semantic_concept: 'Spice'
+    - name: 'Ground Ginger'
+      quantity: 0.5
+      semantic_concept: 'Spice'
+    - name: 'Ground Coriander'
+      quantity: 0.5
+      semantic_concept: 'Spice'
+    - name: 'Ground Cinnamon'
+      quantity: 0.25
+      semantic_concept: 'Spice'
+    - name: 'Lemon'
+      quantity: 1
+      semantic_concept: 'Fruit'
+    - name: 'Garlic'
+      quantity: 5
+      semantic_concept: 'Vegetable'
+    - name: 'Bone-in, skin-on chicken thighs'
+      quantity: 1800
+      semantic_concept: 'Meat'
+    - name: 'Salt'
+      quantity: 2.25
+      semantic_concept: 'Seasoning'
+    - name: 'Ground black pepper'
+      quantity: 0.5
+      semantic_concept: 'Seasoning'
+    - name: 'Olive Oil'
+      quantity: 1
+      semantic_concept: 'Oil'
+    - name: 'Large Yellow Onion'
+      quantity: 1
+      semantic_concept: 'Vegetable'
+    - name: 'All-purpose Flour'
+      quantity: 2
+      semantic_concept: 'Thickener'
+    - name: 'Chicken Broth'
+      quantity: 415
+      semantic_concept: 'Liquid base'
+    - name: 'Honey'
+      quantity: 2
+      semantic_concept: 'Sweetener'
+    - name: 'Carrots'
+      quantity: 2
+      semantic_concept: 'Vegetable'
+    - name: 'Greek cracked green olives'
+      quantity: 0.5
+      semantic_concept: 'Condiment'
+    - name: 'Fresh Cilantro Leaves'
+      quantity: 2
+      semantic_concept: 'Herb'
+
+  tools:
+    - name: 'Dutch oven or large pan'
+      type: 'Cookware'
+      description: 'Large, heavy-bottomed for braising'
+    - name: 'Small Bowl'
+      type: 'Utensil'
+      description: 'Used for mixing spices'
+    - name: 'Tongs'
+      type: 'Utensil'
+      description: 'Used for flipping chicken'
+    - name: 'Wooden Spoon'
+      type: 'Utensil'
+      description: 'For stirring the sauce'
+    - name: 'Knife'
+      type: 'Utensil'
+      description: 'For cutting vegetables'
+    - name: 'Cutting Board'
+      type: 'Utensil'
+      description: 'Used for ingredient preparation'
+
+  steps:
+    - instruction: 'Combine all dry spices in a bowl. Zest the lemon and set aside 1 tsp mixed with 1 minced garlic clove.'
+      duration: 5
+      temperature: 25
+    - instruction: 'Season both sides of chicken with salt and pepper. Heat oil in Dutch oven over medium-high heat and brown chicken skin side down until golden, about 5 minutes.'
+      duration: 5
+      temperature: 180
+      tools:
+        - name: 'Dutch oven'
+          type: 'Cookware'
+          description: 'Used for browning chicken'
+      ingredients:
+        - name: 'Olive Oil'
+          quantity: 1
+        - name: 'Chicken Thighs'
+          quantity: 1800
+    - instruction: 'Flip chicken pieces and brown other side, about 4 minutes more. Transfer to plate and remove skin.'
+      duration: 5
+      temperature: 180
+    - instruction: 'Add onions to pot and sauté until browned at edges, 5–7 minutes. Add garlic and cook for 30 seconds.'
+      duration: 8
+      temperature: 100
+    - instruction: 'Add spices and flour, cook 30 seconds. Stir in broth, honey, lemon zest, and salt. Add chicken, reduce heat, cover, and simmer for 10 minutes.'
+      duration: 11
+      temperature: 90
+    - instruction: 'Add carrots, cover, and simmer until chicken cooked through and carrots tender, about 10 minutes.'
+      duration: 10
+      temperature: 85
+    - instruction: 'Add olives, lemon mixture, cilantro, and lemon juice. Adjust seasoning as needed.'
+      duration: 2
+      temperature: 80
+    - instruction: 'Serve hot with couscous.'
+      duration: 1
+      temperature: 70
