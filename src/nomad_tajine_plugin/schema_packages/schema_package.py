@@ -2,7 +2,6 @@ from typing import (
     TYPE_CHECKING,
 )
 
-from nomad.units import ureg
 from nomad.datamodel.metainfo.basesections import (
     ActivityStep,
     BaseSection,
@@ -11,6 +10,7 @@ from nomad.datamodel.metainfo.basesections import (
     Instrument,
 )
 from nomad.metainfo.metainfo import Section, SubSection
+from nomad.units import ureg
 
 if TYPE_CHECKING:
     from nomad.datamodel.datamodel import (
