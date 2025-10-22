@@ -1,0 +1,5 @@
+data:
+  m_def: nomad_tajine_plugin.schema_packages.schema_package.IngredientType
+  name: Carrots
+  density: 640
+  weight_per_piece: 60
