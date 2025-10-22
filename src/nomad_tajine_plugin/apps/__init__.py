@@ -131,7 +131,8 @@ recipe_app_entry_point = AppEntryPoint(
                 WidgetHistogram(
                     title='Calories',
                     x=AxisQuantity(
-                        search_quantity=f'data.calories_per_serving#{SCHEMA}', unit='kcal'
+                        search_quantity=f'data.calories_per_serving#{SCHEMA}',
+                        unit='kcal',
                     ),
                     n_bins=100,
                     autorange=True,
