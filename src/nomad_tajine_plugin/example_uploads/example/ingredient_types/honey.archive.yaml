@@ -1,5 +1,13 @@
 data:
   m_def: nomad_tajine_plugin.schema_packages.schema_package.Ingredient
   name: Honey
-  density: 1.420
-  total_nutrients_per_100g: 304
+  density: 1.42
+  total_calories_per_100g: 304
+  calories_per_100_g: 3.04
+  fat_per_100_g: 0.0
+  protein_per_100_g: 0.3
+  carbohydrates_per_100_g: 82.4
+  calories_per_100g: 3.04
+  fat_per_100g: 0.0
+  protein_per_100g: 0.3
+  carbohydrates_per_100g: 82.4

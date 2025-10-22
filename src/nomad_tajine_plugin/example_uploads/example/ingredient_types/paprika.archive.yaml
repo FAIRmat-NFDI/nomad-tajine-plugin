@@ -1,5 +1,13 @@
 data:
   m_def: nomad_tajine_plugin.schema_packages.schema_package.Ingredient
   name: Paprika
-  density: 0.400
-  total_nutrients_per_100g: 282
+  density: 0.4
+  total_calories_per_100g: 282
+  calories_per_100_g: 2.82
+  fat_per_100_g: 13.0
+  protein_per_100_g: 14.1
+  carbohydrates_per_100_g: 54.0
+  calories_per_100g: 2.82
+  fat_per_100g: 13.0
+  protein_per_100g: 14.1
+  carbohydrates_per_100g: 54.0

@@ -3,11 +3,11 @@ data:
   name: 'Moroccan Chicken Tagine'
   summary: 'A traditional Moroccan dish of chicken pieces braised with spices, garlic, onion, olives, and preserved lemons. It is company-worthy yet easy to throw together.'
   cuisine: 'Moroccan'
-  # duration: 60  # total prep + cooking time
   number_of_servings: 5
   difficulty: 'medium'
   authors: 'Chef Uday'
-  diet: 'non-vegetarian'
+  # duration: 60  # total prep + cooking time
+  # diet_type: 'non-vegetarian'
 
   steps:
     - instruction: 'Combine all dry spices in a bowl.'

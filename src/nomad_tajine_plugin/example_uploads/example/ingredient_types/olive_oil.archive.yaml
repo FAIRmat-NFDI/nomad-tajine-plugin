@@ -1,5 +1,13 @@
 data:
   m_def: nomad_tajine_plugin.schema_packages.schema_package.Ingredient
   name: Olive Oil
-  density: 0.910
-  total_nutrients_per_100g: 884
+  density: 0.91
+  total_calories_per_100g: 884
+  calories_per_100_g: 8.84
+  fat_per_100_g: 100.0
+  protein_per_100_g: 0.0
+  carbohydrates_per_100_g: 0.0
+  calories_per_100g: 8.84
+  fat_per_100g: 100.0
+  protein_per_100g: 0.0
+  carbohydrates_per_100g: 0.0

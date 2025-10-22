@@ -1,5 +1,13 @@
 data:
   m_def: nomad_tajine_plugin.schema_packages.schema_package.Ingredient
   name: Ground Coriander
-  density: 0.430
-  total_nutrients_per_100g: 298
+  density: 0.43
+  total_calories_per_100g: 298
+  calories_per_100_g: 2.98
+  fat_per_100_g: 13.0
+  protein_per_100_g: 12.4
+  carbohydrates_per_100_g: 55.0
+  calories_per_100g: 2.98
+  fat_per_100g: 13.0
+  protein_per_100g: 12.4
+  carbohydrates_per_100g: 55.0

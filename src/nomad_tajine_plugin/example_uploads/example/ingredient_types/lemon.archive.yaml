@@ -2,5 +2,13 @@ data:
   m_def: nomad_tajine_plugin.schema_packages.schema_package.Ingredient
   name: Lemon
   density: 1030
-  weight_per_piece: 0.120
-  total_nutrients_per_100g: 29
+  weight_per_piece: 0.12
+  total_calories_per_100g: 29
+  calories_per_100_g: 0.29
+  fat_per_100_g: 0.3
+  protein_per_100_g: 1.1
+  carbohydrates_per_100_g: 9.3
+  calories_per_100g: 0.29
+  fat_per_100g: 0.3
+  protein_per_100g: 1.1
+  carbohydrates_per_100g: 9.3

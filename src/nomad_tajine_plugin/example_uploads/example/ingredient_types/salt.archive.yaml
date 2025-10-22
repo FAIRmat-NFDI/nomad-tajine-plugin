@@ -1,5 +1,13 @@
 data:
   m_def: nomad_tajine_plugin.schema_packages.schema_package.Ingredient
   name: Salt
-  density: 1.210
-  total_nutrients_per_100g: 0
+  density: 1.21
+  total_calories_per_100g: 0
+  calories_per_100_g: 0.0
+  fat_per_100_g: 0.0
+  protein_per_100_g: 0.0
+  carbohydrates_per_100_g: 0.0
+  calories_per_100g: 0.0
+  fat_per_100g: 0.0
+  protein_per_100g: 0.0
+  carbohydrates_per_100g: 0.0
