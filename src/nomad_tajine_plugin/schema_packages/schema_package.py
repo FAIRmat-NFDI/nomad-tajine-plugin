@@ -34,8 +34,7 @@ configuration = config.get_plugin_entry_point(
 m_package = SchemaPackage()
 
 def format_lab_id(lab_id: str):
-    return lab_id.replace(' ', '_').lower()
-
+    return lab_id.lower().replace(" ", "_").replace(",", "")
 
 class Ingredient(Entity, Schema):
     m_def = Section(
@@ -232,9 +231,9 @@ class IngredientAmount(EntityReference):
                 value_per_100g = getattr(self.reference, per_100g_attr)
                 value = (self.mass * value_per_100g / ureg.Quantity(100, "gram")).to(value_per_100g.units)
                 setattr(self, nutrient, value)
-            except Exception as e:
-                logger.error(
-                    f"Failed to calculate {nutrient} for ingredient: {e}",
+            except TypeError as e:
+                logger.warn(
+                    f"Failed to calculate {nutrient} for ingredient {self.name}",
                     exc_info=True
                 )
 

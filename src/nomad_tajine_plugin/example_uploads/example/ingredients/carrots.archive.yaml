@@ -1,0 +1,8 @@
+data:
+  m_def: nomad_tajine_plugin.schema_packages.schema_package.Ingredient
+  name: Carrots
+  density: 640
+  calories_per_100g: 41
+  fat_per_100g: 0.2
+  protein_per_100g: 0.9
+  carbohydrates_per_100g: 10

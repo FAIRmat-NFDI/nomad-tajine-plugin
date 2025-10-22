@@ -1,0 +1,8 @@
+data:
+  m_def: nomad_tajine_plugin.schema_packages.schema_package.Ingredient
+  name: Garlic
+  density: 640
+  calories_per_100g: 149
+  fat_per_100g: 0.5
+  protein_per_100g: 6.4
+  carbohydrates_per_100g: 33

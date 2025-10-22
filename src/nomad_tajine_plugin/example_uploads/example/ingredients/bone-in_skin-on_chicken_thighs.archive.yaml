@@ -1,0 +1,8 @@
+data:
+  m_def: nomad_tajine_plugin.schema_packages.schema_package.Ingredient
+  name: Bone-in Skin-on Chicken Thighs
+  density: 1050
+  calories_per_100g: 209
+  fat_per_100g: 11
+  protein_per_100g: 26
+  carbohydrates_per_100g: 0

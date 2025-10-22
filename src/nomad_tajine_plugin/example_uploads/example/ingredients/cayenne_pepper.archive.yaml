@@ -1,0 +1,8 @@
+data:
+  m_def: nomad_tajine_plugin.schema_packages.schema_package.Ingredient
+  name: Cayenne Pepper
+  density: 510
+  calories_per_100g: 318
+  fat_per_100g: 17
+  protein_per_100g: 12
+  carbohydrates_per_100g: 56
