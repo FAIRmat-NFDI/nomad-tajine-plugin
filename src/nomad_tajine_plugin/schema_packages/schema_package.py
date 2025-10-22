@@ -102,7 +102,23 @@ class Ingredient(EntityReference):
     # preparation_notes = Quantity() or SubSection() TODO: discuss
     # TODO: discuss references
 
-    def normalize(self, archive, logger: 'BoundLogger'):  # noqa: PLR0912
+    def convert_volume(self, unit_volume):
+        if self.reference.density:
+            self.quantity_si = (
+                ureg.Quantity(unit_volume, 'milliliter')
+                * self.quantity
+                * self.reference.density
+            )
+        else:
+            self.quantity_si = None
+
+    def convert_piece(self):
+        if self.reference.weight_per_piece:
+            self.quantity_si = self.reference.weight_per_piece * self.quantity
+        else:
+            self.quantity_si = None
+
+    def normalize(self, archive, logger: 'BoundLogger'):
         if not self.lab_id:
             self.lab_id = self.name
 
@@ -111,49 +127,29 @@ class Ingredient(EntityReference):
         if self.reference:
             unit = self.unit.replace(' ', '_')  # type: ignore
             match unit:
+                # the values for teaspoon, tablespoon and cup come from
+                # https://en.wikipedia.org/wiki/Cooking_weights_and_measures, which
+                # in turn compiles them from '1896 Boston Cooking-School Cook Book'
                 case 'gram':
                     self.quantity_si = self.quantity
                 case 'piece':
-                    if self.reference.weight_per_piece:
-                        self.quantity_si = (
-                            self.reference.weight_per_piece * self.quantity
-                        )
-                    else:
-                        self.quantity_si = None
+                    self.convert_piece()
                 case 'teaspoon':
-                    if self.reference.density:
-                        self.quantity_si = (
-                            ureg.Quantity(14.79, 'milliliter')
-                            * self.quantity
-                            * self.reference.density
-                        )
-                    else:
-                        self.quantity_si = None
+                    self.convert_volume(14.79)
                 case 'tablespoon':
-                    if self.reference.density:
-                        self.quantity_si = (
-                            ureg.Quantity(3.552, 'milliliter')
-                            * self.quantity
-                            * self.reference.density
-                        )
-                    else:
-                        self.quantity_si = None
+                    self.convert_volume(3.552)
                 case 'cup':
-                    if self.reference.density:
-                        self.quantity_si = (
-                            ureg.Quantity(236.588, 'milliliter')
-                            * self.quantity
-                            * self.reference.density
-                        )
-                    else:
-                        self.quantity_si = None
+                    self.convert_volume(236.588)
                 case _:
                     if self.reference.density:
-                        self.quantity_si = (
-                            (ureg(unit).to(ureg.milliliter))
-                            * self.quantity
-                            * self.reference.density
-                        )
+                        try:
+                            self.quantity_si = (
+                                (ureg(unit).to(ureg.milliliter))
+                                * self.quantity
+                                * self.reference.density
+                            )
+                        except Exception as e:
+                            logger.warn(f'Not able to convert common unit to [g], {e}')
                     else:
                         self.quantity_si = None
 
