@@ -102,7 +102,7 @@ class Ingredient(EntityReference):
     # preparation_notes = Quantity() or SubSection() TODO: discuss
     # TODO: discuss references
 
-    def normalize(self, archive, logger: 'BoundLogger'):
+    def normalize(self, archive, logger: 'BoundLogger'):  # noqa: PLR0912
         if not self.lab_id:
             self.lab_id = self.name
 
