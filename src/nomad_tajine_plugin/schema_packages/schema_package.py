@@ -378,46 +378,23 @@ class RecipeScaler(BaseSection, Schema):
         a new archived entry for the scaled recipe.
         """
         if scaling_factor == 1.0:
-            logger.info('Scaling factor is 1.0, no scaling applied.')
-            return recipe
-        scaled_recipe = recipe.m_def.section_cls.from_dict(
-            recipe.m_to_dict(with_root_def=True)
-        )
+            logger.warning('Scaling factor is 1.0, no scaling applied.')
+            return
+        scaled_recipe = Recipe().m_from_dict(recipe.m_to_dict(with_root_def=True))
         scaled_recipe.name += f' (scaled x{scaling_factor:.2f})'
+        scaled_recipe.number_of_servings *= scaling_factor
+
+        # reset ingredients and tools, that will be populated from steps
+        scaled_recipe.tools = []
+        scaled_recipe.ingredients = []
 
         # Scale ingredients in steps
-        scaled_steps = []
-        for step in recipe.steps:
-            scaled_step = step.m_def.section_cls.from_dict(
-                step.m_to_dict(with_root_def=True)
-            )
-            scaled_ingredients = []
-            for ingredient in scaled_step.ingredients:
-                scaled_ingredient = ingredient.m_def.section_cls.from_dict(
-                    ingredient.m_to_dict(with_root_def=True)
-                )
-                scaled_ingredient.quantity *= scaling_factor
-                if scaled_ingredient.quantity_si:
-                    scaled_ingredient.quantity_si *= scaling_factor
-                scaled_ingredients.append(scaled_ingredient)
-            scaled_step.ingredients = scaled_ingredients
-            scaled_steps.append(scaled_step)
-        scaled_recipe.steps = scaled_steps
-        scaled_recipe.number_of_servings = int(
-            recipe.number_of_servings * scaling_factor
-        )
+        for step in scaled_recipe.steps:
+            for ingredient in step.ingredients:
+                ingredient.quantity *= scaling_factor
+                if ingredient.quantity_si:
+                    ingredient.quantity_si *= scaling_factor
 
-        # Scale ingredients
-        scaled_ingredients = []
-        for ingredient in recipe.ingredients:
-            scaled_ingredient = ingredient.m_def.section_cls.from_dict(
-                ingredient.m_to_dict(with_root_def=True)
-            )
-            scaled_ingredient.quantity *= scaling_factor
-            if scaled_ingredient.quantity_si:
-                scaled_ingredient.quantity_si *= scaling_factor
-            scaled_ingredients.append(scaled_ingredient)
-        scaled_recipe.ingredients = scaled_ingredients
         file_name = (
             (f'{recipe.name} scaled x{scaling_factor:.2f}.archive.json')
             .replace(' ', '_')
