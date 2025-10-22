@@ -1,19 +1,7 @@
 import requests
 import json
-import os
-from pathlib import Path
-from dotenv import dotenv_values
 from rapidfuzz import fuzz
 
-# Load .env from the same directory as this script so running from any CWD works.
-env_path = Path(__file__).resolve().parent / '.env'
-config = dotenv_values(str(env_path))
-# Prefer .env value, then environment variable fallback.
-API_KEY = config.get('USDA_API_KEY') or os.environ.get('USDA_API_KEY')
-if not API_KEY:
-    raise RuntimeError(
-        f'USDA API key not found. Looked in {env_path} and environment variables. Please set USDA_API_KEY.'
-    )
 
 FOOD_CATEGORY_CLASSIFICATION = {
     # --------------------------------------------------------------------
@@ -64,6 +52,7 @@ FOOD_CATEGORY_CLASSIFICATION = {
 
 def get_usda_data(
     ingredient_name,
+    usda_api_key,
 ):
     """
     Finds a food by its name and returns its calorie count.
@@ -75,7 +64,7 @@ def get_usda_data(
         'query': ingredient_name,
         'dataType': ['SR Legacy'],
         'pageSize': 1000,
-        'api_key': API_KEY,
+        'api_key': usda_api_key,
     }
 
     result = {}

@@ -114,7 +114,7 @@ class Ingredient(Entity, Schema):
         else:
             self.lab_id = format_lab_id(self.lab_id)
 
-        usda_query_result = get_usda_data(self.name)
+        usda_query_result = get_usda_data(self.name, configuration.usda_api_key)
         if usda_query_result:
             self.protein_per_100_g = usda_query_result.get('protein')
             self.fat_per_100_g = usda_query_result.get('fat')
