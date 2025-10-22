@@ -33,8 +33,10 @@ configuration = config.get_plugin_entry_point(
 
 m_package = SchemaPackage()
 
+
 def format_lab_id(lab_id: str):
-    return lab_id.lower().replace(" ", "_").replace(",", "")
+    return lab_id.lower().replace(' ', '_').replace(',', '')
+
 
 class Ingredient(Entity, Schema):
     m_def = Section(
@@ -233,18 +235,20 @@ class IngredientAmount(EntityReference):
             self.mass = self.reference.weight_per_piece * self.quantity
         else:
             self.mass = None
-    
+
     def calculate_nutrients(self, logger):
-        for nutrient in ("calories", "fat", "protein", "carbohydrates"):
+        for nutrient in ('calories', 'fat', 'protein', 'carbohydrates'):
             try:
-                per_100_g_attr = f"{nutrient}_per_100_g"
+                per_100_g_attr = f'{nutrient}_per_100_g'
                 value_per_100_g = getattr(self.reference, per_100_g_attr)
-                value = (self.mass * value_per_100_g / ureg.Quantity(100, "gram")).to(value_per_100_g.units)
+                value = (self.mass * value_per_100_g / ureg.Quantity(100, 'gram')).to(
+                    value_per_100_g.units
+                )
                 setattr(self, nutrient, value)
-            except TypeError as e:
+            except TypeError:
                 logger.warn(
-                    f"Failed to calculate {nutrient} for ingredient {self.name}",
-                    exc_info=True
+                    f'Failed to calculate {nutrient} for ingredient {self.name}',
+                    exc_info=True,
                 )
 
     def normalize(self, archive, logger: 'BoundLogger'):  # noqa: PLR0912
@@ -303,7 +307,7 @@ class IngredientAmount(EntityReference):
                         self.mass = None
 
             self.diet_type = self.reference.diet_type
-            
+
             self.calculate_nutrients(logger)
 
 
@@ -525,7 +529,7 @@ class Recipe(BaseSection, Schema):
         repeats=True,
     )
 
-    def normalize(self, archive: 'EntryArchive', logger: 'BoundLogger') -> None:
+    def normalize(self, archive: 'EntryArchive', logger: 'BoundLogger') -> None:  # noqa: PLR0912
         super().normalize(archive, logger)
 
         all_ingredients = []
@@ -547,7 +551,7 @@ class Recipe(BaseSection, Schema):
 
                     # Sum nutrient values safely
                     nutrients = {}
-                    for nutrient in ("calories", "fat", "protein", "carbohydrates"):
+                    for nutrient in ('calories', 'fat', 'protein', 'carbohydrates'):
                         nutrients[nutrient] = (getattr(existing, nutrient, 0) or 0) + (
                             getattr(ingredient, nutrient, 0) or 0
                         )
@@ -581,17 +585,20 @@ class Recipe(BaseSection, Schema):
         self.tools.extend(Tool.m_from_dict(tool.m_to_dict()) for tool in all_tools)
 
         # --- Compute total nutrients ---
-        for nutrient in ("calories", "fat", "protein", "carbohydrates"):
+        for nutrient in ('calories', 'fat', 'protein', 'carbohydrates'):
             setattr(
                 self,
                 nutrient,
-                sum((getattr(ingredient, nutrient, 0.0) or 0.0) for ingredient in (self.ingredients or [])),
+                sum(
+                    (getattr(ingredient, nutrient, 0.0) or 0.0)
+                    for ingredient in (self.ingredients or [])
+                ),
             )
 
         # --- Compute nutrients per serving ---
         if self.number_of_servings:
-            for nutrient in ("calories", "fat", "protein", "carbohydrates"):
-                per_serving_attr = f"{nutrient}_per_serving"
+            for nutrient in ('calories', 'fat', 'protein', 'carbohydrates'):
+                per_serving_attr = f'{nutrient}_per_serving'
                 total_value = getattr(self, nutrient, 0.0)
                 setattr(self, per_serving_attr, total_value / self.number_of_servings)
 
@@ -601,18 +608,22 @@ class Recipe(BaseSection, Schema):
         except Exception as e:
             logger.warning('recipe_duration_sum_failed', error=str(e))
 
-        ingredient_diets = [(ingredient.diet_type or "AMBIGUOUS") for ingredient in (self.ingredients or [])]
+        ingredient_diets = [
+            (ingredient.diet_type or 'AMBIGUOUS')
+            for ingredient in (self.ingredients or [])
+        ]
 
         # --- Find the diet type ---
         if not ingredient_diets:
-            self.diet_type = "AMBIGUOUS"
-        elif "ANIMAL_PRODUCT" in ingredient_diets:
-            self.diet_type = "ANIMAL_PRODUCT"
-        elif all(d == "VEGAN" for d in ingredient_diets):
-            self.diet_type = "VEGAN"
-        elif "VEGETARIAN" in ingredient_diets:
-            self.diet_type = "VEGETARIAN"
+            self.diet_type = 'AMBIGUOUS'
+        elif 'ANIMAL_PRODUCT' in ingredient_diets:
+            self.diet_type = 'ANIMAL_PRODUCT'
+        elif all(d == 'VEGAN' for d in ingredient_diets):
+            self.diet_type = 'VEGAN'
+        elif 'VEGETARIAN' in ingredient_diets:
+            self.diet_type = 'VEGETARIAN'
         else:
-            self.diet_type = "AMBIGUOUS"
+            self.diet_type = 'AMBIGUOUS'
+
 
 m_package.__init_metainfo__()
