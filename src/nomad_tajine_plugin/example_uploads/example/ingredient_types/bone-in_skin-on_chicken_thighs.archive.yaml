@@ -3,3 +3,4 @@ data:
   name: Bone-in, skin-on chicken thighs
   density: 1.050
   weight_per_piece: 0.200
+  total_nutrients_per_100g: 364

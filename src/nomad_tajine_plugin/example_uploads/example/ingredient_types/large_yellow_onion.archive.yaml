@@ -3,3 +3,4 @@ data:
   name: Large Yellow Onion
   density: 0.920
   weight_per_piece: 0.150
+  total_nutrients_per_100g: 40

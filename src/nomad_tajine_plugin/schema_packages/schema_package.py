@@ -70,7 +70,6 @@ class Ingredient(Entity, Schema):
         description='Nutrients per 100 g for this ingredient type imported from USDA probably.',
         a_eln=ELNAnnotation(
             component=ELNComponentEnum.NumberEditQuantity, 
-            # properties= {'editable': False},
         )
     )
 
@@ -170,12 +169,12 @@ class IngredientAmount(EntityReference):
         if not self.reference:
             logger.debug('Ingredient entry not found. Creating a new one.')
             try:
-                ingredient_type = Ingredient(
+                ingredient = Ingredient(
                     name=self.name,
                     lab_id=self.lab_id,
                 )
                 self.reference = create_archive(
-                    ingredient_type,
+                    ingredient,
                     archive,
                     f'{self.lab_id}.archive.json',
                     overwrite=False,
@@ -359,9 +358,10 @@ class Recipe(BaseSection, Schema):
     duration = Quantity(
         type=float,
         a_eln=ELNAnnotation(
-            component=ELNComponentEnum.NumberEditQuantity, defaultDisplayUnit='minute', properties= {'editable': False},
-            unit='minute',
+            component=ELNComponentEnum.NumberEditQuantity, defaultDisplayUnit='minute', 
+            # properties= {'editable': False},
         ),
+        unit='minute',
     )
 
     tools = SubSection(
@@ -385,76 +385,70 @@ class Recipe(BaseSection, Schema):
     def normalize(self, archive: 'EntryArchive', logger: 'BoundLogger') -> None:
         super().normalize(archive, logger)
 
-        try:
-            self.total_duration = sum((step.duration or 0.0) for step in (self.steps or []))
-        except Exception as e:
-            logger.warning('recipe_duration_sum_failed', error=str(e))
+        # all_ingredients = []
+        # all_tools = []
 
+        # for step in self.steps:
+        #     for ingredient in step.ingredients:
+        #         # Check if ingredient with the same name exists
+        #         existing = next(
+        #             (ing for ing in all_ingredients if ing.name == ingredient.name), None
+        #         )
 
-        all_ingredients = []
-        all_tools = []
+        #         if existing is None:
+        #             all_ingredients.append(ingredient)
+        #         else:
+        #             # Sum quantities
+        #             new_quantity = (existing.quantity or 0) + (ingredient.quantity or 0)
 
-        for step in self.steps:
-            for ingredient in step.ingredients:
-                # Check if ingredient with the same name exists
-                existing = next(
-                    (ing for ing in all_ingredients if ing.name == ingredient.name), None
-                )
+        #             # Sum nutrition values
+        #             new_total_nutrients = sum(
+        #                 existing.total_nutrients, ingredient.total_nutrients
+        #             )
 
-                if existing is None:
-                    all_ingredients.append(ingredient)
-                else:
-                    # Sum quantities
-                    new_quantity = (existing.quantity or 0) + (ingredient.quantity or 0)
+        #             # Create a new ingredient with summed values
+        #             ingredient_summed = IngredientAmount(
+        #                 name=existing.name,
+        #                 quantity=new_quantity,
+        #                 unit=existing.unit,
+        #                 quantity_si=None,  # optionally recalc
+        #                 lab_id=existing.lab_id,
+        #                 reference=existing.reference,
+        #                 total_nutrients=new_total_nutrients,
+        #             )
 
-                    # Sum nutrition values
-                    new_total_nutrients = sum(
-                        existing.total_nutrients, ingredient.total_nutrients
-                    )
+        #             # Replace old ingredient with new summed one
+        #             all_ingredients = [
+        #                 ing if ing.name != ingredient.name else ingredient_summed
+        #                 for ing in all_ingredients
+        #             ]
+            
+        #     for tool in step.tools:
+        #         # Check if ingredient with the same name exists
+        #         existing = next(
+        #             (tool for tool in all_tools if tool.name == tool.name), None
+        #         )
 
-                    # Create a new ingredient with summed values
-                    ingredient_summed = Ingredient(
-                        name=existing.name,
-                        quantity=new_quantity,
-                        unit=existing.unit,
-                        quantity_si=None,  # optionally recalc
-                        lab_id=existing.lab_id,
-                        reference=existing.reference,
-                        total_nutrients=new_total_nutrients,
-                    )
+        #         if existing is None:
+        #             all_tools.append(tool)
 
-                    # Replace old ingredient with new summed one
-                    all_ingredients = [
-                        ing if ing.name != ingredient.name else ingredient_summed
-                        for ing in all_ingredients
-                    ]
+        # self.ingredients.extend(
+        #     IngredientAmount.m_from_dict(ingredient.m_to_dict())
+        #     for ingredient in all_ingredients
+        # )
+        # self.tools.extend(
+        #     Tool.m_from_dict(tool.m_to_dict())
+        #     for tool in all_tools
+        # )
 
-        
-        self.ingredients.extend(
-            IngredientAmount.m_from_dict(ingredient.m_to_dict())
-            for ingredient in all_ingredients
-        )
-        self.tools.extend(
-            Tool.m_from_dict(tool.m_to_dict())
-            for tool in all_tools
-        )
-        try:
-            self.total_duration = sum((_.duration or 0.0) for _ in (self.steps or []))
-        except Exception as e:
-            logger.warning('recipe_duration_sum_failed', error=str(e))
+        # self.total_nutrients = sum((ingredient.nutrition_value or 0.0) for ingredient in (self.ingredient or []))
+        # if self.number_of_servings:
+        #     self.nutrients_per_serving = self.total_nutrients / self.number_of_servings
 
-        all_ingredients = []
-        if self.ingredients:
-            all_ingredients.extend(self.ingredients)
-        for s in (self.steps or []):
-            if s.ingredients:
-                all_ingredients.extend(s.ingredients)
+        # try:
+        #     self.total_duration = sum((_.duration or 0.0) for _ in (self.steps or []))
+        # except Exception as e:
+        #     logger.warning('recipe_duration_sum_failed', error=str(e))
 
-
-        self.nutrients_total = sum((ingredient.nutrition_value or 0.0) for ingredient in (self.ingredient or []))
-        try:
-            self.total_duration = sum((_.duration or 0.0) for _ in (self.steps or []))
-        except Exception as e:
-            logger.warning('recipe_duration_sum_failed', error=str(e))
 
 m_package.__init_metainfo__()

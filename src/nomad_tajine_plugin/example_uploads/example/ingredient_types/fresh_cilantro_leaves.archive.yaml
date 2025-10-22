@@ -2,3 +2,4 @@ data:
   m_def: nomad_tajine_plugin.schema_packages.schema_package.Ingredient
   name: Fresh Cilantro Leaves
   density: 0.110
+  total_nutrients_per_100g: 23

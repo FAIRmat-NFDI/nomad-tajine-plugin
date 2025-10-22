@@ -3,3 +3,4 @@ data:
   name: Carrots
   density: 0.640
   weight_per_piece: 0.060
+  total_nutrients_per_100g: 41

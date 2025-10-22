@@ -3,3 +3,4 @@ data:
   name: Garlic
   density: 0.640
   weight_per_piece: 0.005
+  total_nutrients_per_100g: 149
