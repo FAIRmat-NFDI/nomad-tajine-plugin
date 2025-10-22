@@ -38,7 +38,7 @@ def format_lab_id(lab_id: str):
     return lab_id.replace(' ', '_').lower()
 
 
-class IngredientType(Entity, Schema):
+class Ingredient(Entity, Schema):
     m_def = Section(
         label='Ingredient Type',
         categories=[UseCaseElnCategory],
@@ -65,7 +65,7 @@ class IngredientType(Entity, Schema):
         super().normalize(archive, logger)
 
 
-class Ingredient(EntityReference):
+class IngredientAmount(EntityReference):
     name = Quantity(
         type=str, a_eln=ELNAnnotation(component=ELNComponentEnum.StringEditQuantity)
     )
@@ -105,7 +105,7 @@ class Ingredient(EntityReference):
     )
 
     reference = Quantity(
-        type=IngredientType,
+        type=Ingredient,
         description='A reference to a ingredient type entry.',
         a_eln=ELNAnnotation(
             component='ReferenceEditQuantity',
@@ -141,9 +141,9 @@ class Ingredient(EntityReference):
         super().normalize(archive, logger)
 
         if not self.reference:
-            logger.debug('IngredientType entry not found. Creating a new one.')
+            logger.debug('Ingredient entry not found. Creating a new one.')
             try:
-                ingredient_type = IngredientType(
+                ingredient_type = Ingredient(
                     name=self.name,
                     lab_id=self.lab_id,
                 )
@@ -155,7 +155,7 @@ class Ingredient(EntityReference):
                 )
             except Exception as e:
                 logger.error(
-                    'Failed to create IngredientType entry.', exc_info=True, error=e
+                    'Failed to create Ingredient entry.', exc_info=True, error=e
                 )
 
         if self.reference:
@@ -222,7 +222,7 @@ class RecipeStep(ActivityStep):
     )
 
     ingredients = SubSection(
-        section_def=Ingredient,
+        section_def=IngredientAmount,
         description='',
         repeats=True,
     )
@@ -317,7 +317,7 @@ class Recipe(BaseSection, Schema):
     )
 
     ingredients = SubSection(
-        section_def=Ingredient,
+        section_def=IngredientAmount,
         description='',
         repeats=True,
     )
@@ -327,7 +327,7 @@ class Recipe(BaseSection, Schema):
 
         # Collect and clone all ingredients and tools from steps
         self.ingredients.extend(
-            Ingredient.m_from_dict(ingredient.m_to_dict())
+            IngredientAmount.m_from_dict(ingredient.m_to_dict())
             for step in self.steps
             for ingredient in step.ingredients
         )

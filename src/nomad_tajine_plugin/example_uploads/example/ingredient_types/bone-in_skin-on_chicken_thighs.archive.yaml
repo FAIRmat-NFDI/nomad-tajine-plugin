@@ -1,5 +1,5 @@
 data:
-  m_def: nomad_tajine_plugin.schema_packages.schema_package.IngredientType
+  m_def: nomad_tajine_plugin.schema_packages.schema_package.Ingredient
   name: Bone-in, skin-on chicken thighs
   density: 1050
   weight_per_piece: 200
