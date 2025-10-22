@@ -10,8 +10,7 @@ from nomad.datamodel.metainfo.basesections import (
     Instrument,
 )
 from nomad.metainfo.metainfo import Section, SubSection
-
-# from nomad.units import ureg
+from nomad.units import ureg
 
 if TYPE_CHECKING:
     from nomad.datamodel.datamodel import (
@@ -68,8 +67,8 @@ class Ingredient(EntityReference):
             'gram',
             'milliliter',
             'piece',
-            'tea spoon',
-            'table spoon',
+            'teaspoon',
+            'tablespoon',
             'fluid ounce',
             'cup',
             'pint',
@@ -109,18 +108,54 @@ class Ingredient(EntityReference):
 
         super().normalize(archive, logger)
 
-        # if self.reference:
-        #     match self.unit:
-        #         case 'gram':
-        #             self.quantity_si = self.quantity
-        #         case 'piece':
-        #             self.quantity_si = self.reference.weight_per_piece * self.quantity
-        #         case _:
-        #             self.quantity_si = (
-        #                 (ureg(self.unit).to(ureg.milliliter)).magnitude
-        #                 * self.quantity
-        #                 * self.reference.density
-        #             )
+        if self.reference:
+            unit = self.unit.replace(' ', '_')  # type: ignore
+            match unit:
+                case 'gram':
+                    self.quantity_si = self.quantity
+                case 'piece':
+                    if self.reference.weight_per_piece:
+                        self.quantity_si = (
+                            self.reference.weight_per_piece * self.quantity
+                        )
+                    else:
+                        self.quantity_si = None
+                case 'teaspoon':
+                    if self.reference.density:
+                        self.quantity_si = (
+                            ureg.Quantity(14.79, 'milliliter')
+                            * self.quantity
+                            * self.reference.density
+                        )
+                    else:
+                        self.quantity_si = None
+                case 'tablespoon':
+                    if self.reference.density:
+                        self.quantity_si = (
+                            ureg.Quantity(3.552, 'milliliter')
+                            * self.quantity
+                            * self.reference.density
+                        )
+                    else:
+                        self.quantity_si = None
+                case 'cup':
+                    if self.reference.density:
+                        self.quantity_si = (
+                            ureg.Quantity(236.588, 'milliliter')
+                            * self.quantity
+                            * self.reference.density
+                        )
+                    else:
+                        self.quantity_si = None
+                case _:
+                    if self.reference.density:
+                        self.quantity_si = (
+                            (ureg(unit).to(ureg.milliliter))
+                            * self.quantity
+                            * self.reference.density
+                        )
+                    else:
+                        self.quantity_si = None
 
 
 class Tool(Instrument):
