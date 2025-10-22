@@ -11,6 +11,8 @@ from nomad.datamodel.metainfo.basesections import (
 )
 from nomad.metainfo.metainfo import Section, SubSection
 
+# from nomad.units import ureg
+
 if TYPE_CHECKING:
     from nomad.datamodel.datamodel import (
         EntryArchive,
@@ -31,8 +33,23 @@ configuration = config.get_plugin_entry_point(
 m_package = SchemaPackage()
 
 
-class IngredientType(Entity):
-    pass
+class IngredientType(Entity, Schema):
+    m_def = Section(
+        label='Ingredient Type',
+        categories=[UseCaseElnCategory],
+    )
+
+    density = Quantity(
+        type=float,
+        a_eln=ELNAnnotation(component=ELNComponentEnum.NumberEditQuantity),
+        unit='kg/L',
+    )
+
+    weight_per_piece = Quantity(
+        type=float,
+        a_eln=ELNAnnotation(component=ELNComponentEnum.NumberEditQuantity),
+        unit='kg',
+    )
 
 
 class Ingredient(EntityReference):
@@ -47,7 +64,18 @@ class Ingredient(EntityReference):
     )
 
     unit = Quantity(
-        type=MEnum('tea spoon', 'piece'),
+        type=MEnum(
+            'gram',
+            'milliliter',
+            'piece',
+            'tea spoon',
+            'table spoon',
+            'fluid ounce',
+            'cup',
+            'pint',
+            'quart',
+            'gallon',
+        ),
         a_eln=ELNAnnotation(component=ELNComponentEnum.EnumEditQuantity),
     )
 
@@ -81,9 +109,18 @@ class Ingredient(EntityReference):
 
         super().normalize(archive, logger)
 
-
-# class IngredientTypeReference():
-#     pass
+        # if self.reference:
+        #     match self.unit:
+        #         case 'gram':
+        #             self.quantity_si = self.quantity
+        #         case 'piece':
+        #             self.quantity_si = self.reference.weight_per_piece * self.quantity
+        #         case _:
+        #             self.quantity_si = (
+        #                 (ureg(self.unit).to(ureg.milliliter)).magnitude
+        #                 * self.quantity
+        #                 * self.reference.density
+        #             )
 
 
 class Tool(Instrument):
