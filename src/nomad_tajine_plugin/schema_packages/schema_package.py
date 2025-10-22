@@ -142,15 +142,6 @@ class RecipeStep(ActivityStep):
         unit='minute',
     )
 
-    temperature = Quantity(
-        type=float,
-        default=20.0,
-        a_eln=ELNAnnotation(
-            component=ELNComponentEnum.NumberEditQuantity, defaultDisplayUnit='celsius'
-        ),
-        unit='celsius',
-    )
-
     tools = SubSection(
         section_def=Tool,
         description='',
@@ -165,6 +156,17 @@ class RecipeStep(ActivityStep):
 
     instruction = Quantity(
         type=str, a_eln=ELNAnnotation(component=ELNComponentEnum.StringEditQuantity)
+    )
+
+
+class HeatingCoolingStep(RecipeStep):
+    temperature = Quantity(
+        type=float,
+        default=20.0,
+        a_eln=ELNAnnotation(
+            component=ELNComponentEnum.NumberEditQuantity, defaultDisplayUnit='celsius'
+        ),
+        unit='celsius',
     )
 
 
