@@ -10,7 +10,8 @@ from nomad.datamodel.metainfo.basesections import (
     Instrument,
 )
 from nomad.metainfo.metainfo import Section, SubSection
-from nomad.units import ureg
+
+# from nomad.units import ureg
 
 if TYPE_CHECKING:
     from nomad.datamodel.datamodel import (
