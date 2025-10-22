@@ -369,15 +369,56 @@ class RecipeScaler(BaseSection, Schema):
     def scale_recipe(
         self, recipe: Recipe, scaling_factor: float, logger: 'BoundLogger'
     ) -> None:
-        return recipe
+        if scaling_factor == 1.0:
+            logger.info('Scaling factor is 1.0, no scaling applied.')
+            return recipe
+        scaled_recipe = recipe.m_def.section_cls.from_dict(
+            recipe.m_to_dict(with_root_def=True)
+        )
+        scaled_recipe.name += f' (scaled x{scaling_factor:.2f})'
+
+        # Scale ingredients in steps
+        scaled_steps = []
+        for step in recipe.steps:
+            scaled_step = step.m_def.section_cls.from_dict(
+                step.m_to_dict(with_root_def=True)
+            )
+            scaled_ingredients = []
+            for ingredient in scaled_step.ingredients:
+                scaled_ingredient = ingredient.m_def.section_cls.from_dict(
+                    ingredient.m_to_dict(with_root_def=True)
+                )
+                scaled_ingredient.quantity *= scaling_factor
+                if scaled_ingredient.quantity_si:
+                    scaled_ingredient.quantity_si *= scaling_factor
+                scaled_ingredients.append(scaled_ingredient)
+            scaled_step.ingredients = scaled_ingredients
+            scaled_steps.append(scaled_step)
+        scaled_recipe.steps = scaled_steps
+        scaled_recipe.number_of_servings = int(
+            recipe.number_of_servings * scaling_factor
+        )
+
+        # Scale ingredients
+        scaled_ingredients = []
+        for ingredient in recipe.ingredients:
+            scaled_ingredient = ingredient.m_def.section_cls.from_dict(
+                ingredient.m_to_dict(with_root_def=True)
+            )
+            scaled_ingredient.quantity *= scaling_factor
+            if scaled_ingredient.quantity_si:
+                scaled_ingredient.quantity_si *= scaling_factor
+            scaled_ingredients.append(scaled_ingredient)
+        scaled_recipe.ingredients = scaled_ingredients
+
+        return scaled_recipe
 
     def normalize(self, archive: 'EntryArchive', logger: 'BoundLogger') -> None:
         super().normalize(archive, logger)
 
+        self.scaled_recipe = None
         if self.original_recipe and self.desired_servings:
             try:
-                if isinstance(self.original_recipe, MProxy):
-                    self.original_recipe = self.original_recipe.m_proxy_resolve()
                 scaling_factor = (
                     self.desired_servings / self.original_recipe.number_of_servings
                 )
