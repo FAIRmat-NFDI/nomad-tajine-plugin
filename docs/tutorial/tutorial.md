@@ -1,65 +1,49 @@
 # Tutorial
 
-
 ## Install this plugin
 
-### 1. Add it as a submodule to yournomad-tajine-distro
-   ```bash
-   git submodule add https://github.com/FAIRmat-NFDI/nomad-tajine-plugin.git packages/nomad-tajine-plugin
-   ```
-### 2. Modify the `pyproject.toml` of your nomad-tajine-distro
+If you are using the **nomad-tajine-distro** Oasis, this plugin comes preinstalled.  
 
-To ensure `uv` recognizes the local plugins (a local copy of your plugin repository available in `packages/` directory), we need to make some modifications in the `pyproject.toml`.  These include adding the plugin package to `[project.dependencies]` and `[tool.uv.sources]` tables. The packages listed under `[tool.uv.sources]` are loaded by `uv` using the local code directory made available under `packages/` with the previous step. This list will contain all the plugins that we need to actively develop in this environment.
+If you would like to install the plugin on another NOMAD Oasis instance, please follow the official guide on [**How to install plugins into a NOMAD Oasis**](https://nomad-lab.eu/prod/v1/docs/howto/oasis/configure.html#plugins).
 
-If a new plugin is **not** listed under `[project.dependencies]`, we need to first add it as a dependency. After adding the dependencies, update the `[tool.uv.sources]` section in your `pyproject.toml` file to reflect the new plugins.
+In short, to ensure that this plugin is available in your NOMAD Oasis, you need to declare it in the `pyproject.toml` file of your Oasis. This involves adding the plugin package to the `[project.dependencies]` table.
 
-There are two ways of adding to these two lists:
+There are two ways to do this:
 
-   a) You can use `uv add` which adds the dependency and the source in `pyproject.toml` and sets up the environment.  Adding multiple plugins should be done in a single command:
-   ```bash
-   uv add packages/nomad-tajine-plugin
-   ```
-   b) You can modify the `pyproject.toml` file manually:
+**a)** Use `uv add`, which automatically adds the dependency and source entries to `pyproject.toml` and sets up the environment.  
 
-     ```toml
-     [project]
-     dependencies = [
-     ...
-     "nomad-tajine-plugin",
-     ]
+```bash
+uv add packages/nomad-tajine-plugin
+```
+**b)** Modify the `pyproject.toml` file manually:
+```toml
+[project]
+dependencies = [
+  ...
+  "nomad-tajine-plugin",
+]
 
-     [tool.uv.sources]
-     ...
-     nomad-tajine-plugin = { workspace = true }
-     ```
-
-!!! attention
-    You can also use `uv` to install a specific branch of the plugin without adding a submodule locally.
-    ```bash
-    uv add https://github.com/FAIRmat-NFDI/nomad-tajine-plugin.git --branch <specific-branch-name>
-    ```
-    This command will not include the plugin in the `packages/` folder, and hence this plugin will not be editable.
-
+[tool.uv.sources]
+...
+nomad-tajine-plugin = { workspace = true }
+```
 
 ## Create recipe entries manually
 
-It is similar to using other built-in ELN templates. You simply need to choose the **Recipe** as your template: You could follow this concise steps:
+It is similar to using other built-in ELN templates. You simply need to choose the **Recipe** as your **Built-in schema**.
 
-In the GUI: PUBLISH → Uploads → CREAT A NEW UPLOAD → CREATE FROM SCHEMA → Built-in schema → Recipe (entry type provided by the plugin).
+You can follow this concise steps:
 
-Fill the main fields: Name, Cuisine, Number of servings, etc.
+1. In the GUI: **PUBLISH** → **Uploads** → **CREATE A NEW UPLOAD** → **CREATE FROM SCHEMA** → select **Built-in schema** → **Recipe** (entry type provided by the plugin).
 
-Choose ingredients from already existing entries or simply add them in using the designated fields (name, amount, unit) and Cooking steps (ordered steps).
+2. Fill the main fields: Name, Cuisine, Number of servings, etc.
 
-Save the entry and (optionally) add it to a Dataset/Collection.
-
-!!! note
-Additional entry types (e.g., Ingredient, Step, RecipeCollection) can be created and linked, depending on how you structure your data.
+3. Choose ingredients from already existing entries or simply add them in using the designated fields (name, amount, unit) and Cooking steps (ordered steps).
 
 
-## Search Recipes
+## Search recipes
 
-The easiest is to use NOMAD Tajine App. You can find it under EXPLORE menu.
+The easiest is to use NOMAD Tajine App. You can find it in the **EXPLORE** menu under **USE CASES** category.
 
 Feel free to use the already existing dashboard or modify it to your search criteria. 
 
@@ -78,14 +62,7 @@ The steps are the same as briefly mentioned above.
 
 Noteworthy is that the docs are Markdown and deployed using **MkDocs**.
 
-After you modified or added to the docs, preview them locally, before PR:
-
-Install the MkDocs using uv: 
-
-```bash
-uv run pip install requirements_docs.txt
-```
-and then preview them for sanity check:
+After you modified or added to the docs, preview them locally for a final sanity check:
 
 ```bash
 uv run mkdocs serve
