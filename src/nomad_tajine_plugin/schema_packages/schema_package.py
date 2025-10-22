@@ -33,7 +33,8 @@ configuration = config.get_plugin_entry_point(
 
 m_package = SchemaPackage()
 
-# TODO: if we want to have individual values for macronutrients (fats, proteins, ...), we could reactivate this.
+# TODO: if we want to have individual values for macronutrients (fats, proteins, ...),
+# we could reactivate this.
 # class NutrientAmount(BaseSection):
 #     m_def = Section(label='Nutrient Amount')
 
@@ -67,10 +68,11 @@ class Ingredient(Entity, Schema):
 
     total_nutrients_per_100g = Quantity(
         type=float,
-        description='Nutrients per 100 g for this ingredient type imported from USDA probably.',
+        unit='kcal/g',
+        description='Nutrients per 100 g for this ingredient type imported from USDA.',
         a_eln=ELNAnnotation(
-            component=ELNComponentEnum.NumberEditQuantity, 
-        )
+            component=ELNComponentEnum.NumberEditQuantity, defaultDisplayUnit='kcal/g'
+        ),
     )
 
     def normalize(self, archive, logger: 'BoundLogger'):
@@ -132,11 +134,13 @@ class IngredientAmount(EntityReference):
 
     total_nutrients = Quantity(
         type=float,
+        unit='kcal',
         description='Total nutrients of this ingredient.',
         a_eln=ELNAnnotation(
-            component=ELNComponentEnum.NumberEditQuantity, 
+            component=ELNComponentEnum.NumberEditQuantity,
+            defaultDisplayUnit='kcal',
             # properties= {'editable': False},
-        )
+        ),
     )
 
     # preparation_notes = Quantity() or SubSection() TODO: discuss
@@ -156,7 +160,7 @@ class IngredientAmount(EntityReference):
         if self.reference.weight_per_piece:
             self.mass = self.reference.weight_per_piece * self.quantity
         else:
-            self.mass = None      
+            self.mass = None
 
     def normalize(self, archive, logger: 'BoundLogger'):  # noqa: PLR0912
         if not self.lab_id:
@@ -212,14 +216,19 @@ class IngredientAmount(EntityReference):
                             logger.warn(f'Not able to convert common unit to [g], {e}')
                     else:
                         self.mass = None
-            
+
             try:
-                self.total_nutrients = self.mass * self.reference.total_nutrients_per_100g
+                self.total_nutrients = (
+                    self.mass * self.reference.total_nutrients_per_100g / 100
+                )
 
             except Exception as e:
                 logger.error(
-                    'Failed to calculate total nutrients for ingredient.', exc_info=True, error=e
+                    'Failed to calculate total nutrients for ingredient.',
+                    exc_info=True,
+                    error=e,
                 )
+
 
 class Tool(Instrument, Schema):
     type = Quantity(
@@ -319,15 +328,6 @@ class Recipe(BaseSection, Schema):
         type=str, a_eln=ELNAnnotation(component=ELNComponentEnum.StringEditQuantity)
     )
 
-    nutrients = Quantity(
-        type=float,
-        a_eln=ELNAnnotation(
-            component=ELNComponentEnum.NumberEditQuantity,
-            defaultDisplayUnit='kcal',
-        ),
-        unit='kcal',
-    )
-
     diet = Quantity(
         type=MEnum(
             'non-vegetarian',
@@ -339,26 +339,31 @@ class Recipe(BaseSection, Schema):
 
     total_nutrients = Quantity(
         type=float,
+        unit='kcal',
         description='Total nutrients of this ingredient.',
         a_eln=ELNAnnotation(
-            component=ELNComponentEnum.NumberEditQuantity, 
+            component=ELNComponentEnum.NumberEditQuantity,
+            defaultDisplayUnit='kcal',
             # properties= {'editable': False},
-        )
+        ),
     )
 
     nutrients_per_serving = Quantity(
         type=float,
+        unit='kcal',
         description='Summed nutrients per serving.',
         a_eln=ELNAnnotation(
-            component=ELNComponentEnum.NumberEditQuantity, 
+            component=ELNComponentEnum.NumberEditQuantity,
+            defaultDisplayUnit='kcal',
             # properties= {'editable': False},
-        )
+        ),
     )
 
     duration = Quantity(
         type=float,
         a_eln=ELNAnnotation(
-            component=ELNComponentEnum.NumberEditQuantity, defaultDisplayUnit='minute', 
+            component=ELNComponentEnum.NumberEditQuantity,
+            defaultDisplayUnit='minute',
             # properties= {'editable': False},
         ),
         unit='minute',
@@ -389,45 +394,44 @@ class Recipe(BaseSection, Schema):
         all_tools = []
 
         for step in self.steps:
-        #     for ingredient in step.ingredients:
-        #         # Check if ingredient with the same name exists
-        #         existing = next(
-        #             (ing for ing in all_ingredients if ing.name == ingredient.name), None
-        #         )
-
-        #         if existing is None:
-        #             all_ingredients.append(ingredient)
-        #         else:
-        #             # Sum quantities
-        #             new_quantity = (existing.quantity or 0) + (ingredient.quantity or 0)
-
-        #             # Sum nutrition values
-        #             new_total_nutrients = sum(
-        #                 existing.total_nutrients, ingredient.total_nutrients
-        #             )
-
-        #             # Create a new ingredient with summed values
-        #             ingredient_summed = IngredientAmount(
-        #                 name=existing.name,
-        #                 quantity=new_quantity,
-        #                 unit=existing.unit,
-        #                 mass=None,  # optionally recalc
-        #                 lab_id=existing.lab_id,
-        #                 reference=existing.reference,
-        #                 total_nutrients=new_total_nutrients,
-        #             )
-
-        #             # Replace old ingredient with new summed one
-        #             all_ingredients = [
-        #                 ing if ing.name != ingredient.name else ingredient_summed
-        #                 for ing in all_ingredients
-        #             ]
-            
-            for tool in step.tools:
+            for ingredient in step.ingredients:
                 # Check if ingredient with the same name exists
                 existing = next(
-                    (tool for tool in all_tools if tool.name == tool.name), None
+                    (ing for ing in all_ingredients if ing.name == ingredient.name),
+                    None,
                 )
+
+                if existing is None:
+                    all_ingredients.append(ingredient)
+                else:
+                    # Sum quantities
+                    new_quantity = (existing.quantity or 0) + (ingredient.quantity or 0)
+
+                    # Sum nutrition values
+                    new_total_nutrients = sum(
+                        existing.total_nutrients, ingredient.total_nutrients
+                    )
+
+                    # Create a new ingredient with summed values
+                    ingredient_summed = IngredientAmount(
+                        name=existing.name,
+                        quantity=new_quantity,
+                        unit=existing.unit,
+                        mass=None,  # optionally recalc
+                        lab_id=existing.lab_id,
+                        reference=existing.reference,
+                        total_nutrients=new_total_nutrients,
+                    )
+
+                    # Replace old ingredient with new summed one
+                    all_ingredients = [
+                        ing if ing.name != ingredient.name else ingredient_summed
+                        for ing in all_ingredients
+                    ]
+
+            for tool in step.tools:
+                # Check if ingredient with the same name exists
+                existing = next((tl for tl in all_tools if tl.name == tool.name), None)
 
                 if existing is None:
                     all_tools.append(tool)
@@ -436,19 +440,21 @@ class Recipe(BaseSection, Schema):
             IngredientAmount.m_from_dict(ingredient.m_to_dict())
             for ingredient in all_ingredients
         )
-        self.tools.extend(
-            Tool.m_from_dict(tool.m_to_dict())
-            for tool in all_tools
+        self.tools.extend(Tool.m_from_dict(tool.m_to_dict()) for tool in all_tools)
+
+        self.total_nutrients = sum(
+            (ingredient.total_nutrients or 0.0)
+            for ingredient in (self.ingredients or [])
         )
+        if self.number_of_servings:
+            self.nutrients_per_serving = self.total_nutrients / self.number_of_servings
 
-        # self.total_nutrients = sum((ingredient.nutrition_value or 0.0) for ingredient in (self.ingredient or []))
-        # if self.number_of_servings:
-        #     self.nutrients_per_serving = self.total_nutrients / self.number_of_servings
-
-        # try:
-        #     self.total_duration = sum((_.duration or 0.0) for _ in (self.steps or []))
-        # except Exception as e:
-        #     logger.warning('recipe_duration_sum_failed', error=str(e))
+        try:
+            self.total_duration = sum(
+                (step.duration or 0.0) for step in (self.steps or [])
+            )
+        except Exception as e:
+            logger.warning('recipe_duration_sum_failed', error=str(e))
 
 
 m_package.__init_metainfo__()
