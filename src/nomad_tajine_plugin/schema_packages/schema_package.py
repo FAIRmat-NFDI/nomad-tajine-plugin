@@ -240,6 +240,7 @@ class IngredientAmount(EntityReference):
             if self.mass:
                 self.calculate_nutrients(logger)
 
+
 class IngredientVolume(IngredientAmount):
     volume = Quantity(
         type=float,
@@ -321,8 +322,7 @@ class RecipeStep(ArchiveSection):
         repeats=True,
     )
     instruction = Quantity(
-        type=str, 
-        a_eln=ELNAnnotation(component=ELNComponentEnum.RichTextEditQuantity)
+        type=str, a_eln=ELNAnnotation(component=ELNComponentEnum.RichTextEditQuantity)
     )
 
 
@@ -349,9 +349,7 @@ class Recipe(BaseSection, Schema):
     m_def = Section(
         label='Cooking Recipe',
         categories=[UseCaseElnCategory],
-        a_eln=ELNAnnotation(
-            hide=['_normalization_delay']
-        )
+        a_eln=ELNAnnotation(hide=['_normalization_delay']),
     )
     name = Quantity(
         type=str, a_eln=ELNAnnotation(component=ELNComponentEnum.StringEditQuantity)
@@ -493,10 +491,10 @@ class Recipe(BaseSection, Schema):
         """
         Generates an HTML formatted step-by-step instructions based on the recipe steps.
         """
-        self.description = "<ol>"
+        self.description = '<ol>'
         for step in self.steps:
-            self.description += f"<li>{step.instruction}</li>"
-        self.description += "</ol>"
+            self.description += f'<li>{step.instruction}</li>'
+        self.description += '</ol>'
 
     def normalize(self, archive: 'EntryArchive', logger: 'BoundLogger') -> None:  # noqa: PLR0912
         """
