@@ -10,81 +10,83 @@ data:
   diet: 'non-vegetarian'
 
   steps:
-    - steps:
-      - instruction: 'Combine all dry spices in a bowl.'
-        duration: 5
-        temperature: 25
-        tools:
-          - name: 'Small Bowl'
-          - name: 'Wooden Spoon'
-        ingredients:
-          - name: 'Paprika'
-            quantity: 1
-            unit: 'tablespoon'
-          - name: 'Ground Cumin'
-            quantity: 1
-            unit: 'tablespoon'
-          - name: 'Cayenne Pepper'
-            quantity: 0.25
-            unit: 'teaspoon'
-          - name: 'Ground Ginger'
-            quantity: 0.5
-            unit: 'teaspoon'
-          - name: 'Ground Coriander'
-            quantity: 0.5
-            unit: 'teaspoon'
-          - name: 'Ground Cinnamon'
-            quantity: 0.25
-            unit: 'teaspoon'
+    - instruction: 'Combine all dry spices in a bowl.'
+      duration: 5
+      temperature: 25
+      tools:
+        - name: 'Small Bowl'
+        - name: 'Wooden Spoon'
+      ingredients:
+        - name: 'Paprika'
+          quantity: 1
+          unit: 'tablespoon'
+        - name: 'Ground Cumin'
+          quantity: 1
+          unit: 'tablespoon'
+        - name: 'Cayenne Pepper'
+          quantity: 0.25
+          unit: 'teaspoon'
+        - name: 'Ground Ginger'
+          quantity: 0.5
+          unit: 'teaspoon'
+        - name: 'Ground Coriander'
+          quantity: 0.5
+          unit: 'teaspoon'
+        - name: 'Ground Cinnamon'
+          quantity: 0.25
+          unit: 'teaspoon'
 
-      - instruction: 'Zest the lemon and set aside 1 tsp mixed with 1 minced garlic clove.'
-        duration: 2
-        temperature: 25
-        tools:
-          - name: 'Knife'
-          - name: 'Cutting Board'
-        ingredients:
-          - name: 'Lemon'
-            quantity: 1
-            unit: 'piece'
-          - name: 'Garlic'
-            quantity: 5
-            unit: 'piece'
+    - instruction: 'Zest the lemon and set aside 1 tsp mixed with 1 minced garlic clove.'
+      duration: 2
+      temperature: 25
+      tools:
+        - name: 'Knife'
+        - name: 'Cutting Board'
+      ingredients:
+        - name: 'Lemon'
+          quantity: 1
+          unit: 'piece'
+        - name: 'Garlic'
+          quantity: 5
+          unit: 'piece'
 
-      - instruction: 'Season both sides of chicken with salt and pepper.'
-        duration: 2
-        temperature: 25
-        tools:
-          - name: 'Tongs'
-        ingredients:
-          - name: 'Bone-in, skin-on chicken thighs'
-            quantity: 1800
-            unit: 'grams'
-          - name: 'Salt'
-            quantity: 2.25
-            unit: 'teaspoon'
-          - name: 'Ground black pepper'
-            quantity: 0.5
-            unit: 'teaspoon'
+    - instruction: 'Season both sides of chicken with salt and pepper.'
+      duration: 2
+      temperature: 25
+      tools:
+        - name: 'Tongs'
+      ingredients:
+        - name: 'Bone-in, skin-on chicken thighs'
+          quantity: 3
+          unit: piece
+        - name: 'Salt'
+          quantity: 2.25
+          unit: 'teaspoon'
+        - name: 'Ground black pepper'
+          quantity: 0.5
+          unit: 'teaspoon'
 
-      - instruction: 'Heat oil in Dutch oven over medium-high heat and brown chicken skin side down until golden.'
-        duration: 5
-        temperature: 180
-        tools:
-          - name: 'Dutch oven'
-        ingredients:
-          - name: 'Olive Oil'
-            quantity: 1
-            unit: 'tablespoon'
+    - m_def: 'nomad_tajine_plugin.schema_packages.schema_package.HeatingCoolingStep'
+      instruction: 'Heat oil in Dutch oven over medium-high heat and brown chicken skin side down until golden.'
+      duration: 5
+      temperature: 180
+      tools:
+        - name: 'Dutch oven'
+      ingredients:
+        - name: 'Olive Oil'
+          quantity: 1
+          unit: 'tablespoon'
 
-      - instruction: 'Flip chicken pieces and brown other side, about 4 minutes more. Transfer to plate and remove skin.'
-        duration: 5
-        temperature: 180
-        tools:
-          - name: 'Tongs'
-          - name: 'Dutch oven'
+    - m_def: 'nomad_tajine_plugin.schema_packages.schema_package.HeatingCoolingStep'
+      instruction: 'Flip chicken pieces and brown other side, about 4 minutes more. Transfer to plate and remove skin.'
+      duration: 5
+      temperature: 180
+      tools:
+        - name: 'Tongs'
+        - name: 'Dutch oven'
 
-    - instruction: 'Add onions to pot and sauté until browned at edges, 5–7 minutes. Add garlic and cook for 30 seconds.'
+    - m_def: 'nomad_tajine_plugin.schema_packages.schema_package.HeatingCoolingStep'
+      instruction: 'Add onions to pot and sauté until browned at edges, 5-7 minutes. Add garlic and cook for 30 seconds.'
       duration: 8
       temperature: 100
       tools:
@@ -95,7 +97,8 @@ data:
           quantity: 1
           unit: 'piece'
 
-    - instruction: 'Add spices and flour, cook 30 seconds. Stir in broth, honey, lemon zest, and salt. Add chicken, reduce heat, cover, and simmer for 10 minutes.'
+    - m_def: 'nomad_tajine_plugin.schema_packages.schema_package.HeatingCoolingStep'
+      instruction: 'Add spices and flour, cook 30 seconds. Stir in broth, honey, lemon zest, and salt. Add chicken, reduce heat, cover, and simmer for 10 minutes.'
       duration: 11
       temperature: 90
       tools:
@@ -112,7 +115,8 @@ data:
           quantity: 2
           unit: 'tablespoon'
 
-    - instruction: 'Add carrots, cover, and simmer until chicken cooked through and carrots tender, about 10 minutes.'
+    - m_def: 'nomad_tajine_plugin.schema_packages.schema_package.HeatingCoolingStep'
+      instruction: 'Add carrots, cover, and simmer until chicken cooked through and carrots tender, about 10 minutes.'
       duration: 10
       temperature: 85
       tools:
@@ -122,7 +126,8 @@ data:
           quantity: 2
           unit: 'piece'
 
-    - instruction: 'Add olives, lemon mixture, cilantro, and lemon juice. Adjust seasoning as needed.'
+    - m_def: 'nomad_tajine_plugin.schema_packages.schema_package.HeatingCoolingStep'
+      instruction: 'Add olives, lemon mixture, cilantro, and lemon juice. Adjust seasoning as needed.'
       duration: 2
       temperature: 80
       tools:

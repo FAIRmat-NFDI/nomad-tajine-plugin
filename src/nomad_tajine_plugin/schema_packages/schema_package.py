@@ -109,7 +109,7 @@ class IngredientAmount(EntityReference):
         a_eln=ELNAnnotation(component=ELNComponentEnum.EnumEditQuantity),
     )
 
-    quantity_si = Quantity(
+    mass = Quantity(
         type=float,
         unit='gram',
     )  # in [g], calculate from quantity, unit and density etc
@@ -144,19 +144,19 @@ class IngredientAmount(EntityReference):
 
     def convert_volume(self, unit_volume):
         if self.reference.density:
-            self.quantity_si = (
+            self.mass = (
                 ureg.Quantity(unit_volume, 'milliliter')
                 * self.quantity
                 * self.reference.density
             )
         else:
-            self.quantity_si = None
+            self.mass = None
 
     def convert_piece(self):
         if self.reference.weight_per_piece:
-            self.quantity_si = self.reference.weight_per_piece * self.quantity
+            self.mass = self.reference.weight_per_piece * self.quantity
         else:
-            self.quantity_si = None      
+            self.mass = None      
 
     def normalize(self, archive, logger: 'BoundLogger'):  # noqa: PLR0912
         if not self.lab_id:
@@ -191,7 +191,7 @@ class IngredientAmount(EntityReference):
                 # https://en.wikipedia.org/wiki/Cooking_weights_and_measures, which
                 # in turn compiles them from '1896 Boston Cooking-School Cook Book'
                 case 'gram':
-                    self.quantity_si = self.quantity
+                    self.mass = self.quantity
                 case 'piece':
                     self.convert_piece()
                 case 'teaspoon':
@@ -203,7 +203,7 @@ class IngredientAmount(EntityReference):
                 case _:
                     if self.reference.density:
                         try:
-                            self.quantity_si = (
+                            self.mass = (
                                 (ureg(unit).to(ureg.milliliter))
                                 * self.quantity
                                 * self.reference.density
@@ -211,15 +211,15 @@ class IngredientAmount(EntityReference):
                         except Exception as e:
                             logger.warn(f'Not able to convert common unit to [g], {e}')
                     else:
-                        self.quantity_si = None
-        
+                        self.mass = None
+            
             try:
-                self.total_nutrients = self.quantity_si * self.reference.data.total_nutrients_per_100g
+                self.total_nutrients = self.mass * self.reference.total_nutrients_per_100g
+
             except Exception as e:
                 logger.error(
                     'Failed to calculate total nutrients for ingredient.', exc_info=True, error=e
                 )
-
 
 class Tool(Instrument, Schema):
     type = Quantity(
@@ -385,10 +385,10 @@ class Recipe(BaseSection, Schema):
     def normalize(self, archive: 'EntryArchive', logger: 'BoundLogger') -> None:
         super().normalize(archive, logger)
 
-        # all_ingredients = []
-        # all_tools = []
+        all_ingredients = []
+        all_tools = []
 
-        # for step in self.steps:
+        for step in self.steps:
         #     for ingredient in step.ingredients:
         #         # Check if ingredient with the same name exists
         #         existing = next(
@@ -411,7 +411,7 @@ class Recipe(BaseSection, Schema):
         #                 name=existing.name,
         #                 quantity=new_quantity,
         #                 unit=existing.unit,
-        #                 quantity_si=None,  # optionally recalc
+        #                 mass=None,  # optionally recalc
         #                 lab_id=existing.lab_id,
         #                 reference=existing.reference,
         #                 total_nutrients=new_total_nutrients,
@@ -423,23 +423,23 @@ class Recipe(BaseSection, Schema):
         #                 for ing in all_ingredients
         #             ]
             
-        #     for tool in step.tools:
-        #         # Check if ingredient with the same name exists
-        #         existing = next(
-        #             (tool for tool in all_tools if tool.name == tool.name), None
-        #         )
+            for tool in step.tools:
+                # Check if ingredient with the same name exists
+                existing = next(
+                    (tool for tool in all_tools if tool.name == tool.name), None
+                )
 
-        #         if existing is None:
-        #             all_tools.append(tool)
+                if existing is None:
+                    all_tools.append(tool)
 
-        # self.ingredients.extend(
-        #     IngredientAmount.m_from_dict(ingredient.m_to_dict())
-        #     for ingredient in all_ingredients
-        # )
-        # self.tools.extend(
-        #     Tool.m_from_dict(tool.m_to_dict())
-        #     for tool in all_tools
-        # )
+        self.ingredients.extend(
+            IngredientAmount.m_from_dict(ingredient.m_to_dict())
+            for ingredient in all_ingredients
+        )
+        self.tools.extend(
+            Tool.m_from_dict(tool.m_to_dict())
+            for tool in all_tools
+        )
 
         # self.total_nutrients = sum((ingredient.nutrition_value or 0.0) for ingredient in (self.ingredient or []))
         # if self.number_of_servings:
