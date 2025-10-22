@@ -66,13 +66,60 @@ class Ingredient(Entity, Schema):
         unit='kg',
     )
 
-    total_nutrients_per_100g = Quantity(
+    diet_type = Quantity(
+        type=MEnum(
+            'ANIMAL_PRODUCT',
+            'VEGETARIAN',
+            'VEGAN',
+            'AMBIGUOUS',
+        ),
+        a_eln=ELNAnnotation(component=ELNComponentEnum.EnumEditQuantity),
+    )
+
+    calories_per_100_g = Quantity(
         type=float,
         unit='kcal/g',
         description='Nutrients per 100 g for this ingredient type imported from USDA.',
         a_eln=ELNAnnotation(
             component=ELNComponentEnum.NumberEditQuantity, defaultDisplayUnit='kcal/g'
         ),
+    )
+
+    fat_per_100_g = Quantity(
+        type=float,
+        unit='g/100g',
+        description='Nutrients per 100 g for this ingredient type imported from USDA.',
+        a_eln=ELNAnnotation(
+            component=ELNComponentEnum.NumberEditQuantity, defaultDisplayUnit='g/100g'
+        ),
+    )
+
+    protein_per_100_g = Quantity(
+        type=float,
+        unit='g/100g',
+        description='Nutrients per 100 g for this ingredient type imported from USDA.',
+        a_eln=ELNAnnotation(
+            component=ELNComponentEnum.NumberEditQuantity, defaultDisplayUnit='g/100g'
+        ),
+    )
+
+    carbohydrates_per_100_g = Quantity(
+        type=float,
+        unit='g/100g',
+        description='Nutrients per 100 g for this ingredient type imported from USDA.',
+        a_eln=ELNAnnotation(
+            component=ELNComponentEnum.NumberEditQuantity, defaultDisplayUnit='g/100g'
+        ),
+    )
+
+    fdc_id = Quantity(
+        type=int,
+        a_eln=ELNAnnotation(component=ELNComponentEnum.NumberEditQuantity),
+    )
+
+    ndb_id = Quantity(
+        type=int,
+        a_eln=ELNAnnotation(component=ELNComponentEnum.NumberEditQuantity),
     )
 
     def normalize(self, archive, logger: 'BoundLogger'):
@@ -132,14 +179,41 @@ class IngredientAmount(EntityReference):
         ),
     )
 
-    total_nutrients = Quantity(
+    calories = Quantity(
         type=float,
         unit='kcal',
-        description='Total nutrients of this ingredient.',
+        description='Total calories of this ingredient.',
         a_eln=ELNAnnotation(
             component=ELNComponentEnum.NumberEditQuantity,
             defaultDisplayUnit='kcal',
             # properties= {'editable': False},
+        ),
+    )
+
+    fat = Quantity(
+        type=float,
+        unit='g',
+        description='Total fat of this ingredient.',
+        a_eln=ELNAnnotation(
+            component=ELNComponentEnum.NumberEditQuantity, defaultDisplayUnit='g'
+        ),
+    )
+
+    protein = Quantity(
+        type=float,
+        unit='g',
+        description='Total proteins of this ingredient.',
+        a_eln=ELNAnnotation(
+            component=ELNComponentEnum.NumberEditQuantity, defaultDisplayUnit='g'
+        ),
+    )
+
+    carbohydrates = Quantity(
+        type=float,
+        unit='g',
+        description='Total carbohydrates of this ingredient.',
+        a_eln=ELNAnnotation(
+            component=ELNComponentEnum.NumberEditQuantity, defaultDisplayUnit='g'
         ),
     )
 
@@ -161,6 +235,18 @@ class IngredientAmount(EntityReference):
             self.mass = self.reference.weight_per_piece * self.quantity
         else:
             self.mass = None
+
+    def calculate_nutrients(self, logger):
+        for nutrient in ("calories", "fat", "protein", "carbohydrates"):
+            try:
+                per_100g_attr = f"{nutrient}_per_100g"
+                value_per_100g = getattr(self.reference, per_100g_attr)
+                setattr(self, nutrient, self.mass * value_per_100g / 100)
+            except Exception as e:
+                logger.error(
+                    f"Failed to calculate {nutrient} for ingredient: {e}",
+                    exc_info=True
+                )
 
     def normalize(self, archive, logger: 'BoundLogger'):  # noqa: PLR0912
         if not self.lab_id:
@@ -217,17 +303,7 @@ class IngredientAmount(EntityReference):
                     else:
                         self.mass = None
 
-            try:
-                self.total_nutrients = (
-                    self.mass * self.reference.total_nutrients_per_100g / 100
-                )
-
-            except Exception as e:
-                logger.error(
-                    'Failed to calculate total nutrients for ingredient.',
-                    exc_info=True,
-                    error=e,
-                )
+            self.calculate_nutrients(logger)
 
 
 class Tool(Instrument, Schema):
@@ -328,19 +404,20 @@ class Recipe(BaseSection, Schema):
         type=str, a_eln=ELNAnnotation(component=ELNComponentEnum.StringEditQuantity)
     )
 
-    diet = Quantity(
+    diet_type = Quantity(
         type=MEnum(
-            'non-vegetarian',
-            'vegetarian',
-            'vegan',
+            'ANIMAL_PRODUCT',
+            'VEGETARIAN',
+            'VEGAN',
+            'AMBIGUOUS',
         ),
         a_eln=ELNAnnotation(component=ELNComponentEnum.EnumEditQuantity),
-    )  # TODO: add more options / complexity
+    )
 
-    total_nutrients = Quantity(
+        calories = Quantity(
         type=float,
         unit='kcal',
-        description='Total nutrients of this ingredient.',
+        description='Total calories of this ingredient.',
         a_eln=ELNAnnotation(
             component=ELNComponentEnum.NumberEditQuantity,
             defaultDisplayUnit='kcal',
@@ -348,13 +425,73 @@ class Recipe(BaseSection, Schema):
         ),
     )
 
-    nutrients_per_serving = Quantity(
+    fat = Quantity(
+        type=float,
+        unit='g',
+        description='Total fat of this recipe.',
+        a_eln=ELNAnnotation(
+            component=ELNComponentEnum.NumberEditQuantity, defaultDisplayUnit='g'
+        ),
+    )
+
+    protein = Quantity(
+        type=float,
+        unit='g',
+        description='Total proteins of this recipe.',
+        a_eln=ELNAnnotation(
+            component=ELNComponentEnum.NumberEditQuantity, defaultDisplayUnit='g'
+        ),
+    )
+
+    carbohydrates = Quantity(
+        type=float,
+        unit='g',
+        description='Total carbohydrates of this recipe.',
+        a_eln=ELNAnnotation(
+            component=ELNComponentEnum.NumberEditQuantity, defaultDisplayUnit='g'
+        ),
+    )
+
+    calories_per_serving = Quantity(
         type=float,
         unit='kcal',
-        description='Summed nutrients per serving.',
+        description='Calories per serving.',
         a_eln=ELNAnnotation(
             component=ELNComponentEnum.NumberEditQuantity,
             defaultDisplayUnit='kcal',
+            # properties= {'editable': False},
+        ),
+    )
+
+    fat_per_serving = Quantity(
+        type=float,
+        unit='g',
+        description='Fats per serving.',
+        a_eln=ELNAnnotation(
+            component=ELNComponentEnum.NumberEditQuantity,
+            defaultDisplayUnit='g',
+            # properties= {'editable': False},
+        ),
+    )
+
+    protein_per_serving = Quantity(
+        type=float,
+        unit='g',
+        description='Proteins per serving.',
+        a_eln=ELNAnnotation(
+            component=ELNComponentEnum.NumberEditQuantity,
+            defaultDisplayUnit='g',
+            # properties= {'editable': False},
+        ),
+    )
+
+    carbohydrates_per_serving = Quantity(
+        type=float,
+        unit='g',
+        description='Carbohydrates per serving.',
+        a_eln=ELNAnnotation(
+            component=ELNComponentEnum.NumberEditQuantity,
+            defaultDisplayUnit='g',
             # properties= {'editable': False},
         ),
     )
@@ -408,8 +545,8 @@ class Recipe(BaseSection, Schema):
                     new_quantity = (existing.quantity or 0) + (ingredient.quantity or 0)
 
                     # Sum nutrition values
-                    new_total_nutrients = sum(
-                        existing.total_nutrients, ingredient.total_nutrients
+                    new_calories = sum(
+                        existing.calories, ingredient.calories
                     )
 
                     # Create a new ingredient with summed values
@@ -420,7 +557,7 @@ class Recipe(BaseSection, Schema):
                         mass=None,  # optionally recalc
                         lab_id=existing.lab_id,
                         reference=existing.reference,
-                        total_nutrients=new_total_nutrients,
+                        calories=new_calories,
                     )
 
                     # Replace old ingredient with new summed one
@@ -442,12 +579,12 @@ class Recipe(BaseSection, Schema):
         )
         self.tools.extend(Tool.m_from_dict(tool.m_to_dict()) for tool in all_tools)
 
-        self.total_nutrients = sum(
-            (ingredient.total_nutrients or 0.0)
+        self.calories = sum(
+            (ingredient.calories or 0.0)
             for ingredient in (self.ingredients or [])
         )
         if self.number_of_servings:
-            self.nutrients_per_serving = self.total_nutrients / self.number_of_servings
+            self.nutrients_per_serving = self.calories / self.number_of_servings
 
         try:
             self.total_duration = sum(
