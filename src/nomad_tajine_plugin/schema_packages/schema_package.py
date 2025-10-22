@@ -25,7 +25,7 @@ if TYPE_CHECKING:
 from nomad.config import config
 from nomad.datamodel.data import Schema, UseCaseElnCategory
 from nomad.datamodel.metainfo.annotations import ELNAnnotation, ELNComponentEnum
-from nomad.metainfo import MEnum, Quantity, SchemaPackage
+from nomad.metainfo import MEnum, MProxy, Quantity, SchemaPackage
 
 configuration = config.get_plugin_entry_point(
     'nomad_tajine_plugin.schema_packages:schema_tajine_entry_point'
@@ -336,6 +336,56 @@ class Recipe(BaseSection, Schema):
             for step in self.steps
             for tool in step.tools
         )
+
+
+class RecipeScaler(BaseSection, Schema):
+    """
+    A schema that references an existing recipe and creates a scaled version
+    based on desired number of servings.
+    """
+
+    m_def = Section(
+        label='Recipe Scaler',
+        description='Scale a recipe for different serving sizes',
+    )
+
+    original_recipe = Quantity(
+        type=Recipe,
+        description='Reference to the original recipe to be scaled',
+        a_eln=ELNAnnotation(component=ELNComponentEnum.ReferenceEditQuantity),
+    )
+
+    desired_servings = Quantity(
+        type=int,
+        description='Number of servings desired for the scaled recipe',
+        a_eln=ELNAnnotation(component=ELNComponentEnum.NumberEditQuantity),
+    )
+
+    scaled_recipe = SubSection(
+        section_def=Recipe,
+        description='The resulting scaled recipe',
+    )
+
+    def scale_recipe(
+        self, recipe: Recipe, scaling_factor: float, logger: 'BoundLogger'
+    ) -> None:
+        return recipe
+
+    def normalize(self, archive: 'EntryArchive', logger: 'BoundLogger') -> None:
+        super().normalize(archive, logger)
+
+        if self.original_recipe and self.desired_servings:
+            try:
+                if isinstance(self.original_recipe, MProxy):
+                    self.original_recipe = self.original_recipe.m_proxy_resolve()
+                scaling_factor = (
+                    self.desired_servings / self.original_recipe.number_of_servings
+                )
+                self.scaled_recipe = self.scale_recipe(
+                    self.original_recipe, scaling_factor, logger
+                )
+            except Exception as e:
+                logger.error('Error while scaling recipe.', exc_info=True, error=e)
 
 
 m_package.__init_metainfo__()
