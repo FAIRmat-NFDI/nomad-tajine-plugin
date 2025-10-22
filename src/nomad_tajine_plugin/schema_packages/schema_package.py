@@ -318,7 +318,7 @@ class Recipe(BaseSection, Schema):
         description='Summed nutrients for the entire recipe.',
         unit = '', ????????????
 #        a_eln=ELNAnnotation(
-#            component=ELNComponentEnum.NumberEditQuantity, defaultDisplayUnit='minute'
+#            component=ELNComponentEnum.NumberEditQuantity, properties= {'editable': False},
     )
 
     nutrients_per_serving = Quantity(
@@ -326,13 +326,13 @@ class Recipe(BaseSection, Schema):
         description='Summed nutrients per serving.',
         unit = '', ???????????
 #        a_eln=ELNAnnotation(
-#            component=ELNComponentEnum.NumberEditQuantity, defaultDisplayUnit='minute'
+#            component=ELNComponentEnum.NumberEditQuantity, properties= {'editable': False},
     )
 
     total_duration = Quantity(
         type=float,
         a_eln=ELNAnnotation(
-#            component=ELNComponentEnum.NumberEditQuantity, defaultDisplayUnit='minute'
+            component=ELNComponentEnum.NumberEditQuantity, defaultDisplayUnit='minute', properties= {'editable': False},
 #        ),
         unit='minute',
     )
@@ -373,6 +373,14 @@ class Recipe(BaseSection, Schema):
             self.total_duration = sum((_.duration or 0.0) for _ in (self.steps or []))
         except Exception as e:
             logger.warning('recipe_duration_sum_failed', error=str(e))
+
+        all_ingredients = []
+        if self.ingredients:
+            all_ingredients.extend(self.ingredients)
+        for s in (self.steps or []):
+            if s.ingredients:
+                all_ingredients.extend(s.ingredients)
+
 
 
 m_package.__init_metainfo__()
