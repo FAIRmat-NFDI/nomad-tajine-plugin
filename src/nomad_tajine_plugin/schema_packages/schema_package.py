@@ -25,7 +25,7 @@ if TYPE_CHECKING:
 from nomad.config import config
 from nomad.datamodel.data import Schema, UseCaseElnCategory
 from nomad.datamodel.metainfo.annotations import ELNAnnotation, ELNComponentEnum
-from nomad.metainfo import MEnum, MProxy, Quantity, SchemaPackage
+from nomad.metainfo import MEnum, Quantity, SchemaPackage
 
 configuration = config.get_plugin_entry_point(
     'nomad_tajine_plugin.schema_packages:schema_tajine_entry_point'
