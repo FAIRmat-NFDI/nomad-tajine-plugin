@@ -59,7 +59,7 @@ recipe_app_entry_point = AppEntryPoint(
                 selected=True,
             ),
             Column(
-                quantity=f'data.nutrition_value#{SCHEMA}',
+                quantity=f'data.calories_per_serving#{SCHEMA}',
                 label='Calories',
                 selected=True,
                 unit='kcal',
@@ -131,7 +131,8 @@ recipe_app_entry_point = AppEntryPoint(
                 WidgetHistogram(
                     title='Calories',
                     x=AxisQuantity(
-                        search_quantity=f'data.nutrition_value#{SCHEMA}', unit='kcal'
+                        search_quantity=f'data.calories_per_serving#{SCHEMA}',
+                        unit='kcal',
                     ),
                     n_bins=100,
                     autorange=True,
@@ -141,14 +142,14 @@ recipe_app_entry_point = AppEntryPoint(
                     },
                 ),
                 WidgetScatterPlot(
-                    title='Duration vs Nutrition value (by Specifier)',
+                    title='Calories vs Duration (by Specifier)',
                     x=Axis(
                         search_quantity=f'data.duration#{SCHEMA}',
                         title='Duration',
                         unit='minute',
                     ),
                     y=Axis(
-                        search_quantity=f'data.nutrition_value#{SCHEMA}',
+                        search_quantity=f'data.calories_per_serving#{SCHEMA}',
                         title='Calories',
                         unit='kcal',
                     ),
