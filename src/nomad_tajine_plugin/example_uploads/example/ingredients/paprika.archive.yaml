@@ -1,0 +1,9 @@
+data:
+  m_def: nomad_tajine_plugin.schema_packages.schema_package.Ingredient
+  name: Paprika
+  diet_type: VEGAN
+  density: 560
+  calories_per_100_g: 282
+  fat_per_100_g: 13
+  protein_per_100_g: 14
+  carbohydrates_per_100_g: 54

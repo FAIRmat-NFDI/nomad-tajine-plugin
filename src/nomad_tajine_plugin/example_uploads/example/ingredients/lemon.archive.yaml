@@ -1,0 +1,9 @@
+data:
+  m_def: nomad_tajine_plugin.schema_packages.schema_package.Ingredient
+  name: Lemon
+  diet_type: VEGAN
+  density: 980
+  calories_per_100_g: 29
+  fat_per_100_g: 0.3
+  protein_per_100_g: 1.1
+  carbohydrates_per_100_g: 9

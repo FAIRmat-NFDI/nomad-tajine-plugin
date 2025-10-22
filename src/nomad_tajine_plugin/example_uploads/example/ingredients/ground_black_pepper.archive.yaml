@@ -1,0 +1,9 @@
+data:
+  m_def: nomad_tajine_plugin.schema_packages.schema_package.Ingredient
+  name: Ground Black Pepper
+  diet_type: VEGAN
+  density: 560
+  calories_per_100_g: 251
+  fat_per_100_g: 3
+  protein_per_100_g: 10
+  carbohydrates_per_100_g: 64

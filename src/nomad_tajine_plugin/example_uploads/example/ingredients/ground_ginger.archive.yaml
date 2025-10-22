@@ -1,0 +1,9 @@
+data:
+  m_def: nomad_tajine_plugin.schema_packages.schema_package.Ingredient
+  name: Ground Ginger
+  diet_type: VEGAN
+  density: 470
+  calories_per_100_g: 335
+  fat_per_100_g: 6
+  protein_per_100_g: 8
+  carbohydrates_per_100_g: 71

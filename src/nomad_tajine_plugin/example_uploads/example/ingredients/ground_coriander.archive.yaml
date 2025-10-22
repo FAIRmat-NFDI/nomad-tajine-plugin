@@ -1,0 +1,9 @@
+data:
+  m_def: nomad_tajine_plugin.schema_packages.schema_package.Ingredient
+  name: Ground Coriander
+  diet_type: VEGAN
+  density: 500
+  calories_per_100_g: 298
+  fat_per_100_g: 13
+  protein_per_100_g: 12
+  carbohydrates_per_100_g: 55

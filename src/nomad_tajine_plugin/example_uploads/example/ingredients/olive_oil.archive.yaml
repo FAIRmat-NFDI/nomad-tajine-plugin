@@ -1,0 +1,9 @@
+data:
+  m_def: nomad_tajine_plugin.schema_packages.schema_package.Ingredient
+  name: Olive Oil
+  diet_type: VEGAN
+  density: 910
+  calories_per_100_g: 884
+  fat_per_100_g: 100
+  protein_per_100_g: 0
+  carbohydrates_per_100_g: 0

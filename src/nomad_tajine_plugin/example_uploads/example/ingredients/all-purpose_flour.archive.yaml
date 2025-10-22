@@ -1,0 +1,9 @@
+data:
+  m_def: nomad_tajine_plugin.schema_packages.schema_package.Ingredient
+  name: All-purpose Flour
+  diet_type: VEGETARIAN
+  density: 590
+  calories_per_100_g: 364
+  fat_per_100_g: 1
+  protein_per_100_g: 10
+  carbohydrates_per_100_g: 76
