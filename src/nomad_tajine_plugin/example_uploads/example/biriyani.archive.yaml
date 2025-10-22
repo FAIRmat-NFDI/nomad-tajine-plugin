@@ -1,0 +1,102 @@
+data:
+  m_def: 'nomad_tajine_plugin.schema_packages.schema_package.Recipe'
+  name: 'Chicken Biryani'
+  summary: 'A fragrant and majestic layered rice dish made with long-grain Basmati rice, marinated chicken, and a medley of spices, herbs, and aromatics.'
+  cuisine: 'Indian'
+  number_of_servings: 5
+  difficulty: 'hard'
+  authors: 'Chef Markus'
+
+  steps:
+    - instruction: 'In a large bowl, marinate the chicken with yogurt, ginger-garlic paste, biryani masala, turmeric, red chili powder, salt, and half of the mint and cilantro. Mix well and set aside for at least 1 hour.'
+      duration: 65
+      temperature: 25
+      tools:
+        - name: 'Large Bowl'
+      ingredients:
+        - name: 'Bone-in Chicken Pieces'
+          mass: 1000
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientAmount'
+        - name: 'Yogurt'
+          volume: 240
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientVolume'
+        - name: 'Ginger-Garlic Paste'
+          volume: 30
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientVolume'
+        - name: 'Biryani Masala Powder'
+          volume: 30
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientVolume'
+        - name: 'Turmeric Powder'
+          volume: 2.5
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientVolume'
+        - name: 'Red Chili Powder'
+          volume: 5
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientVolume'
+        - name: 'Salt'
+          volume: 10
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientVolume'
+        - name: 'Fresh Mint Leaves'
+          volume: 60
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientVolume'
+        - name: 'Fresh Cilantro Leaves'
+          volume: 60
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientVolume'
+
+    - m_def: 'nomad_tajine_plugin.schema_packages.schema_package.HeatingCoolingStep'
+      instruction: 'While chicken marinates, wash rice and soak for 30 minutes. Bring a large pot of water to a boil with whole spices (bay leaf, cloves, cardamom) and salt. Add soaked rice and cook until it is 70% done. Drain completely.'
+      duration: 40
+      temperature: 100
+      tools:
+        - name: 'Large Pot'
+        - name: 'Colander'
+      ingredients:
+        - name: 'Basmati Rice'
+          mass: 500
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientAmount'
+        - name: 'Bay Leaf'
+          pieces: 2
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientPiece'
+        - name: 'Cloves'
+          pieces: 4
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientPiece'
+        - name: 'Green Cardamom Pods'
+          pieces: 4
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientPiece'
+
+    - m_def: 'nomad_tajine_plugin.schema_packages.schema_package.HeatingCoolingStep'
+      instruction: 'Heat ghee in a heavy-bottomed pot (handi). Add the marinated chicken and cook for 15-20 minutes, until it is about 80% cooked and the gravy has thickened.'
+      duration: 20
+      temperature: 180
+      tools:
+        - name: 'Heavy-bottomed Pot (Handi)'
+      ingredients:
+        - name: 'Ghee'
+          volume: 60
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientVolume'
+
+    - instruction: 'Layer the partially cooked rice evenly over the chicken. Sprinkle the remaining mint, cilantro, and fried onions on top. Drizzle the saffron-infused milk and remaining ghee over the rice.'
+      duration: 5
+      temperature: 70
+      tools:
+        - name: 'Heavy-bottomed Pot (Handi)'
+      ingredients:
+        - name: 'Fried Onions (Birista)'
+          volume: 120
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientVolume'
+        - name: 'Saffron strands soaked in milk'
+          volume: 30
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientVolume'
+
+    - m_def: 'nomad_tajine_plugin.schema_packages.schema_package.HeatingCoolingStep'
+      instruction: 'Cover the pot with a tight-fitting lid. Cook on the lowest possible heat for 20-25 minutes. This process is called "dum". Let it rest for 10 minutes before opening.'
+      duration: 35
+      temperature: 85
+      tools:
+        - name: 'Heavy-bottomed Pot (Handi)'
+
+    - instruction: 'Gently fluff the biryani with a fork, mixing the layers slightly. Serve hot with raita.'
+      duration: 3
+      temperature: 75
+      tools:
+        - name: 'Fork'
+        - name: 'Serving Platter'

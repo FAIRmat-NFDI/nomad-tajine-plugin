@@ -1,0 +1,100 @@
+data:
+  m_def: 'nomad_tajine_plugin.schema_packages.schema_package.Recipe'
+  name: 'Butter Chicken (Murgh Makhani)'
+  summary: 'A popular Indian dish where marinated chicken is first grilled and then simmered in a rich, creamy tomato and butter sauce.'
+  cuisine: 'Indian'
+  number_of_servings: 4
+  difficulty: 'medium'
+  authors: 'Chef Uday'
+
+  steps:
+    - instruction: 'In a large bowl, combine chicken pieces with yogurt, ginger-garlic paste, turmeric, garam masala, red chili powder, and salt. Mix well to coat. Let it marinate for at least 30 minutes.'
+      duration: 35
+      temperature: 25
+      tools:
+        - name: 'Large Bowl'
+        - name: 'Spoon'
+      ingredients:
+        - name: 'Boneless, skinless chicken thighs'
+          mass: 700
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientAmount'
+        - name: 'Plain Yogurt'
+          volume: 120
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientVolume'
+        - name: 'Ginger-Garlic Paste'
+          volume: 15
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientVolume'
+        - name: 'Turmeric Powder'
+          volume: 2.5
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientVolume'
+        - name: 'Garam Masala'
+          volume: 5
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientVolume'
+        - name: 'Red Chili Powder'
+          volume: 5
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientVolume'
+        - name: 'Salt'
+          volume: 5
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientVolume'
+
+    - m_def: 'nomad_tajine_plugin.schema_packages.schema_package.HeatingCoolingStep'
+      instruction: 'Heat vegetable oil in a large skillet or pan over medium-high heat. Add the marinated chicken and cook until golden brown on all sides, about 6-8 minutes. Set aside.'
+      duration: 8
+      temperature: 190
+      tools:
+        - name: 'Large Skillet'
+        - name: 'Tongs'
+      ingredients:
+        - name: 'Vegetable Oil'
+          volume: 30
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientVolume'
+
+    - m_def: 'nomad_tajine_plugin.schema_packages.schema_package.HeatingCoolingStep'
+      instruction: 'In the same skillet, melt butter. Add onions and sauté until soft, about 5 minutes. Add ginger-garlic paste and cook for another minute until fragrant.'
+      duration: 6
+      temperature: 150
+      tools:
+        - name: 'Large Skillet'
+        - name: 'Spatula'
+      ingredients:
+        - name: 'Butter'
+          mass: 60
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientAmount'
+        - name: 'Yellow Onion'
+          pieces: 1
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientPiece'
+
+    - m_def: 'nomad_tajine_plugin.schema_packages.schema_package.HeatingCoolingStep'
+      instruction: 'Stir in tomato puree, red chili powder, and salt. Bring to a simmer and cook for 10 minutes, stirring occasionally, until the sauce thickens.'
+      duration: 12
+      temperature: 95
+      tools:
+        - name: 'Large Skillet'
+      ingredients:
+        - name: 'Tomato Puree'
+          volume: 475
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientVolume'
+
+    - m_def: 'nomad_tajine_plugin.schema_packages.schema_package.HeatingCoolingStep'
+      instruction: 'Reduce heat to low. Stir in the heavy cream and sugar. Add the cooked chicken back to the skillet. Simmer for 5 minutes for the flavors to meld.'
+      duration: 6
+      temperature: 85
+      tools:
+        - name: 'Large Skillet'
+      ingredients:
+        - name: 'Heavy Cream'
+          volume: 180
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientVolume'
+        - name: 'Sugar'
+          volume: 5
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientVolume'
+
+    - instruction: 'Garnish with fresh cilantro and serve hot with naan or rice.'
+      duration: 2
+      temperature: 75
+      tools:
+        - name: 'Serving Dish'
+      ingredients:
+        - name: 'Fresh Cilantro'
+          volume: 15
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientVolume'

@@ -1,0 +1,95 @@
+data:
+  m_def: 'nomad_tajine_plugin.schema_packages.schema_package.Recipe'
+  name: 'Palak Paneer'
+  summary: 'A classic vegetarian Indian dish consisting of paneer (Indian cheese) in a smooth, creamy, and vibrant spinach sauce seasoned with garlic, ginger, and aromatic spices.'
+  cuisine: 'Indian'
+  number_of_servings: 4
+  difficulty: 'medium'
+  authors: 'Chef Uday'
+
+  steps:
+    - m_def: 'nomad_tajine_plugin.schema_packages.schema_package.HeatingCoolingStep'
+      instruction: 'Bring a large pot of water to a boil. Add the spinach and blanch for 2-3 minutes until wilted. Immediately transfer to a bowl of ice water to preserve the green color. Drain and blend into a smooth puree.'
+      duration: 10
+      temperature: 100
+      tools:
+        - name: 'Large Pot'
+        - name: 'Blender'
+        - name: 'Ice Water Bath'
+      ingredients:
+        - name: 'Fresh Spinach'
+          mass: 500
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientAmount'
+
+    - m_def: 'nomad_tajine_plugin.schema_packages.schema_package.HeatingCoolingStep'
+      instruction: 'Heat ghee or oil in a pan over medium heat. Add the paneer cubes and pan-fry until they are lightly golden on all sides. Remove from the pan and set aside.'
+      duration: 7
+      temperature: 170
+      tools:
+        - name: 'Pan'
+        - name: 'Tongs'
+      ingredients:
+        - name: 'Paneer'
+          mass: 250
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientAmount'
+        - name: 'Ghee or Oil'
+          volume: 30
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientVolume'
+
+    - m_def: 'nomad_tajine_plugin.schema_packages.schema_package.HeatingCoolingStep'
+      instruction: 'In the same pan, add more ghee if needed. Sauté the onions until they turn soft and golden. Add the ginger-garlic paste and cook for another minute until fragrant.'
+      duration: 8
+      temperature: 160
+      tools:
+        - name: 'Pan'
+        - name: 'Spatula'
+      ingredients:
+        - name: 'Large Onion'
+          pieces: 1
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientPiece'
+        - name: 'Ginger-Garlic Paste'
+          volume: 15
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientVolume'
+
+    - m_def: 'nomad_tajine_plugin.schema_packages.schema_package.HeatingCoolingStep'
+      instruction: 'Add the chopped tomatoes, turmeric, coriander powder, and red chili powder. Cook until the tomatoes soften and the oil begins to separate from the masala.'
+      duration: 7
+      temperature: 120
+      tools:
+        - name: 'Pan'
+      ingredients:
+        - name: 'Tomatoes'
+          pieces: 2
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientPiece'
+        - name: 'Turmeric Powder'
+          volume: 2.5
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientVolume'
+        - name: 'Coriander Powder'
+          volume: 5
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientVolume'
+        - name: 'Red Chili Powder'
+          volume: 2.5
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientVolume'
+
+    - m_def: 'nomad_tajine_plugin.schema_packages.schema_package.HeatingCoolingStep'
+      instruction: 'Pour the spinach puree into the pan. Add salt and cream (if using). Stir well and bring to a simmer. Add the fried paneer cubes and garam masala. Cook for 5 more minutes.'
+      duration: 8
+      temperature: 90
+      tools:
+        - name: 'Pan'
+      ingredients:
+        - name: 'Heavy Cream'
+          volume: 60
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientVolume'
+        - name: 'Garam Masala'
+          volume: 5
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientVolume'
+        - name: 'Salt'
+          volume: 5
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientVolume'
+
+    - instruction: 'Serve hot with naan, roti, or steamed rice.'
+      duration: 1
+      temperature: 80
+      tools:
+        - name: 'Serving Bowl'

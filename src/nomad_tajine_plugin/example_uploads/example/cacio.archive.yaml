@@ -1,0 +1,67 @@
+data:
+  m_def: 'nomad_tajine_plugin.schema_packages.schema_package.Recipe'
+  name: 'Cacio e Pepe'
+  summary: 'A minimalist Roman pasta dish whose name means "cheese and pepper." The magic lies in creating a perfectly creamy sauce from nothing more than Pecorino Romano, black pepper, and starchy pasta water.'
+  cuisine: 'Italian'
+  number_of_servings: 2
+  difficulty: 'medium'
+  authors: 'Chef Heiko'
+
+  steps:
+    - m_def: 'nomad_tajine_plugin.schema_packages.schema_package.HeatingCoolingStep'
+      instruction: 'Bring a large pot of water to a boil. Add a generous amount of salt. Add the spaghetti and cook until very al dente (about 1-2 minutes less than package directions).'
+      duration: 10
+      temperature: 100
+      tools:
+        - name: 'Large Pot'
+        - name: 'Tongs'
+      ingredients:
+        - name: 'Spaghetti or Tonnarelli'
+          mass: 200
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientAmount'
+        - name: 'Coarse Salt'
+          volume: 15
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientVolume'
+
+    - instruction: 'While the pasta cooks, put the finely grated Pecorino cheese in a large bowl. In a separate large skillet, toast the freshly cracked black pepper over medium heat for about 1 minute until fragrant.'
+      duration: 3
+      temperature: 25
+      tools:
+        - name: 'Large Bowl'
+        - name: 'Large Skillet'
+      ingredients:
+        - name: 'Pecorino Romano Cheese'
+          mass: 100
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientAmount'
+        - name: 'Freshly Cracked Black Pepper'
+          volume: 10
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientVolume'
+
+    - m_def: 'nomad_tajine_plugin.schema_packages.schema_package.HeatingCoolingStep'
+      instruction: 'Just before the pasta is ready, add one ladle (about 120ml) of the hot, starchy pasta water to the skillet with the pepper. Bring to a simmer. This will be the base of your sauce.'
+      duration: 1
+      temperature: 120
+      tools:
+        - name: 'Large Skillet'
+        - name: 'Ladle'
+
+    - m_tinstruction: 'Add a small splash of the hot pasta water to the bowl of cheese and mix vigorously with a fork to create a thick, smooth paste. This prevents the cheese from clumping later.'
+      duration: 1
+      temperature: 80
+      tools:
+        - name: 'Large Bowl'
+        - name: 'Fork'
+
+    - instruction: 'Using tongs, transfer the al dente pasta directly from the pot to the skillet. Toss vigorously in the pepper-infused water to coat. Reserve the remaining pasta water.'
+      duration: 1
+      temperature: 95
+      tools:
+        - name: 'Large Skillet'
+        - name: 'Tongs'
+
+    - instruction: 'Remove the skillet from the heat. Let it cool for 15 seconds. Add the cheese paste to the pasta along with another small splash of pasta water. Stir and toss rapidly to emulsify the cheese and water into a creamy, perfect sauce that clings to the pasta. Serve immediately.'
+      duration: 2
+      temperature: 85
+      tools:
+        - name: 'Large Skillet'
+        - name: 'Plates'

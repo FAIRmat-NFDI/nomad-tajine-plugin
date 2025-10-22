@@ -1,0 +1,113 @@
+data:
+  m_def: 'nomad_tajine_plugin.schema_packages.schema_package.Recipe'
+  name: 'Feijoada Vegana (Portuguese Vegan Bean Stew)'
+  summary: 'A rich, smoky, and hearty vegan adaptation of the classic Portuguese stew. This challenging version builds deep flavors by using multiple plant-based "meats" and a slow-cooked bean base.'
+  cuisine: 'Portuguese'
+  number_of_servings: 6
+  difficulty: 'hard'
+  authors: 'Chef Uday'
+
+  steps:
+    - instruction: 'The day before, place the dried black beans in a large bowl and cover with several inches of cold water. Let them soak for at least 8 hours, or overnight.'
+      duration: 480
+      temperature: 25
+      tools:
+        - name: 'Large Bowl'
+      ingredients:
+        - name: 'Dried Black Beans'
+          mass: 450
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientAmount'
+
+    - m_def: 'nomad_tajine_plugin.schema_packages.schema_package.HeatingCoolingStep'
+      instruction: 'Drain the soaked beans and transfer them to a large pot. Cover with fresh water, add the bay leaves, and bring to a boil. Reduce heat and simmer for 60-75 minutes, or until the beans are tender but not mushy. Drain, reserving 1 cup of the cooking liquid.'
+      duration: 75
+      temperature: 95
+      tools:
+        - name: 'Large Pot'
+        - name: 'Colander'
+      ingredients:
+        - name: 'Bay Leaves'
+          pieces: 2
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientPiece'
+
+    - m_def: 'nomad_tajine_plugin.schema_packages.schema_package.HeatingCoolingStep'
+      instruction: 'While the beans cook, prepare the vegan "meats". Heat 2 tbsp of olive oil in a skillet. Pan-fry the smoked tofu until golden, set aside. In the same skillet, sauté the mushrooms until browned, set aside. Finally, brown the seitan chorizo, set aside.'
+      duration: 20
+      temperature: 180
+      tools:
+        - name: 'Skillet'
+        - name: 'Tongs'
+      ingredients:
+        - name: 'Olive Oil'
+          volume: 60
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientVolume'
+        - name: 'Smoked Tofu'
+          mass: 250
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientAmount'
+        - name: 'Cremini Mushrooms'
+          mass: 200
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientAmount'
+        - name: 'Vegan Seitan Chorizo'
+          mass: 200
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientAmount'
+
+    - m_def: 'nomad_tajine_plugin.schema_packages.schema_package.HeatingCoolingStep'
+      instruction: 'In a large Dutch oven, heat the remaining olive oil over medium heat. Add the onion and bell pepper, and cook until softened (the "refogado"). Add the garlic and cook for one more minute until fragrant.'
+      duration: 10
+      temperature: 150
+      tools:
+        - name: 'Dutch Oven'
+        - name: 'Wooden Spoon'
+      ingredients:
+        - name: 'Large Yellow Onion'
+          pieces: 1
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientPiece'
+        - name: 'Red Bell Pepper'
+          pieces: 1
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientPiece'
+        - name: 'Garlic'
+          pieces: 4
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientPiece'
+
+    - m_def: 'nomad_tajine_plugin.schema_packages.schema_package.HeatingCoolingStep'
+      instruction: 'Stir in the smoked paprika, cumin, and oregano. Add the diced tomatoes and red wine, scraping up any browned bits. Pour in the vegetable broth and the reserved bean cooking liquid.'
+      duration: 5
+      temperature: 120
+      tools:
+        - name: 'Dutch Oven'
+      ingredients:
+        - name: 'Smoked Paprika'
+          volume: 15
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientVolume'
+        - name: 'Ground Cumin'
+          volume: 5
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientVolume'
+        - name: 'Dried Oregano'
+          volume: 5
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientVolume'
+        - name: 'Diced Tomatoes'
+          mass: 400
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientAmount'
+        - name: 'Dry Red Wine'
+          volume: 120
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientVolume'
+        - name: 'Vegetable Broth'
+          volume: 480
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientVolume'
+
+    - m_def: 'nomad_tajine_plugin.schema_packages.schema_package.HeatingCoolingStep'
+      instruction: 'Add the cooked beans and all the prepared vegan "meats" to the pot. Bring to a simmer, then reduce heat to low, cover partially, and cook for at least 45 minutes, stirring occasionally, for the flavors to meld and the stew to thicken.'
+      duration: 45
+      temperature: 90
+      tools:
+        - name: 'Dutch Oven'
+
+    - instruction: 'Stir in the fresh parsley and season with salt and pepper to taste. Serve hot with steamed rice, sautéed collard greens, and orange slices to brighten the flavors.'
+      duration: 3
+      temperature: 80
+      tools:
+        - name: 'Serving Ladle'
+      ingredients:
+        - name: 'Fresh Parsley'
+          volume: 30
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientVolume'

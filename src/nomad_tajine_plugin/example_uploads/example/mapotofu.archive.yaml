@@ -1,0 +1,103 @@
+data:
+  m_def: 'nomad_tajine_plugin.schema_packages.schema_package.Recipe'
+  name: 'Kung Pao Chicken'
+  summary: 'A classic Sichuan stir-fry dish with tender chicken, crunchy peanuts, and a savory, sweet, and spicy sauce.'
+  cuisine: 'Chinese'
+  number_of_servings: 3
+  difficulty: 'medium'
+  authors: 'Chef Alex'
+
+  steps:
+    - instruction: 'In a small bowl, combine all sauce ingredients (light soy sauce, black vinegar, Shaoxing wine, sugar, and cornstarch). Mix well and set aside.'
+      duration: 3
+      temperature: 25
+      tools:
+        - name: 'Small Bowl'
+        - name: 'Whisk'
+      ingredients:
+        - name: 'Light Soy Sauce'
+          volume: 30
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientVolume'
+        - name: 'Chinese Black Vinegar'
+          volume: 15
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientVolume'
+        - name: 'Shaoxing Wine'
+          volume: 15
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientVolume'
+        - name: 'Sugar'
+          volume: 10
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientVolume'
+        - name: 'Cornstarch'
+          volume: 5
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientVolume'
+
+    - instruction: 'In a separate bowl, marinate the diced chicken with soy sauce, Shaoxing wine, and cornstarch. Let it sit for 15 minutes.'
+      duration: 17
+      temperature: 25
+      tools:
+        - name: 'Medium Bowl'
+      ingredients:
+        - name: 'Boneless, skinless chicken breast or thighs'
+          mass: 450
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientAmount'
+        - name: 'Soy Sauce (for marinade)'
+          volume: 15
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientVolume'
+        - name: 'Shaoxing Wine (for marinade)'
+          volume: 7.5
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientVolume'
+        - name: 'Cornstarch (for marinade)'
+          volume: 7.5
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientVolume'
+
+    - m_def: 'nomad_tajine_plugin.schema_packages.schema_package.HeatingCoolingStep'
+      instruction: 'Heat oil in a wok or large skillet over high heat. Add the marinated chicken and stir-fry until golden brown and cooked through. Remove chicken and set aside.'
+      duration: 4
+      temperature: 200
+      tools:
+        - name: 'Wok'
+        - name: 'Spatula'
+      ingredients:
+        - name: 'Cooking Oil'
+          volume: 30
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientVolume'
+
+    - m_def: 'nomad_tajine_plugin.schema_packages.schema_package.HeatingCoolingStep'
+      instruction: 'Reduce heat to medium. Add dried red chilies and Sichuan peppercorns to the wok and stir-fry for 30 seconds until fragrant. Add garlic, ginger, and the white parts of the scallions and stir-fry for another 30 seconds.'
+      duration: 2
+      temperature: 180
+      tools:
+        - name: 'Wok'
+      ingredients:
+        - name: 'Dried Red Chilies'
+          pieces: 10
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientPiece'
+        - name: 'Sichuan Peppercorns'
+          volume: 5
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientVolume'
+        - name: 'Garlic'
+          pieces: 3
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientPiece'
+        - name: 'Ginger'
+          mass: 15
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientAmount'
+        - name: 'Scallions'
+          pieces: 3
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientPiece'
+
+    - m_def: 'nomad_tajine_plugin.schema_packages.schema_package.HeatingCoolingStep'
+      instruction: 'Return the cooked chicken to the wok. Give the sauce a quick stir and pour it in. Stir constantly until the sauce thickens and coats the chicken. Add peanuts and the green parts of the scallions. Toss to combine.'
+      duration: 2
+      temperature: 150
+      tools:
+        - name: 'Wok'
+      ingredients:
+        - name: 'Roasted Peanuts'
+          volume: 120
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientVolume'
+
+    - instruction: 'Serve immediately with steamed rice.'
+      duration: 1
+      temperature: 85
+      tools:
+        - name: 'Serving Plate'

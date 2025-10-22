@@ -1,0 +1,88 @@
+data:
+  m_def: 'nomad_tajine_plugin.schema_packages.schema_package.Recipe'
+  name: 'Dal Makhani (Creamy Black Lentil Curry)'
+  summary: 'A luxuriously rich and creamy lentil dish from Punjab, made with whole black lentils and kidney beans slow-cooked in a tomato-based sauce with butter and cream.'
+  cuisine: 'Indian'
+  number_of_servings: 6
+  difficulty: 'hard'
+  authors: 'Chef Sarthak'
+
+  steps:
+    - instruction: 'Wash the black lentils and kidney beans thoroughly. Soak them in plenty of water for at least 8 hours, or overnight.'
+      duration: 480
+      temperature: 25
+      tools:
+        - name: 'Large Bowl'
+      ingredients:
+        - name: 'Whole Black Lentils (Urad Dal)'
+          mass: 200
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientAmount'
+        - name: 'Red Kidney Beans (Rajma)'
+          mass: 50
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientAmount'
+
+    - m_def: 'nomad_tajine_plugin.schema_packages.schema_package.HeatingCoolingStep'
+      instruction: 'Drain the lentils and beans. Add them to a pressure cooker with water and salt. Cook for 10-12 whistles, or until they are completely soft and mushy. If using a pot, boil for 1.5-2 hours.'
+      duration: 90
+      temperature: 120
+      tools:
+        - name: 'Pressure Cooker or Large Pot'
+      ingredients:
+        - name: 'Water'
+          volume: 1000
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientVolume'
+        - name: 'Salt'
+          volume: 5
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientVolume'
+
+    - m_def: 'nomad_tajine_plugin.schema_packages.schema_package.HeatingCoolingStep'
+      instruction: 'For the masala, heat butter in a heavy-bottomed pan. Add the ginger-garlic paste and sauté for a minute. Add the tomato puree and cook until the mixture thickens and releases fat from the sides.'
+      duration: 15
+      temperature: 160
+      tools:
+        - name: 'Heavy-bottomed Pan'
+        - name: 'Spatula'
+      ingredients:
+        - name: 'Butter'
+          mass: 60
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientAmount'
+        - name: 'Ginger-Garlic Paste'
+          volume: 15
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientVolume'
+        - name: 'Tomato Puree'
+          volume: 240
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientVolume'
+
+    - m_def: 'nomad_tajine_plugin.schema_packages.schema_package.HeatingCoolingStep'
+      instruction: 'Add the red chili powder and garam masala to the pan, and cook for another minute. Add the cooked lentil and bean mixture to the masala. Add 1-2 cups of water, mix well, and bring to a simmer.'
+      duration: 5
+      temperature: 120
+      tools:
+        - name: 'Heavy-bottomed Pan'
+      ingredients:
+        - name: 'Red Chili Powder'
+          volume: 5
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientVolume'
+        - name: 'Garam Masala'
+          volume: 5
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientVolume'
+
+    - m_def: 'nomad_tajine_plugin.schema_packages.schema_package.HeatingCoolingStep'
+      instruction: 'Reduce the heat to low and let the dal simmer for at least 45 minutes (the longer, the better), stirring occasionally. Mash some of the lentils against the side of the pan to increase creaminess.'
+      duration: 45
+      temperature: 90
+      tools:
+        - name: 'Heavy-bottomed Pan'
+
+    - instruction: 'Stir in the heavy cream and crushed kasuri methi (dried fenugreek leaves). Simmer for just 2 more minutes. Adjust salt. Serve hot, garnished with a swirl of cream or a dollop of butter.'
+      duration: 3
+      temperature: 85
+      tools:
+        - name: 'Heavy-bottomed Pan'
+      ingredients:
+        - name: 'Heavy Cream'
+          volume: 80
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientVolume'
+        - name: 'Kasuri Methi'
+          volume: 5
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientVolume'

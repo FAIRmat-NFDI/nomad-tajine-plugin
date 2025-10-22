@@ -1,0 +1,74 @@
+data:
+  m_def: 'nomad_tajine_plugin.schema_packages.schema_package.Recipe'
+  name: 'Käsespätzle (German Cheese Noodles)'
+  summary: 'A traditional German dish from the Swabian region, consisting of soft egg noodles (Spätzle) layered with grated cheese and topped with crispy fried onions.'
+  cuisine: 'German'
+  number_of_servings: 4
+  difficulty: 'medium'
+  authors: 'Chef Rubel'
+
+  steps:
+    - instruction: 'In a large bowl, combine flour and salt. Make a well in the center and crack the eggs into it. Gradually add the sparkling water, mixing from the inside out with a wooden spoon until a smooth, thick, and viscous batter forms. Let it rest for 15 minutes.'
+      duration: 20
+      temperature: 25
+      tools:
+        - name: 'Large Bowl'
+        - name: 'Wooden Spoon'
+      ingredients:
+        - name: 'All-purpose Flour'
+          mass: 500
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientAmount'
+        - name: 'Salt'
+          volume: 5
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientVolume'
+        - name: 'Large Eggs'
+          pieces: 4
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientPiece'
+        - name: 'Sparkling Water'
+          volume: 200
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientVolume'
+
+    - m_def: 'nomad_tajine_plugin.schema_packages.schema_package.HeatingCoolingStep'
+      instruction: 'While the batter rests, heat butter in a skillet over medium-low heat. Add the sliced onions and cook slowly, stirring occasionally, until deeply caramelized and crispy, about 20-25 minutes. Remove from skillet and set aside.'
+      duration: 25
+      temperature: 140
+      tools:
+        - name: 'Skillet'
+        - name: 'Spatula'
+      ingredients:
+        - name: 'Butter'
+          mass: 45
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientAmount'
+        - name: 'Large Onions'
+          pieces: 2
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientPiece'
+
+    - m_def: 'nomad_tajine_plugin.schema_packages.schema_package.HeatingCoolingStep'
+      instruction: 'Bring a large pot of salted water to a rolling boil. Press the Spätzle batter through a Spätzle press or a colander with large holes into the boiling water. Cook for 2-3 minutes, until they float to the surface. '
+      duration: 10
+      temperature: 100
+      tools:
+        - name: 'Large Pot'
+        - name: 'Spätzle Press'
+        - name: 'Slotted Spoon'
+
+    - instruction: 'Using a slotted spoon, transfer a layer of cooked Spätzle to a large, warm serving dish. Immediately sprinkle with a layer of grated cheese. Repeat the layers of Spätzle and cheese until all are used, finishing with a layer of cheese.'
+      duration: 5
+      temperature: 90
+      tools:
+        - name: 'Large Serving Dish'
+        - name: 'Slotted Spoon'
+      ingredients:
+        - name: 'Grated Emmentaler or Gruyère Cheese'
+          mass: 250
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientAmount'
+
+    - instruction: 'Top the Käsespätzle with the crispy fried onions and garnish with fresh chives. Serve immediately.'
+      duration: 2
+      temperature: 80
+      tools:
+        - name: 'Serving Spoons'
+      ingredients:
+        - name: 'Fresh Chives'
+          volume: 30
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientVolume'

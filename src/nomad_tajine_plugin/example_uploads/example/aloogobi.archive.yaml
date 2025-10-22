@@ -1,0 +1,87 @@
+data:
+  m_def: 'nomad_tajine_plugin.schema_packages.schema_package.Recipe'
+  name: 'Aloo Gobi (Potato and Cauliflower Stir-fry)'
+  summary: 'A classic and comforting North Indian dry curry where tender potatoes and cauliflower are sautéed with onions, tomatoes, and a fragrant blend of spices.'
+  cuisine: 'Indian'
+  number_of_servings: 4
+  difficulty: 'easy'
+  authors: 'Chef Uday'
+
+  steps:
+    - m_def: 'nomad_tajine_plugin.schema_packages.schema_package.HeatingCoolingStep'
+      instruction: 'Heat oil in a large pan or kadai over medium heat. Add the cumin seeds and allow them to sizzle and become fragrant, about 30 seconds.'
+      duration: 2
+      temperature: 170
+      tools:
+        - name: 'Large Pan (Kadai)'
+      ingredients:
+        - name: 'Vegetable Oil'
+          volume: 45
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientVolume'
+        - name: 'Cumin Seeds'
+          volume: 5
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientVolume'
+
+    - m_def: 'nomad_tajine_plugin.schema_packages.schema_package.HeatingCoolingStep'
+      instruction: 'Add the chopped onion and sauté until it becomes soft and translucent. Then add the ginger and garlic paste and cook for another minute.'
+      duration: 6
+      temperature: 160
+      tools:
+        - name: 'Large Pan (Kadai)'
+        - name: 'Spatula'
+      ingredients:
+        - name: 'Medium Onion'
+          pieces: 1
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientPiece'
+        - name: 'Ginger-Garlic Paste'
+          volume: 15
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientVolume'
+
+    - m_def: 'nomad_tajine_plugin.schema_packages.schema_package.HeatingCoolingStep'
+      instruction: 'Add the potato cubes and cauliflower florets to the pan. Sprinkle with turmeric, coriander powder, red chili powder, and salt. Stir well to coat the vegetables with the spices.'
+      duration: 5
+      temperature: 150
+      tools:
+        - name: 'Large Pan (Kadai)'
+      ingredients:
+        - name: 'Potatoes'
+          mass: 400
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientAmount'
+        - name: 'Cauliflower'
+          mass: 500
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientAmount'
+        - name: 'Turmeric Powder'
+          volume: 5
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientVolume'
+        - name: 'Coriander Powder'
+          volume: 10
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientVolume'
+        - name: 'Red Chili Powder'
+          volume: 2.5
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientVolume'
+        - name: 'Salt'
+          volume: 7.5
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientVolume'
+
+    - m_def: 'nomad_tajine_plugin.schema_packages.schema_package.HeatingCoolingStep'
+      instruction: 'Reduce the heat to low, cover the pan, and cook for 15-20 minutes, stirring occasionally, until the potatoes and cauliflower are tender. If it gets too dry, add a splash of water.'
+      duration: 20
+      temperature: 95
+      tools:
+        - name: 'Large Pan (Kadai)'
+
+    - instruction: 'Add the chopped tomatoes and garam masala. Increase the heat to medium and cook for another 3-4 minutes until the tomatoes soften. Garnish with fresh cilantro and serve hot.'
+      duration: 5
+      temperature: 85
+      tools:
+        - name: 'Large Pan (Kadai)'
+      ingredients:
+        - name: 'Tomato'
+          pieces: 1
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientPiece'
+        - name: 'Garam Masala'
+          volume: 5
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientVolume'
+        - name: 'Fresh Cilantro'
+          volume: 30
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientVolume'

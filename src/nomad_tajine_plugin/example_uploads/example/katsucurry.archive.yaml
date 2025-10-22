@@ -1,0 +1,97 @@
+data:
+  m_def: 'nomad_tajine_plugin.schema_packages.schema_package.Recipe'
+  name: 'Chicken Katsu Curry'
+  summary: 'A popular Japanese comfort food featuring a crispy deep-fried chicken cutlet (katsu) served with a rich and savory curry sauce over steamed rice.'
+  cuisine: 'Japanese'
+  number_of_servings: 2
+  difficulty: 'medium'
+  authors: 'Chef Markus'
+
+  steps:
+    - m_def: 'nomad_tajine_plugin.schema_packages.schema_package.HeatingCoolingStep'
+      instruction: 'To make the curry, heat oil in a medium saucepan. Sauté the onion, garlic, and carrot over medium heat until the onion softens, about 5 minutes.'
+      duration: 6
+      temperature: 150
+      tools:
+        - name: 'Saucepan'
+        - name: 'Wooden Spoon'
+      ingredients:
+        - name: 'Vegetable Oil'
+          volume: 15
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientVolume'
+        - name: 'Yellow Onion'
+          pieces: 1
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientPiece'
+        - name: 'Carrot'
+          pieces: 1
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientPiece'
+        - name: 'Garlic'
+          pieces: 1
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientPiece'
+
+    - m_def: 'nomad_tajine_plugin.schema_packages.schema_package.HeatingCoolingStep'
+      instruction: 'Add water and bring to a boil. Reduce heat, cover, and simmer for 10 minutes. Break apart the curry roux blocks, add them to the pot, and stir until completely melted and the sauce has thickened.'
+      duration: 15
+      temperature: 90
+      tools:
+        - name: 'Saucepan'
+      ingredients:
+        - name: 'Water'
+          volume: 500
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientVolume'
+        - name: 'Japanese Curry Roux Block'
+          mass: 100
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientAmount'
+
+    - instruction: 'Prepare the chicken by pounding the breasts to an even thickness (about 1.5 cm). Season both sides with salt and pepper.'
+      duration: 5
+      temperature: 25
+      tools:
+        - name: 'Cutting Board'
+        - name: 'Meat Mallet'
+      ingredients:
+        - name: 'Boneless, skinless chicken breasts'
+          pieces: 2
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientPiece'
+        - name: 'Salt'
+          volume: 2.5
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientVolume'
+        - name: 'Black Pepper'
+          volume: 1.25
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientVolume'
+
+    - instruction: 'Set up a breading station with three shallow dishes: one for flour, one for the beaten egg, and one for the panko breadcrumbs. Coat each chicken breast first in flour, then egg, then panko.'
+      duration: 7
+      temperature: 25
+      tools:
+        - name: 'Shallow Dishes'
+      ingredients:
+        - name: 'All-purpose Flour'
+          volume: 60
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientVolume'
+        - name: 'Large Egg'
+          pieces: 1
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientPiece'
+        - name: 'Panko Breadcrumbs'
+          volume: 120
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientVolume'
+
+    - m_def: 'nomad_tajine_plugin.schema_packages.schema_package.HeatingCoolingStep'
+      instruction: 'Heat about 4 cm of oil in a heavy-bottomed pot to 175°C. Carefully place the breaded chicken in the hot oil and fry for 4-5 minutes per side, until golden brown and cooked through. Transfer to a wire rack to drain.'
+      duration: 10
+      temperature: 175
+      tools:
+        - name: 'Heavy-bottomed Pot'
+        - name: 'Tongs'
+        - name: 'Wire Rack'
+      ingredients:
+        - name: 'Frying Oil'
+          volume: 750
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientVolume'
+
+    - instruction: 'Slice the chicken katsu into strips. Serve hot with steamed rice and a generous ladle of the curry sauce.'
+      duration: 3
+      temperature: 80
+      tools:
+        - name: 'Knife'
+        - name: 'Plates'
