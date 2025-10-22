@@ -33,6 +33,15 @@ configuration = config.get_plugin_entry_point(
 
 m_package = SchemaPackage()
 
+class NutrientAmount(BaseSection):
+
+    m_def = Section(label='Nutrient Amount')
+
+    nutrient_id = Quantity(type=str)
+    label = Quantity(type=str)
+    unit = Quantity(type=str)
+    amount = Quantity(type=float)
+
 
 def format_lab_id(lab_id: str):
     return lab_id.replace(' ', '_').lower()
@@ -304,6 +313,30 @@ class Recipe(BaseSection, Schema):
         a_eln=ELNAnnotation(component=ELNComponentEnum.EnumEditQuantity),
     )  # TODO: add more options / complexity
 
+    nutrients_total = Quantity(
+        type=float,
+        description='Summed nutrients for the entire recipe.',
+        unit = '', ????????????
+#        a_eln=ELNAnnotation(
+#            component=ELNComponentEnum.NumberEditQuantity, defaultDisplayUnit='minute'
+    )
+
+    nutrients_per_serving = Quantity(
+        type=float,
+        description='Summed nutrients per serving.',
+        unit = '', ???????????
+#        a_eln=ELNAnnotation(
+#            component=ELNComponentEnum.NumberEditQuantity, defaultDisplayUnit='minute'
+    )
+
+    total_duration = Quantity(
+        type=float,
+        a_eln=ELNAnnotation(
+#            component=ELNComponentEnum.NumberEditQuantity, defaultDisplayUnit='minute'
+#        ),
+        unit='minute',
+    )
+
     tools = SubSection(
         section_def=Tool,
         description='',
@@ -336,6 +369,10 @@ class Recipe(BaseSection, Schema):
             for step in self.steps
             for tool in step.tools
         )
+        try:
+            self.total_duration = sum((_.duration or 0.0) for _ in (self.steps or []))
+        except Exception as e:
+            logger.warning('recipe_duration_sum_failed', error=str(e))
 
 
 m_package.__init_metainfo__()
