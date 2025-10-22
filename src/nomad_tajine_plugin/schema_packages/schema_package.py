@@ -361,14 +361,22 @@ class RecipeScaler(BaseSection, Schema):
         a_eln=ELNAnnotation(component=ELNComponentEnum.NumberEditQuantity),
     )
 
-    scaled_recipe = SubSection(
-        section_def=Recipe,
+    scaled_recipe = Quantity(
+        type=Recipe,
         description='The resulting scaled recipe',
     )
 
     def scale_recipe(
-        self, recipe: Recipe, scaling_factor: float, logger: 'BoundLogger'
+        self,
+        recipe: Recipe,
+        scaling_factor: float,
+        archive: 'EntryArchive',
+        logger: 'BoundLogger',
     ) -> None:
+        """
+        Scales the given recipe by the specified scaling factor and creates
+        a new archived entry for the scaled recipe.
+        """
         if scaling_factor == 1.0:
             logger.info('Scaling factor is 1.0, no scaling applied.')
             return recipe
@@ -410,8 +418,14 @@ class RecipeScaler(BaseSection, Schema):
                 scaled_ingredient.quantity_si *= scaling_factor
             scaled_ingredients.append(scaled_ingredient)
         scaled_recipe.ingredients = scaled_ingredients
-
-        return scaled_recipe
+        file_name = (
+            (f'{recipe.name} scaled x{scaling_factor:.2f}.archive.json')
+            .replace(' ', '_')
+            .lower()
+        )
+        self.scaled_recipe = create_archive(
+            scaled_recipe, archive=archive, file_name=file_name, overwrite=True
+        )
 
     def normalize(self, archive: 'EntryArchive', logger: 'BoundLogger') -> None:
         super().normalize(archive, logger)
@@ -422,9 +436,7 @@ class RecipeScaler(BaseSection, Schema):
                 scaling_factor = (
                     self.desired_servings / self.original_recipe.number_of_servings
                 )
-                self.scaled_recipe = self.scale_recipe(
-                    self.original_recipe, scaling_factor, logger
-                )
+                self.scale_recipe(self.original_recipe, scaling_factor, archive, logger)
             except Exception as e:
                 logger.error('Error while scaling recipe.', exc_info=True, error=e)
 
