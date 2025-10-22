@@ -39,6 +39,10 @@ def format_lab_id(lab_id: str):
 
 
 class Ingredient(Entity, Schema):
+    """
+    An ingredient used in cooking recipes.
+    """
+
     m_def = Section(
         label='Ingredient Type',
         categories=[UseCaseElnCategory],
@@ -66,6 +70,10 @@ class Ingredient(Entity, Schema):
 
 
 class IngredientAmount(EntityReference):
+    """
+    Represents the amount of an ingredient in a recipe.
+    """
+
     name = Quantity(
         type=str, a_eln=ELNAnnotation(component=ELNComponentEnum.StringEditQuantity)
     )
@@ -133,6 +141,11 @@ class IngredientAmount(EntityReference):
             self.quantity_si = None
 
     def normalize(self, archive, logger: 'BoundLogger'):  # noqa: PLR0912
+        """
+        For the given ingredient name or ID, fetches the corresponding Ingredient entry.
+        If not found, creates a new Ingredient entry. Converts the quantity to SI units
+        based on the unit and ingredient properties like density or weight per piece.
+        """
         if not self.lab_id:
             self.lab_id = format_lab_id(self.name)
         else:
@@ -189,6 +202,10 @@ class IngredientAmount(EntityReference):
 
 
 class Tool(Instrument, Schema):
+    """
+    A kitchen tool or utensil used in cooking.
+    """
+
     type = Quantity(
         type=str, a_eln=ELNAnnotation(component=ELNComponentEnum.StringEditQuantity)
     )
@@ -207,6 +224,10 @@ class Tool(Instrument, Schema):
 
 
 class RecipeStep(ActivityStep):
+    """
+    A single step in a cooking recipe.
+    """
+
     duration = Quantity(
         type=float,
         a_eln=ELNAnnotation(
@@ -233,6 +254,10 @@ class RecipeStep(ActivityStep):
 
 
 class HeatingCoolingStep(RecipeStep):
+    """
+    A recipe step that involves heating or cooling to a specific temperature.
+    """
+
     temperature = Quantity(
         type=float,
         default=20.0,
@@ -244,6 +269,10 @@ class HeatingCoolingStep(RecipeStep):
 
 
 class Recipe(BaseSection, Schema):
+    """
+    A schema representing a cooking recipe with ingredients, tools, and steps.
+    """
+
     m_def = Section(
         label='Cooking Recipe',
         categories=[UseCaseElnCategory],
@@ -323,6 +352,10 @@ class Recipe(BaseSection, Schema):
     )
 
     def normalize(self, archive: 'EntryArchive', logger: 'BoundLogger') -> None:
+        """
+        Collects all ingredients and tools from steps and adds them to the recipe's
+        ingredients and tools lists.
+        """
         super().normalize(archive, logger)
 
         # Collect and clone all ingredients and tools from steps
@@ -405,6 +438,10 @@ class RecipeScaler(BaseSection, Schema):
         )
 
     def normalize(self, archive: 'EntryArchive', logger: 'BoundLogger') -> None:
+        """
+        Uses the referenced original recipe entry and specified desired servings to
+        create a scaled recipe entry.
+        """
         super().normalize(archive, logger)
 
         self.scaled_recipe = None
