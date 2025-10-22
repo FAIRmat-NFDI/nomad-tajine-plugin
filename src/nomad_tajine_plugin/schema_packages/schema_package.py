@@ -120,7 +120,7 @@ class Ingredient(EntityReference):
         else:
             self.quantity_si = None
 
-    def normalize(self, archive, logger: 'BoundLogger'):
+    def normalize(self, archive, logger: 'BoundLogger'):  # noqa: PLR0912
         if not self.lab_id:
             self.lab_id = self.name.lower().replace(' ', '_')
 
