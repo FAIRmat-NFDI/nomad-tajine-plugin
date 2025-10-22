@@ -1,0 +1,5 @@
+data:
+  m_def: nomad_tajine_plugin.schema_packages.schema_package.IngredientType
+  name: Lemon
+  density: 1030
+  weight_per_piece: 120

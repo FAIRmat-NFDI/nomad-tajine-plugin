@@ -1,0 +1,5 @@
+data:
+  m_def: nomad_tajine_plugin.schema_packages.schema_package.IngredientType
+  name: Greek cracked green olives
+  density: 1100
+  weight_per_piece: 3

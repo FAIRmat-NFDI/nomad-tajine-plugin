@@ -16,100 +16,80 @@ data:
         temperature: 25
         tools:
           - name: 'Small Bowl'
-            type: 'Utensil'
-            description: 'Used for mixing spices'
           - name: 'Wooden Spoon'
-            type: 'Utensil'
-            description: 'For stirring the spice mix'
         ingredients:
           - name: 'Paprika'
             quantity: 1
-            unit: 'piece' #'table spoon'
+            unit: 'tablespoon'
           - name: 'Ground Cumin'
             quantity: 1
-            unit: 'piece' #'table spoon'
+            unit: 'tablespoon'
           - name: 'Cayenne Pepper'
             quantity: 0.25
-            unit: 'tea spoon'
+            unit: 'teaspoon'
           - name: 'Ground Ginger'
             quantity: 0.5
-            unit: 'tea spoon'
+            unit: 'teaspoon'
           - name: 'Ground Coriander'
             quantity: 0.5
-            unit: 'tea spoon'
+            unit: 'teaspoon'
           - name: 'Ground Cinnamon'
             quantity: 0.25
-            unit: 'tea spoon'
+            unit: 'teaspoon'
 
       - instruction: 'Zest the lemon and set aside 1 tsp mixed with 1 minced garlic clove.'
         duration: 2
         temperature: 25
         tools:
           - name: 'Knife'
-            type: 'Utensil'
-            description: 'For cutting and zesting'
           - name: 'Cutting Board'
-            type: 'Utensil'
-            description: 'Used for ingredient preparation'
         ingredients:
           - name: 'Lemon'
             quantity: 1
             unit: 'piece'
           - name: 'Garlic'
             quantity: 5
-            unit: 'piece' #'cloves'
+            unit: 'piece'
 
       - instruction: 'Season both sides of chicken with salt and pepper.'
         duration: 2
         temperature: 25
         tools:
           - name: 'Tongs'
-            type: 'Utensil'
-            description: 'Used for flipping chicken'
         ingredients:
           - name: 'Bone-in, skin-on chicken thighs'
             quantity: 1800
-            unit: 'piece' #'grams'
+            unit: 'grams'
           - name: 'Salt'
             quantity: 2.25
-            unit: 'tea spoon'
+            unit: 'teaspoon'
           - name: 'Ground black pepper'
             quantity: 0.5
-            unit: 'tea spoon'
+            unit: 'teaspoon'
 
       - instruction: 'Heat oil in Dutch oven over medium-high heat and brown chicken skin side down until golden.'
         duration: 5
         temperature: 180
         tools:
           - name: 'Dutch oven'
-            type: 'Cookware'
-            description: 'Used for browning chicken'
         ingredients:
           - name: 'Olive Oil'
             quantity: 1
-            unit: 'piece' #'table spoon'
+            unit: 'tablespoon'
 
       - instruction: 'Flip chicken pieces and brown other side, about 4 minutes more. Transfer to plate and remove skin.'
         duration: 5
         temperature: 180
         tools:
           - name: 'Tongs'
-            type: 'Utensil'
-            description: 'Used for turning chicken'
           - name: 'Dutch oven'
-            type: 'Cookware'
-            description: 'Used for browning chicken'
 
     - instruction: 'Add onions to pot and sauté until browned at edges, 5–7 minutes. Add garlic and cook for 30 seconds.'
       duration: 8
       temperature: 100
       tools:
         - name: 'Dutch oven'
-          type: 'Cookware'
-          description: 'Used for sautéing onions and garlic'
         - name: 'Wooden Spoon'
-          type: 'Utensil'
-          description: 'For stirring the mixture'
       ingredients:
         - name: 'Large Yellow Onion'
           quantity: 1
@@ -120,29 +100,23 @@ data:
       temperature: 90
       tools:
         - name: 'Dutch oven'
-          type: 'Cookware'
-          description: 'Used for simmering sauce and chicken'
         - name: 'Wooden Spoon'
-          type: 'Utensil'
-          description: 'For mixing the sauce'
       ingredients:
         - name: 'All-purpose Flour'
           quantity: 2
-          unit: 'piece' #'tablespoon'
+          unit: 'tablespoon'
         - name: 'Chicken Broth'
           quantity: 415
-          unit: 'piece' #'milliliters'
+          unit: 'milliliter'
         - name: 'Honey'
           quantity: 2
-          unit: 'piece' #'tablespoon'
+          unit: 'tablespoon'
 
     - instruction: 'Add carrots, cover, and simmer until chicken cooked through and carrots tender, about 10 minutes.'
       duration: 10
       temperature: 85
       tools:
         - name: 'Dutch oven'
-          type: 'Cookware'
-          description: 'Used for simmering carrots and chicken'
       ingredients:
         - name: 'Carrots'
           quantity: 2
@@ -153,20 +127,16 @@ data:
       temperature: 80
       tools:
         - name: 'Dutch oven'
-          type: 'Cookware'
-          description: 'Used for final mixing before serving'
       ingredients:
         - name: 'Greek cracked green olives'
           quantity: 0.5
-          unit: 'piece' #'cup'
+          unit: 'cup'
         - name: 'Fresh Cilantro Leaves'
           quantity: 2
-          unit: 'piece' #'table spoon'
+          unit: 'tablespoon'
 
     - instruction: 'Serve hot with couscous.'
       duration: 1
       temperature: 70
       tools:
         - name: 'Dutch oven'
-          type: 'Cookware'
-          description: 'Used for serving the tagine'

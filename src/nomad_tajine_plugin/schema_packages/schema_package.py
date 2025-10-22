@@ -33,6 +33,9 @@ configuration = config.get_plugin_entry_point(
 
 m_package = SchemaPackage()
 
+def format_lab_id(lab_id: str):
+    return lab_id.replace(" ", "_").lower()
+
 
 class IngredientType(Entity, Schema):
     m_def = Section(
@@ -52,6 +55,13 @@ class IngredientType(Entity, Schema):
         unit='kg',
     )
 
+    def normalize(self, archive, logger: 'BoundLogger'):
+        if not self.lab_id:
+            self.lab_id = format_lab_id(self.name)
+        else:
+            self.lab_id = format_lab_id(self.lab_id)
+
+        super().normalize(archive, logger)
 
 class Ingredient(EntityReference):
     name = Quantity(
@@ -122,7 +132,9 @@ class Ingredient(EntityReference):
 
     def normalize(self, archive, logger: 'BoundLogger'):  # noqa: PLR0912
         if not self.lab_id:
-            self.lab_id = self.name.lower().replace(' ', '_')
+            self.lab_id = format_lab_id(self.name)
+        else:
+            self.lab_id = format_lab_id(self.lab_id)
 
         super().normalize(archive, logger)
 
@@ -174,7 +186,7 @@ class Ingredient(EntityReference):
                         self.quantity_si = None
 
 
-class Tool(Instrument):
+class Tool(Instrument, Schema):
     type = Quantity(
         type=str, a_eln=ELNAnnotation(component=ELNComponentEnum.StringEditQuantity)
     )
@@ -182,6 +194,14 @@ class Tool(Instrument):
     description = Quantity(
         type=str, a_eln=ELNAnnotation(component=ELNComponentEnum.StringEditQuantity)
     )
+
+    def normalize(self, archive, logger: 'BoundLogger'):
+        if not self.lab_id:
+            self.lab_id = format_lab_id(self.name)
+        else:
+            self.lab_id = format_lab_id(self.lab_id)
+        
+        super().normalize(archive, logger)
 
 
 class RecipeStep(ActivityStep):
@@ -302,6 +322,18 @@ class Recipe(BaseSection, Schema):
 
     def normalize(self, archive: 'EntryArchive', logger: 'BoundLogger') -> None:
         super().normalize(archive, logger)
+
+        # Collect and clone all ingredients and tools from steps
+        self.ingredients.extend(
+            Ingredient.m_from_dict(ingredient.m_to_dict())
+            for step in self.steps
+            for ingredient in step.ingredients
+        )
+        self.tools.extend(
+            Tool.m_from_dict(tool.m_to_dict())
+            for step in self.steps
+            for tool in step.tools
+        )
 
 
 m_package.__init_metainfo__()
