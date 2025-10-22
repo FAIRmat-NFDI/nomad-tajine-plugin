@@ -1,4 +1,4 @@
 data:
-  m_def: nomad_tajine_plugin.schema_packages.schema_package.IngredientType
+  m_def: nomad_tajine_plugin.schema_packages.schema_package.Ingredient
   name: Cayenne Pepper
   density: 400
