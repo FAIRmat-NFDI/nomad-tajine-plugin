@@ -1,4 +1,4 @@
 data:
   m_def: nomad_tajine_plugin.schema_packages.schema_package.Ingredient
   name: All-purpose Flour
-  density: 590
+  density: 0.590

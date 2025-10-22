@@ -1,5 +1,5 @@
 data:
   m_def: nomad_tajine_plugin.schema_packages.schema_package.Ingredient
   name: Garlic
-  density: 640
-  weight_per_piece: 5
+  density: 0.640
+  weight_per_piece: 0.005

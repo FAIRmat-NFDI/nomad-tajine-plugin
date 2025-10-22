@@ -1,4 +1,4 @@
 data:
   m_def: nomad_tajine_plugin.schema_packages.schema_package.Ingredient
   name: Paprika
-  density: 400
+  density: 0.400
