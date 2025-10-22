@@ -12,6 +12,8 @@ from nomad.datamodel.metainfo.basesections import (
 from nomad.metainfo.metainfo import Section, SubSection
 from nomad.units import ureg
 
+from nomad_tajine_plugin.utils import create_archive
+
 if TYPE_CHECKING:
     from nomad.datamodel.datamodel import (
         EntryArchive,
@@ -120,9 +122,27 @@ class Ingredient(EntityReference):
 
     def normalize(self, archive, logger: 'BoundLogger'):
         if not self.lab_id:
-            self.lab_id = self.name
+            self.lab_id = self.name.lower().replace(' ', '_')
 
         super().normalize(archive, logger)
+
+        if not self.reference:
+            logger.debug('IngredientType entry not found. Creating a new one.')
+            try:
+                ingredient_type = IngredientType(
+                    name=self.name,
+                    lab_id=self.lab_id,
+                )
+                self.reference = create_archive(
+                    ingredient_type,
+                    archive,
+                    f'{self.lab_id}.archive.json',
+                    overwrite=False,
+                )
+            except Exception as e:
+                logger.error(
+                    'Failed to create IngredientType entry.', exc_info=True, error=e
+                )
 
         if self.reference:
             unit = self.unit.replace(' ', '_')  # type: ignore
@@ -173,15 +193,6 @@ class RecipeStep(ActivityStep):
         unit='minute',
     )
 
-    temperature = Quantity(
-        type=float,
-        default=20.0,
-        a_eln=ELNAnnotation(
-            component=ELNComponentEnum.NumberEditQuantity, defaultDisplayUnit='celsius'
-        ),
-        unit='celsius',
-    )
-
     tools = SubSection(
         section_def=Tool,
         description='',
@@ -196,6 +207,17 @@ class RecipeStep(ActivityStep):
 
     instruction = Quantity(
         type=str, a_eln=ELNAnnotation(component=ELNComponentEnum.StringEditQuantity)
+    )
+
+
+class HeatingCoolingStep(RecipeStep):
+    temperature = Quantity(
+        type=float,
+        default=20.0,
+        a_eln=ELNAnnotation(
+            component=ELNComponentEnum.NumberEditQuantity, defaultDisplayUnit='celsius'
+        ),
+        unit='celsius',
     )
 
 
