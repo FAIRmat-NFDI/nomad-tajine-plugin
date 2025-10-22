@@ -1,4 +1,4 @@
 data:
   m_def: nomad_tajine_plugin.schema_packages.schema_package.Ingredient
   name: Salt
-  density: 1210
+  density: 1.210

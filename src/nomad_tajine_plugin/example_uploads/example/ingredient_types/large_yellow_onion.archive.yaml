@@ -1,5 +1,5 @@
 data:
   m_def: nomad_tajine_plugin.schema_packages.schema_package.Ingredient
   name: Large Yellow Onion
-  density: 920
-  weight_per_piece: 150
+  density: 0.920
+  weight_per_piece: 0.150
