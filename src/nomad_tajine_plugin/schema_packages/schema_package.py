@@ -1,14 +1,14 @@
-from typing import (
-    TYPE_CHECKING,
-)
+from typing import TYPE_CHECKING
 
+from nomad.config import config
+from nomad.datamodel.data import ArchiveSection, Schema, UseCaseElnCategory
+from nomad.datamodel.metainfo.annotations import ELNAnnotation, ELNComponentEnum
 from nomad.datamodel.metainfo.basesections import (
-    ActivityStep,
     BaseSection,
     Entity,
     EntityReference,
-    Instrument,
 )
+from nomad.metainfo import MEnum, Quantity, SchemaPackage
 from nomad.metainfo.metainfo import Section, SubSection
 from nomad.units import ureg
 
@@ -22,10 +22,6 @@ if TYPE_CHECKING:
         BoundLogger,
     )
 
-from nomad.config import config
-from nomad.datamodel.data import Schema, UseCaseElnCategory
-from nomad.datamodel.metainfo.annotations import ELNAnnotation, ELNComponentEnum
-from nomad.metainfo import MEnum, Quantity, SchemaPackage
 
 configuration = config.get_plugin_entry_point(
     'nomad_tajine_plugin.schema_packages:schema_tajine_entry_point'
@@ -47,19 +43,16 @@ class Ingredient(Entity, Schema):
         label='Ingredient Type',
         categories=[UseCaseElnCategory],
     )
-
     density = Quantity(
         type=float,
         a_eln=ELNAnnotation(component=ELNComponentEnum.NumberEditQuantity),
-        unit='kg/L',
+        unit='g/L',
     )
-
     weight_per_piece = Quantity(
         type=float,
         a_eln=ELNAnnotation(component=ELNComponentEnum.NumberEditQuantity),
-        unit='kg',
+        unit='g',
     )
-
     diet_type = Quantity(
         type=MEnum(
             'ANIMAL_PRODUCT',
@@ -69,7 +62,6 @@ class Ingredient(Entity, Schema):
         ),
         a_eln=ELNAnnotation(component=ELNComponentEnum.EnumEditQuantity),
     )
-
     calories_per_100_g = Quantity(
         type=float,
         unit='kcal',
@@ -78,7 +70,6 @@ class Ingredient(Entity, Schema):
             component=ELNComponentEnum.NumberEditQuantity, defaultDisplayUnit='kcal'
         ),
     )
-
     fat_per_100_g = Quantity(
         type=float,
         unit='g',
@@ -87,7 +78,6 @@ class Ingredient(Entity, Schema):
             component=ELNComponentEnum.NumberEditQuantity, defaultDisplayUnit='g'
         ),
     )
-
     protein_per_100_g = Quantity(
         type=float,
         unit='g',
@@ -96,7 +86,6 @@ class Ingredient(Entity, Schema):
             component=ELNComponentEnum.NumberEditQuantity, defaultDisplayUnit='g'
         ),
     )
-
     carbohydrates_per_100_g = Quantity(
         type=float,
         unit='g',
@@ -105,20 +94,19 @@ class Ingredient(Entity, Schema):
             component=ELNComponentEnum.NumberEditQuantity, defaultDisplayUnit='g'
         ),
     )
-
     fdc_id = Quantity(
         type=int,
         a_eln=ELNAnnotation(component=ELNComponentEnum.NumberEditQuantity),
     )
-
     ndb_id = Quantity(
         type=int,
         a_eln=ELNAnnotation(component=ELNComponentEnum.NumberEditQuantity),
     )
 
-    def normalize(self, archive, logger: 'BoundLogger'):
+    def normalize(self, archive: 'EntryArchive', logger: 'BoundLogger'):
         if not self.lab_id:
-            self.lab_id = format_lab_id(self.name)
+            if self.name:
+                self.lab_id = format_lab_id(self.name)
         else:
             self.lab_id = format_lab_id(self.lab_id)
 
@@ -133,41 +121,18 @@ class IngredientAmount(EntityReference):
     name = Quantity(
         type=str, a_eln=ELNAnnotation(component=ELNComponentEnum.StringEditQuantity)
     )
-
-    quantity = Quantity(
-        type=float,
-        a_eln=ELNAnnotation(component=ELNComponentEnum.NumberEditQuantity),
-        # unit='minute',        # TODO: add custom units to pint custom unit registry
-    )
-
-    unit = Quantity(
-        type=MEnum(
-            'gram',
-            'milliliter',
-            'piece',
-            'teaspoon',
-            'tablespoon',
-            'fluid ounce',
-            'cup',
-            'pint',
-            'quart',
-            'gallon',
-        ),
-        a_eln=ELNAnnotation(component=ELNComponentEnum.EnumEditQuantity),
-    )
-
     mass = Quantity(
         type=float,
         unit='gram',
-    )  # in [g], calculate from quantity, unit and density etc
-
+        description='The mass of the ingredient',
+        a_eln=ELNAnnotation(component=ELNComponentEnum.NumberEditQuantity),
+    )
     lab_id = Quantity(
         type=str,
         description="""An ID string that is unique at least for the lab that produced
             this data.""",
         a_eln=dict(component='StringEditQuantity', label='ingredient ID'),
     )
-
     reference = Quantity(
         type=Ingredient,
         description='A reference to a ingredient type entry.',
@@ -176,7 +141,6 @@ class IngredientAmount(EntityReference):
             label='ingredient type reference',
         ),
     )
-
     diet_type = Quantity(
         type=MEnum(
             'ANIMAL_PRODUCT',
@@ -186,7 +150,6 @@ class IngredientAmount(EntityReference):
         ),
         a_eln=ELNAnnotation(component=ELNComponentEnum.EnumEditQuantity),
     )
-
     calories = Quantity(
         type=float,
         unit='kcal',
@@ -194,10 +157,8 @@ class IngredientAmount(EntityReference):
         a_eln=ELNAnnotation(
             component=ELNComponentEnum.NumberEditQuantity,
             defaultDisplayUnit='kcal',
-            # properties= {'editable': False},
         ),
     )
-
     fat = Quantity(
         type=float,
         unit='g',
@@ -206,7 +167,6 @@ class IngredientAmount(EntityReference):
             component=ELNComponentEnum.NumberEditQuantity, defaultDisplayUnit='g'
         ),
     )
-
     protein = Quantity(
         type=float,
         unit='g',
@@ -215,7 +175,6 @@ class IngredientAmount(EntityReference):
             component=ELNComponentEnum.NumberEditQuantity, defaultDisplayUnit='g'
         ),
     )
-
     carbohydrates = Quantity(
         type=float,
         unit='g',
@@ -224,25 +183,6 @@ class IngredientAmount(EntityReference):
             component=ELNComponentEnum.NumberEditQuantity, defaultDisplayUnit='g'
         ),
     )
-
-    # preparation_notes = Quantity() or SubSection() TODO: discuss
-    # TODO: discuss references
-
-    def convert_volume(self, unit_volume):
-        if self.reference.density:
-            self.mass = (
-                ureg.Quantity(unit_volume, 'milliliter')
-                * self.quantity
-                * self.reference.density
-            )
-        else:
-            self.mass = None
-
-    def convert_piece(self):
-        if self.reference.weight_per_piece:
-            self.mass = self.reference.weight_per_piece * self.quantity
-        else:
-            self.mass = None
 
     def calculate_nutrients(self, logger):
         for nutrient in ('calories', 'fat', 'protein', 'carbohydrates'):
@@ -259,20 +199,25 @@ class IngredientAmount(EntityReference):
                     exc_info=True,
                 )
 
-    def normalize(self, archive, logger: 'BoundLogger'):  # noqa: PLR0912
+    def normalize(self, archive: 'EntryArchive', logger: 'BoundLogger'):
         """
         For the given ingredient name or ID, fetches the corresponding Ingredient entry.
         If not found, creates a new Ingredient entry. Converts the quantity to SI units
         based on the unit and ingredient properties like density or weight per piece.
         """
         if not self.lab_id:
-            self.lab_id = format_lab_id(self.name)
+            if self.name:
+                self.lab_id = format_lab_id(self.name)
         else:
             self.lab_id = format_lab_id(self.lab_id)
 
         super().normalize(archive, logger)
 
-        if not self.reference:
+        if not self.reference and self.lab_id:
+            if hasattr(archive.data, '_normalization_delay'):
+                import time
+
+                time.sleep(archive.data._normalization_delay)
             logger.debug('Ingredient entry not found. Creating a new one.')
             try:
                 ingredient = Ingredient(
@@ -291,62 +236,69 @@ class IngredientAmount(EntityReference):
                 )
 
         if self.reference:
-            unit = self.unit.replace(' ', '_')  # type: ignore
-            match unit:
-                # the values for teaspoon, tablespoon and cup come from
-                # https://en.wikipedia.org/wiki/Cooking_weights_and_measures, which
-                # in turn compiles them from '1896 Boston Cooking-School Cook Book'
-                case 'gram':
-                    self.mass = self.quantity
-                case 'piece':
-                    self.convert_piece()
-                case 'teaspoon':
-                    self.convert_volume(14.79)
-                case 'tablespoon':
-                    self.convert_volume(3.552)
-                case 'cup':
-                    self.convert_volume(236.588)
-                case _:
-                    if self.reference.density:
-                        try:
-                            self.mass = (
-                                (ureg(unit).to(ureg.milliliter))
-                                * self.quantity
-                                * self.reference.density
-                            )
-                        except Exception as e:
-                            logger.warn(f'Not able to convert common unit to [g], {e}')
-                    else:
-                        self.mass = None
-
             self.diet_type = self.reference.diet_type
+            if self.mass:
+                self.calculate_nutrients(logger)
 
+class IngredientVolume(IngredientAmount):
+    volume = Quantity(
+        type=float,
+        unit='milliliter',
+        description='The volume of the ingredient that should be used.',
+        a_eln=ELNAnnotation(
+            component=ELNComponentEnum.NumberEditQuantity,
+            defaultDisplayUnit='milliliter',
+        ),
+    )
+    mass = Quantity(  # Overload to remove ELN annotation
+        type=float,
+        unit='gram',
+        description='The mass of the ingredient that should be used.',
+    )
+
+    def normalize(self, archive: 'EntryArchive', logger: 'BoundLogger'):
+        super().normalize(archive, logger)
+        if self.reference and self.reference.density:
+            self.mass = self.volume * self.reference.density
             self.calculate_nutrients(logger)
 
 
-class Tool(Instrument, Schema):
+class IngredientPiece(IngredientAmount):
+    pieces = Quantity(
+        type=float,
+        description='The number of pieces of the ingredient that should be used.',
+        a_eln=ELNAnnotation(component=ELNComponentEnum.NumberEditQuantity),
+    )
+    mass = Quantity(  # Overload to remove ELN annotation
+        type=float,
+        unit='gram',
+        description='The mass of the ingredient that should be used.',
+    )
+
+    def normalize(self, archive: 'EntryArchive', logger: 'BoundLogger'):
+        super().normalize(archive, logger)
+        if self.reference and self.reference.weight_per_piece:
+            self.mass = self.pieces * self.reference.weight_per_piece
+            self.calculate_nutrients(logger)
+
+
+class Tool(ArchiveSection):
     """
     A kitchen tool or utensil used in cooking.
     """
 
+    name = Quantity(
+        type=str, a_eln=ELNAnnotation(component=ELNComponentEnum.StringEditQuantity)
+    )
     type = Quantity(
         type=str, a_eln=ELNAnnotation(component=ELNComponentEnum.StringEditQuantity)
     )
-
     description = Quantity(
         type=str, a_eln=ELNAnnotation(component=ELNComponentEnum.StringEditQuantity)
     )
 
-    def normalize(self, archive, logger: 'BoundLogger'):
-        if not self.lab_id:
-            self.lab_id = format_lab_id(self.name)
-        else:
-            self.lab_id = format_lab_id(self.lab_id)
 
-        super().normalize(archive, logger)
-
-
-class RecipeStep(ActivityStep):
+class RecipeStep(ArchiveSection):
     """
     A single step in a cooking recipe.
     """
@@ -358,21 +310,19 @@ class RecipeStep(ActivityStep):
         ),
         unit='minute',
     )
-
     tools = SubSection(
         section_def=Tool,
         description='',
         repeats=True,
     )
-
     ingredients = SubSection(
         section_def=IngredientAmount,
         description='',
         repeats=True,
     )
-
     instruction = Quantity(
-        type=str, a_eln=ELNAnnotation(component=ELNComponentEnum.StringEditQuantity)
+        type=str, 
+        a_eln=ELNAnnotation(component=ELNComponentEnum.RichTextEditQuantity)
     )
 
 
@@ -399,12 +349,13 @@ class Recipe(BaseSection, Schema):
     m_def = Section(
         label='Cooking Recipe',
         categories=[UseCaseElnCategory],
+        a_eln=ELNAnnotation(
+            hide=['_normalization_delay']
+        )
     )
-
     name = Quantity(
         type=str, a_eln=ELNAnnotation(component=ELNComponentEnum.StringEditQuantity)
     )
-
     duration = Quantity(
         type=float,
         a_eln=ELNAnnotation(
@@ -412,11 +363,9 @@ class Recipe(BaseSection, Schema):
         ),
         unit='minute',
     )
-
     authors = Quantity(
         type=str, a_eln=ELNAnnotation(component=ELNComponentEnum.StringEditQuantity)
     )
-
     difficulty = Quantity(
         type=MEnum(
             'easy',
@@ -425,19 +374,15 @@ class Recipe(BaseSection, Schema):
         ),
         a_eln=ELNAnnotation(component=ELNComponentEnum.EnumEditQuantity),
     )
-
     number_of_servings = Quantity(
         type=int, a_eln=ELNAnnotation(component=ELNComponentEnum.NumberEditQuantity)
     )
-
     summary = Quantity(
-        type=str, a_eln=ELNAnnotation(component=ELNComponentEnum.StringEditQuantity)
+        type=str, a_eln=ELNAnnotation(component=ELNComponentEnum.RichTextEditQuantity)
     )
-
     cuisine = Quantity(
         type=str, a_eln=ELNAnnotation(component=ELNComponentEnum.StringEditQuantity)
     )
-
     diet_type = Quantity(
         type=MEnum(
             'ANIMAL_PRODUCT',
@@ -447,7 +392,6 @@ class Recipe(BaseSection, Schema):
         ),
         a_eln=ELNAnnotation(component=ELNComponentEnum.EnumEditQuantity),
     )
-
     calories = Quantity(
         type=float,
         unit='kcal',
@@ -455,10 +399,8 @@ class Recipe(BaseSection, Schema):
         a_eln=ELNAnnotation(
             component=ELNComponentEnum.NumberEditQuantity,
             defaultDisplayUnit='kcal',
-            # properties= {'editable': False},
         ),
     )
-
     fat = Quantity(
         type=float,
         unit='g',
@@ -467,7 +409,6 @@ class Recipe(BaseSection, Schema):
             component=ELNComponentEnum.NumberEditQuantity, defaultDisplayUnit='g'
         ),
     )
-
     protein = Quantity(
         type=float,
         unit='g',
@@ -476,7 +417,6 @@ class Recipe(BaseSection, Schema):
             component=ELNComponentEnum.NumberEditQuantity, defaultDisplayUnit='g'
         ),
     )
-
     carbohydrates = Quantity(
         type=float,
         unit='g',
@@ -485,7 +425,6 @@ class Recipe(BaseSection, Schema):
             component=ELNComponentEnum.NumberEditQuantity, defaultDisplayUnit='g'
         ),
     )
-
     calories_per_serving = Quantity(
         type=float,
         unit='kcal',
@@ -493,10 +432,8 @@ class Recipe(BaseSection, Schema):
         a_eln=ELNAnnotation(
             component=ELNComponentEnum.NumberEditQuantity,
             defaultDisplayUnit='kcal',
-            # properties= {'editable': False},
         ),
     )
-
     fat_per_serving = Quantity(
         type=float,
         unit='g',
@@ -504,10 +441,8 @@ class Recipe(BaseSection, Schema):
         a_eln=ELNAnnotation(
             component=ELNComponentEnum.NumberEditQuantity,
             defaultDisplayUnit='g',
-            # properties= {'editable': False},
         ),
     )
-
     protein_per_serving = Quantity(
         type=float,
         unit='g',
@@ -515,10 +450,8 @@ class Recipe(BaseSection, Schema):
         a_eln=ELNAnnotation(
             component=ELNComponentEnum.NumberEditQuantity,
             defaultDisplayUnit='g',
-            # properties= {'editable': False},
         ),
     )
-
     carbohydrates_per_serving = Quantity(
         type=float,
         unit='g',
@@ -526,37 +459,44 @@ class Recipe(BaseSection, Schema):
         a_eln=ELNAnnotation(
             component=ELNComponentEnum.NumberEditQuantity,
             defaultDisplayUnit='g',
-            # properties= {'editable': False},
         ),
     )
-
     duration = Quantity(
         type=float,
         a_eln=ELNAnnotation(
             component=ELNComponentEnum.NumberEditQuantity,
             defaultDisplayUnit='minute',
-            # properties= {'editable': False},
         ),
         unit='minute',
     )
-
     tools = SubSection(
         section_def=Tool,
         description='',
         repeats=True,
     )
-
     steps = SubSection(
         section_def=RecipeStep,
         description='',
         repeats=True,
     )
-
     ingredients = SubSection(
         section_def=IngredientAmount,
         description='',
         repeats=True,
     )
+    _normalization_delay = Quantity(
+        type=float,
+        default=0.0,
+    )
+
+    def generate_description(self) -> None:
+        """
+        Generates an HTML formatted step-by-step instructions based on the recipe steps.
+        """
+        self.description = "<ol>"
+        for step in self.steps:
+            self.description += f"<li>{step.instruction}</li>"
+        self.description += "</ol>"
 
     def normalize(self, archive: 'EntryArchive', logger: 'BoundLogger') -> None:  # noqa: PLR0912
         """
@@ -658,6 +598,8 @@ class Recipe(BaseSection, Schema):
         else:
             self.diet_type = 'AMBIGUOUS'
 
+        self.generate_description()
+
 
 class RecipeScaler(BaseSection, Schema):
     """
@@ -669,19 +611,16 @@ class RecipeScaler(BaseSection, Schema):
         label='Recipe Scaler',
         description='Scale a recipe for different serving sizes',
     )
-
     original_recipe = Quantity(
         type=Recipe,
         description='Reference to the original recipe to be scaled',
         a_eln=ELNAnnotation(component=ELNComponentEnum.ReferenceEditQuantity),
     )
-
     desired_servings = Quantity(
         type=int,
         description='Number of servings desired for the scaled recipe',
         a_eln=ELNAnnotation(component=ELNComponentEnum.NumberEditQuantity),
     )
-
     scaled_recipe = Quantity(
         type=Recipe,
         description='The resulting scaled recipe',

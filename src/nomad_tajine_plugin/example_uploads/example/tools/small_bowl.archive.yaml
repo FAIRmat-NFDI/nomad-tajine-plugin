@@ -1,4 +1,0 @@
-data:
-  m_def: nomad_tajine_plugin.schema_packages.schema_package.Tool
-  name: Small Bowl
-  description: Used for mixing spices
