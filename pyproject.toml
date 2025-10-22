@@ -38,7 +38,17 @@ Homepage = "https://fairmat-nfdi.github.io/nomad-tajine-plugin/"
 Documentation = "https://fairmat-nfdi.github.io/nomad-tajine-plugin/"
 
 [project.optional-dependencies]
-dev = ["ruff", "pytest", "structlog"]
+dev = [
+    "ruff",
+    "pytest",
+    "structlog",
+    "nomad-docs",
+    "mkdocs",
+    "mkdocs-material==8.1.1",
+    "pymdown-extensions",
+    "mkdocs-click",
+    "mkdocs-macros-plugin",
+]
 
 [tool.ruff]
 # Exclude a variety of commonly ignored directories.
