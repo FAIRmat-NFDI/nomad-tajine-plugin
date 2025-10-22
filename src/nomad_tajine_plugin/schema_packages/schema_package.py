@@ -64,7 +64,7 @@ class Ingredient(Entity, Schema):
         a_eln=ELNAnnotation(component=ELNComponentEnum.EnumEditQuantity),
     )
 
-    calories_per_100g = Quantity(
+    calories_per_100_g = Quantity(
         type=float,
         unit='kcal',
         description='Nutrients per 100 g for this ingredient type imported from USDA.',
@@ -73,7 +73,7 @@ class Ingredient(Entity, Schema):
         ),
     )
 
-    fat_per_100g = Quantity(
+    fat_per_100_g = Quantity(
         type=float,
         unit='g',
         description='Nutrients per 100 g for this ingredient type imported from USDA.',
@@ -82,7 +82,7 @@ class Ingredient(Entity, Schema):
         ),
     )
 
-    protein_per_100g = Quantity(
+    protein_per_100_g = Quantity(
         type=float,
         unit='g',
         description='Nutrients per 100 g for this ingredient type imported from USDA.',
@@ -91,7 +91,7 @@ class Ingredient(Entity, Schema):
         ),
     )
 
-    carbohydrates_per_100g = Quantity(
+    carbohydrates_per_100_g = Quantity(
         type=float,
         unit='g',
         description='Nutrients per 100 g for this ingredient type imported from USDA.',
@@ -167,6 +167,16 @@ class IngredientAmount(EntityReference):
         ),
     )
 
+    diet_type = Quantity(
+        type=MEnum(
+            'ANIMAL_PRODUCT',
+            'VEGETARIAN',
+            'VEGAN',
+            'AMBIGUOUS',
+        ),
+        a_eln=ELNAnnotation(component=ELNComponentEnum.EnumEditQuantity),
+    )
+
     calories = Quantity(
         type=float,
         unit='kcal',
@@ -227,9 +237,9 @@ class IngredientAmount(EntityReference):
     def calculate_nutrients(self, logger):
         for nutrient in ("calories", "fat", "protein", "carbohydrates"):
             try:
-                per_100g_attr = f"{nutrient}_per_100g"
-                value_per_100g = getattr(self.reference, per_100g_attr)
-                value = (self.mass * value_per_100g / ureg.Quantity(100, "gram")).to(value_per_100g.units)
+                per_100_g_attr = f"{nutrient}_per_100_g"
+                value_per_100_g = getattr(self.reference, per_100_g_attr)
+                value = (self.mass * value_per_100_g / ureg.Quantity(100, "gram")).to(value_per_100_g.units)
                 setattr(self, nutrient, value)
             except TypeError as e:
                 logger.warn(
@@ -292,6 +302,8 @@ class IngredientAmount(EntityReference):
                     else:
                         self.mass = None
 
+            self.diet_type = self.reference.diet_type
+            
             self.calculate_nutrients(logger)
 
 
@@ -395,12 +407,13 @@ class Recipe(BaseSection, Schema):
 
     diet_type = Quantity(
         type=MEnum(
-            'non-vegetarian',
-            'vegetarian',
-            'vegan',
+            'ANIMAL_PRODUCT',
+            'VEGETARIAN',
+            'VEGAN',
+            'AMBIGUOUS',
         ),
         a_eln=ELNAnnotation(component=ELNComponentEnum.EnumEditQuantity),
-    )  # TODO: add more options / complexity
+    )
 
     calories = Quantity(
         type=float,
@@ -588,5 +601,18 @@ class Recipe(BaseSection, Schema):
         except Exception as e:
             logger.warning('recipe_duration_sum_failed', error=str(e))
 
+        ingredient_diets = [(ingredient.diet_type or "AMBIGUOUS") for ingredient in (self.ingredients or [])]
+
+        # --- Find the diet type ---
+        if not ingredient_diets:
+            self.diet_type = "AMBIGUOUS"
+        elif "ANIMAL_PRODUCT" in ingredient_diets:
+            self.diet_type = "ANIMAL_PRODUCT"
+        elif all(d == "VEGAN" for d in ingredient_diets):
+            self.diet_type = "VEGAN"
+        elif "VEGETARIAN" in ingredient_diets:
+            self.diet_type = "VEGETARIAN"
+        else:
+            self.diet_type = "AMBIGUOUS"
 
 m_package.__init_metainfo__()
