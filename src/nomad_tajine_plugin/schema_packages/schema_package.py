@@ -338,4 +338,84 @@ class Recipe(BaseSection, Schema):
         )
 
 
+class RecipeScaler(BaseSection, Schema):
+    """
+    A schema that references an existing recipe and creates a scaled version
+    based on desired number of servings.
+    """
+
+    m_def = Section(
+        label='Recipe Scaler',
+        description='Scale a recipe for different serving sizes',
+    )
+
+    original_recipe = Quantity(
+        type=Recipe,
+        description='Reference to the original recipe to be scaled',
+        a_eln=ELNAnnotation(component=ELNComponentEnum.ReferenceEditQuantity),
+    )
+
+    desired_servings = Quantity(
+        type=int,
+        description='Number of servings desired for the scaled recipe',
+        a_eln=ELNAnnotation(component=ELNComponentEnum.NumberEditQuantity),
+    )
+
+    scaled_recipe = Quantity(
+        type=Recipe,
+        description='The resulting scaled recipe',
+    )
+
+    def scale_recipe(
+        self,
+        recipe: Recipe,
+        scaling_factor: float,
+        archive: 'EntryArchive',
+        logger: 'BoundLogger',
+    ) -> None:
+        """
+        Scales the given recipe by the specified scaling factor and creates
+        a new archived entry for the scaled recipe.
+        """
+        if scaling_factor == 1.0:
+            logger.warning('Scaling factor is 1.0, no scaling applied.')
+            return
+        scaled_recipe = Recipe().m_from_dict(recipe.m_to_dict(with_root_def=True))
+        scaled_recipe.name += f' (scaled x{scaling_factor:.2f})'
+        scaled_recipe.number_of_servings *= scaling_factor
+
+        # reset ingredients and tools, that will be populated from steps
+        scaled_recipe.tools = []
+        scaled_recipe.ingredients = []
+
+        # Scale ingredients in steps
+        for step in scaled_recipe.steps:
+            for ingredient in step.ingredients:
+                ingredient.quantity *= scaling_factor
+                if ingredient.quantity_si:
+                    ingredient.quantity_si *= scaling_factor
+
+        file_name = (
+            (f'{recipe.name} scaled x{scaling_factor:.2f}.archive.json')
+            .replace(' ', '_')
+            .lower()
+        )
+        self.scaled_recipe = create_archive(
+            scaled_recipe, archive=archive, file_name=file_name, overwrite=True
+        )
+
+    def normalize(self, archive: 'EntryArchive', logger: 'BoundLogger') -> None:
+        super().normalize(archive, logger)
+
+        self.scaled_recipe = None
+        if self.original_recipe and self.desired_servings:
+            try:
+                scaling_factor = (
+                    self.desired_servings / self.original_recipe.number_of_servings
+                )
+                self.scale_recipe(self.original_recipe, scaling_factor, archive, logger)
+            except Exception as e:
+                logger.error('Error while scaling recipe.', exc_info=True, error=e)
+
+
 m_package.__init_metainfo__()
