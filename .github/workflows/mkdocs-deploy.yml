@@ -1,9 +1,9 @@
 name: Deploy MkDocs Site
 
-on: [push]
-  # push:
-  #   branches:
-  #     - main  # Triggers deployment on push to the main branch
+on:
+  push:
+    branches:
+      - main  # Triggers deployment on push to the main branch
 
 env:
   REGISTRY: ghcr.io
