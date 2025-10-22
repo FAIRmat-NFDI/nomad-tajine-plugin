@@ -108,22 +108,18 @@ class Ingredient(EntityReference):
 
         super().normalize(archive, logger)
 
-        if self.reference:
-            match self.unit:
-                case 'gram':
-                    self.quantity_si = self.quantity
-                case 'piece':
-                    self.quantity_si = self.reference.weight_per_piece * self.quantity
-                case _:
-                    self.quantity_si = (
-                        (ureg(self.unit).to(ureg.milliliter)).magnitude
-                        * self.quantity
-                        * self.reference.density
-                    )
-
-
-# class IngredientTypeReference():
-#     pass
+        # if self.reference:
+        #     match self.unit:
+        #         case 'gram':
+        #             self.quantity_si = self.quantity
+        #         case 'piece':
+        #             self.quantity_si = self.reference.weight_per_piece * self.quantity
+        #         case _:
+        #             self.quantity_si = (
+        #                 (ureg(self.unit).to(ureg.milliliter)).magnitude
+        #                 * self.quantity
+        #                 * self.reference.density
+        #             )
 
 
 class Tool(Instrument):
