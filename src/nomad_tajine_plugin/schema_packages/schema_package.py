@@ -33,8 +33,9 @@ configuration = config.get_plugin_entry_point(
 
 m_package = SchemaPackage()
 
+
 def format_lab_id(lab_id: str):
-    return lab_id.replace(" ", "_").lower()
+    return lab_id.replace(' ', '_').lower()
 
 
 class IngredientType(Entity, Schema):
@@ -62,6 +63,7 @@ class IngredientType(Entity, Schema):
             self.lab_id = format_lab_id(self.lab_id)
 
         super().normalize(archive, logger)
+
 
 class Ingredient(EntityReference):
     name = Quantity(
@@ -200,7 +202,7 @@ class Tool(Instrument, Schema):
             self.lab_id = format_lab_id(self.name)
         else:
             self.lab_id = format_lab_id(self.lab_id)
-        
+
         super().normalize(archive, logger)
 
 
