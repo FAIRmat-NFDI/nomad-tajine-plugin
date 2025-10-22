@@ -5,7 +5,7 @@
 
 ### 1. Add it as a submodule to yournomad-tajine-distro
    ```bash
-   git submodule add https://github.com/FAIRmat-NFDI/nomad-tajine-plugin.git packages/nomad-tajine-plugin>
+   git submodule add https://github.com/FAIRmat-NFDI/nomad-tajine-plugin.git packages/nomad-tajine-plugin
    ```
 ### 2. Modify the `pyproject.toml` of your nomad-tajine-distro
 
@@ -36,25 +36,25 @@ There are two ways of adding to these two lists:
 !!! attention
     You can also use `uv` to install a specific branch of the plugin without adding a submodule locally.
     ```bash
-    uv add https://github.com/FAIRmat-NFDI/nomad-measurements.git --branch <specific-branch-name>
+    uv add https://github.com/FAIRmat-NFDI/nomad-tajine-plugin.git --branch <specific-branch-name>
     ```
     This command will not include the plugin in the `packages/` folder, and hence this plugin will not be editable.
 
 
-## Create recipe entries
+## Create recipe entries manually
 
-It is similar to using other built-in ELN temlates. You simply need to choose the **Recipe** as your template: You could follow this concise steps:
+It is similar to using other built-in ELN templates. You simply need to choose the **Recipe** as your template: You could follow this concise steps:
 
 In the GUI: PUBLISH → Uploads → CREAT A NEW UPLOAD → CREATE FROM SCHEMA → Built-in schema → Recipe (entry type provided by the plugin).
 
-Fill the main fields: Title, Cuisine, Servings, Prep/Cook time.
+Fill the main fields: Name, Cuisine, Number of servings, etc.
 
 Choose ingredients from already existing entries or simply add them in using the designated fields (name, amount, unit) and Cooking steps (ordered steps).
 
 Save the entry and (optionally) add it to a Dataset/Collection.
 
 !!! note
-Additional entry types (e.g., Ingredient, CookingStep, RecipeCollection) can be created and linked, depending on how you structure your data.
+Additional entry types (e.g., Ingredient, Step, RecipeCollection) can be created and linked, depending on how you structure your data.
 
 
 ## Search Recipes
