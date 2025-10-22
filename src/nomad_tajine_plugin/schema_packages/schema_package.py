@@ -11,6 +11,8 @@ from nomad.datamodel.metainfo.basesections import (
 )
 from nomad.metainfo.metainfo import Section, SubSection
 
+from nomad_tajine_plugin.utils import create_archive
+
 # from nomad.units import ureg
 
 if TYPE_CHECKING:
@@ -105,9 +107,27 @@ class Ingredient(EntityReference):
 
     def normalize(self, archive, logger: 'BoundLogger'):
         if not self.lab_id:
-            self.lab_id = self.name
+            self.lab_id = self.name.lower().replace(' ', '_')
 
         super().normalize(archive, logger)
+
+        if not self.reference:
+            logger.debug('IngredientType entry not found. Creating a new one.')
+            try:
+                ingredient_type = IngredientType(
+                    name=self.name,
+                    lab_id=self.lab_id,
+                )
+                self.reference = create_archive(
+                    ingredient_type,
+                    archive,
+                    f'{self.lab_id}.archive.json',
+                    overwrite=False,
+                )
+            except Exception as e:
+                logger.error(
+                    'Failed to create IngredientType entry.', exc_info=True, error=e
+                )
 
         # if self.reference:
         #     match self.unit:
