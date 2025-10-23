@@ -68,7 +68,7 @@ recipe_app_entry_point = AppEntryPoint(
         ],
         menu=Menu(
             title='Recipe filters',
-            items=[   
+            items=[
                 Menu(
                     title='Dietary preferences',
                     items=[
@@ -97,19 +97,25 @@ recipe_app_entry_point = AppEntryPoint(
                     items=[
                         MenuItemHistogram(
                             title='Protein per serving',
-                            x={'search_quantity': f'data.protein_per_serving#{SCHEMA}',},
+                            x={
+                                'search_quantity': f'data.protein_per_serving#{SCHEMA}',
+                            },
                             n_bins=100,
                             autorange=True,
                         ),
                         MenuItemHistogram(
                             title='Fat per serving',
-                            x={'search_quantity': f'data.fat_per_serving#{SCHEMA}',},
+                            x={
+                                'search_quantity': f'data.fat_per_serving#{SCHEMA}',
+                            },
                             n_bins=100,
                             autorange=True,
                         ),
                         MenuItemHistogram(
                             title='Carbohydrates per serving',
-                            x={'search_quantity': f'data.carbohydrates_per_serving#{SCHEMA}',},
+                            x={
+                                'search_quantity': f'data.carbohydrates_per_serving#{SCHEMA}',  # noqa: E501
+                            },
                             n_bins=100,
                             autorange=True,
                         ),
@@ -118,7 +124,6 @@ recipe_app_entry_point = AppEntryPoint(
                 Menu(
                     title='Ingredients',
                     items=[
-                        # filter by diet
                         MenuItemTerms(
                             quantity=f'data.ingredients.name#{SCHEMA}',
                             title='Ingredient name',
@@ -130,14 +135,13 @@ recipe_app_entry_point = AppEntryPoint(
                 Menu(
                     title='Kitchen tools',
                     items=[
-                        # filter by diet
                         MenuItemTerms(
                             quantity=f'data.tools.name#{SCHEMA}',
                             title='Tool name',
                             show_input=True,
                         ),
                     ],
-                ),                
+                ),
                 Menu(
                     title='Author / Recipe',
                     size='md',
@@ -145,8 +149,9 @@ recipe_app_entry_point = AppEntryPoint(
                         MenuItemTerms(search_quantity=f'data.authors#{SCHEMA}'),
                         MenuItemHistogram(
                             title='Created on',
-                            x={'search_quantity': 'upload_create_time'}),
-                        MenuItemVisibility(title="Visibility"),
+                            x={'search_quantity': 'upload_create_time'},
+                        ),
+                        MenuItemVisibility(title='Visibility'),
                     ],
                 ),
             ],
