@@ -1,6 +1,6 @@
 # Contribute to the documentation
 
-The steps are the same as briefly mentioned [here](./contribute_to_the_documentation.md#contribute-to-the-documentation).
+The steps are the same as briefly mentioned [here](contribute_to_this_plugin.md#contribute-to-this-plugin).
 
 Noteworthy is that the docs are Markdown and deployed using **MkDocs**.
 
