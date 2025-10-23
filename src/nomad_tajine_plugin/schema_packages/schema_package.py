@@ -1,6 +1,5 @@
 import time
 from typing import TYPE_CHECKING
-from .usda_lookup.usda_lookup import get_usda_data
 
 from nomad.config import config
 from nomad.datamodel.data import ArchiveSection, Schema, UseCaseElnCategory
@@ -14,6 +13,7 @@ from nomad.metainfo import MEnum, Quantity, SchemaPackage
 from nomad.metainfo.metainfo import Section, SubSection
 from nomad.units import ureg
 
+from nomad_tajine_plugin.schema_packages.usda_lookup.usda_lookup import get_usda_data
 from nomad_tajine_plugin.utils import create_archive
 
 if TYPE_CHECKING:
