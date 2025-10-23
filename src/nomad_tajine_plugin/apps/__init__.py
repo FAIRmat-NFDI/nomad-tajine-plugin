@@ -9,6 +9,7 @@ from nomad.config.models.ui import (
     Menu,
     MenuItemHistogram,
     MenuItemTerms,
+    MenuItemVisibility,
     SearchQuantities,
     WidgetHistogram,
     WidgetScatterPlot,
@@ -60,35 +61,22 @@ recipe_app_entry_point = AppEntryPoint(
             ),
             Column(
                 quantity=f'data.calories_per_serving#{SCHEMA}',
-                label='Calories',
+                label='Calories per serving',
                 selected=True,
                 unit='kcal',
             ),
         ],
         menu=Menu(
             title='Recipe filters',
-            items=[
-                # filter by how many toools or ingredients
-                # filter for ingredients
-                # menu=Menu(
-                #     title='Ingredients',
-                #     items=[
-                #         # filter by diet
-                #         MenuItemTerms(
-                #             quantity=f'data.ingredients#{SCHEMA}',
-                #             title='Ingredients',
-                #             show_input=True,
-                #         ),
-                #     ],
-                # ),
+            items=[   
                 Menu(
-                    title='Dietary restrictions',
+                    title='Dietary preferences',
                     items=[
                         # filter by diet
                         MenuItemTerms(
-                            quantity=f'data.diet#{SCHEMA}',
+                            quantity=f'data.diet_type#{SCHEMA}',
                             title='Diet',
-                            show_input=True,
+                            show_input=False,
                         ),
                         # filter by cuisine
                         MenuItemTerms(
@@ -99,16 +87,66 @@ recipe_app_entry_point = AppEntryPoint(
                         MenuItemTerms(
                             quantity=f'data.difficulty#{SCHEMA}',
                             title='Difficulty',
-                            show_input=True,
+                            show_input=False,
                         ),
                     ],
                 ),
+                Menu(
+                    title='Macronutrients',
+                    size='md',
+                    items=[
+                        MenuItemHistogram(
+                            title='Protein per serving',
+                            x={'search_quantity': f'data.protein_per_serving#{SCHEMA}',},
+                            n_bins=100,
+                            autorange=True,
+                        ),
+                        MenuItemHistogram(
+                            title='Fat per serving',
+                            x={'search_quantity': f'data.fat_per_serving#{SCHEMA}',},
+                            n_bins=100,
+                            autorange=True,
+                        ),
+                        MenuItemHistogram(
+                            title='Carbohydrates per serving',
+                            x={'search_quantity': f'data.carbohydrates_per_serving#{SCHEMA}',},
+                            n_bins=100,
+                            autorange=True,
+                        ),
+                    ],
+                ),
+                Menu(
+                    title='Ingredients',
+                    items=[
+                        # filter by diet
+                        MenuItemTerms(
+                            quantity=f'data.ingredients.name#{SCHEMA}',
+                            title='Ingredient name',
+                            show_input=True,
+                            options=8,
+                        ),
+                    ],
+                ),
+                Menu(
+                    title='Kitchen tools',
+                    items=[
+                        # filter by diet
+                        MenuItemTerms(
+                            quantity=f'data.tools.name#{SCHEMA}',
+                            title='Tool name',
+                            show_input=True,
+                        ),
+                    ],
+                ),                
                 Menu(
                     title='Author / Recipe',
                     size='md',
                     items=[
                         MenuItemTerms(search_quantity=f'data.authors#{SCHEMA}'),
-                        MenuItemHistogram(x={'search_quantity': 'upload_create_time'}),
+                        MenuItemHistogram(
+                            title='Created on',
+                            x={'search_quantity': 'upload_create_time'}),
+                        MenuItemVisibility(title="Visibility"),
                     ],
                 ),
             ],
