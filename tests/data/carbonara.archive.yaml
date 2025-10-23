@@ -1,0 +1,78 @@
+data:
+  m_def: 'nomad_tajine_plugin.schema_packages.schema_package.Recipe'
+  name: 'Classic Spaghetti Carbonara'
+  summary: 'An authentic Italian pasta dish from Rome made with egg, hard cheese, cured pork, and black pepper. The key is using the hot pasta to cook the egg-based sauce without scrambling it.'
+  cuisine: 'Italian'
+  number_of_servings: 4
+  difficulty: 'easy'
+  authors: 'Chef Hampus'
+
+  steps:
+    - instruction: 'In a medium bowl, whisk together the eggs and grated Pecorino Romano. Season with a generous amount of freshly ground black pepper.'
+      duration: 5
+      temperature: 25
+      tools:
+        - name: 'Medium Bowl'
+        - name: 'Whisk'
+      ingredients:
+        - name: 'Large Eggs'
+          pieces: 4
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientPiece'
+        - name: 'Pecorino Romano Cheese'
+          mass: 150
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientAmount'
+        - name: 'Freshly Ground Black Pepper'
+          volume: 2.5
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientVolume'
+
+    - m_def: 'nomad_tajine_plugin.schema_packages.schema_package.HeatingCoolingStep'
+      instruction: 'Heat olive oil in a large skillet over medium heat. Add the guanciale and cook until the fat has rendered and the meat is golden and crisp, about 5-7 minutes.'
+      duration: 7
+      temperature: 160
+      tools:
+        - name: 'Large Skillet'
+        - name: 'Wooden Spoon'
+      ingredients:
+        - name: 'Guanciale'
+          mass: 200
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientAmount'
+        - name: 'Olive Oil'
+          volume: 15
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientVolume'
+
+    - m_def: 'nomad_tajine_plugin.schema_packages.schema_package.HeatingCoolingStep'
+      instruction: 'Meanwhile, bring a large pot of heavily salted water to a rolling boil. Add the spaghetti and cook according to package directions until al dente.'
+      duration: 10
+      temperature: 100
+      tools:
+        - name: 'Large Pot'
+        - name: 'Tongs'
+      ingredients:
+        - name: 'Spaghetti'
+          mass: 450
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientAmount'
+        - name: 'Salt'
+          volume: 15
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientVolume'
+
+    - instruction: 'Before draining the pasta, reserve about 1 cup (240ml) of the starchy pasta water. Drain the pasta and immediately add it to the skillet with the guanciale and its rendered fat. Toss to combine.'
+      duration: 3
+      temperature: 95
+      tools:
+        - name: 'Large Skillet'
+        - name: 'Tongs'
+        - name: 'Measuring Cup'
+
+    - instruction: 'Remove the skillet from the heat. Pour the egg and cheese mixture over the hot pasta, stirring quickly and continuously. The residual heat will cook the eggs and create a creamy sauce. Add a splash of the reserved pasta water to emulsify the sauce if it seems too thick.'
+      duration: 2
+      temperature: 80
+      tools:
+        - name: 'Large Skillet'
+        - name: 'Tongs'
+
+    - instruction: 'Serve immediately, garnished with extra Pecorino Romano cheese and more black pepper.'
+      duration: 1
+      temperature: 70
+      tools:
+        - name: 'Plates'
+        - name: 'Tongs'

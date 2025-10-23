@@ -1,0 +1,67 @@
+data:
+  m_def: 'nomad_tajine_plugin.schema_packages.schema_package.Recipe'
+  name: 'Classic American Cheeseburger'
+  summary: 'The quintessential American meal: a juicy, seasoned ground beef patty, seared to perfection, topped with melted cheese, and served on a toasted bun with classic toppings.'
+  cuisine: 'American'
+  number_of_servings: 4
+  difficulty: 'easy'
+  authors: 'Chef Heiko'
+
+  steps:
+    - instruction: 'Gently divide the ground beef into 4 equal portions and form them into patties, about 2 cm thick and slightly wider than your buns. Press a dimple into the center of each patty to prevent it from puffing up. Season both sides generously with salt and pepper.'
+      duration: 8
+      temperature: 25
+      tools:
+        - name: 'Hands'
+        - name: 'Plate'
+      ingredients:
+        - name: 'Ground Beef (80/20)'
+          mass: 900
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientAmount'
+        - name: 'Salt'
+          volume: 5
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientVolume'
+        - name: 'Black Pepper'
+          volume: 5
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientVolume'
+
+    - m_def: 'nomad_tajine_plugin.schema_packages.schema_package.HeatingCoolingStep'
+      instruction: 'Heat a cast-iron skillet or grill over medium-high heat. Place the patties on the hot surface and cook for 3-5 minutes per side for medium doneness.'
+      duration: 10
+      temperature: 220
+      tools:
+        - name: 'Cast-Iron Skillet'
+        - name: 'Spatula'
+
+    - m_def: 'nomad_tajine_plugin.schema_packages.schema_package.HeatingCoolingStep'
+      instruction: 'During the last minute of cooking, place a slice of cheese on each patty to melt. At the same time, lightly butter the cut sides of the buns and toast them on the skillet until golden brown.'
+      duration: 2
+      temperature: 200
+      tools:
+        - name: 'Cast-Iron Skillet'
+      ingredients:
+        - name: 'American or Cheddar Cheese Slices'
+          pieces: 4
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientPiece'
+        - name: 'Hamburger Buns'
+          pieces: 4
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientPiece'
+        - name: 'Butter'
+          mass: 15
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientAmount'
+
+    - instruction: 'Assemble the burgers. Spread your desired condiments on the buns. Place the cheeseburger patty on the bottom bun, followed by lettuce, tomato, and onion slices. Place the top bun on and serve immediately.'
+      duration: 4
+      temperature: 70
+      tools:
+        - name: 'Knife'
+      ingredients:
+        - name: 'Lettuce Leaves'
+          pieces: 4
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientPiece'
+        - name: 'Tomato'
+          pieces: 1
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientPiece'
+        - name: 'Red Onion'
+          pieces: 1
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientPiece'

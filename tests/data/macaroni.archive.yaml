@@ -1,0 +1,94 @@
+data:
+  m_def: 'nomad_tajine_plugin.schema_packages.schema_package.Recipe'
+  name: 'Baked Macaroni and Cheese'
+  summary: 'The ultimate American comfort food. Tender macaroni pasta enveloped in a rich, creamy cheese sauce, topped with breadcrumbs and baked until golden and bubbly.'
+  cuisine: 'American'
+  number_of_servings: 6
+  difficulty: 'medium'
+  authors: 'Chef Hampus'
+
+  steps:
+    - m_def: 'nomad_tajine_plugin.schema_packages.schema_package.HeatingCoolingStep'
+      instruction: 'Preheat oven to 190°C (375°F). Cook macaroni according to package directions until al dente. Drain and set aside.'
+      duration: 12
+      temperature: 100
+      tools:
+        - name: 'Large Pot'
+        - name: 'Colander'
+        - name: 'Oven'
+      ingredients:
+        - name: 'Elbow Macaroni'
+          mass: 450
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientAmount'
+
+    - m_def: 'nomad_tajine_plugin.schema_packages.schema_package.HeatingCoolingStep'
+      instruction: 'In a large saucepan, melt butter over medium heat. Whisk in the flour and cook for one minute to create a roux.'
+      duration: 3
+      temperature: 150
+      tools:
+        - name: 'Large Saucepan'
+        - name: 'Whisk'
+      ingredients:
+        - name: 'Unsalted Butter'
+          mass: 60
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientAmount'
+        - name: 'All-purpose Flour'
+          mass: 45
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientAmount'
+
+    - m_def: 'nomad_tajine_plugin.schema_packages.schema_package.HeatingCoolingStep'
+      instruction: 'Gradually whisk in the warm milk until the mixture is smooth. Bring to a simmer and cook for 2-3 minutes, stirring constantly, until the sauce thickens.'
+      duration: 5
+      temperature: 90
+      tools:
+        - name: 'Large Saucepan'
+      ingredients:
+        - name: 'Whole Milk'
+          volume: 720
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientVolume'
+
+    - instruction: 'Remove saucepan from heat. Gradually stir in the shredded cheese until completely melted and smooth. Season with salt, pepper, and mustard powder.'
+      duration: 4
+      temperature: 80
+      tools:
+        - name: 'Large Saucepan'
+      ingredients:
+        - name: 'Shredded Sharp Cheddar Cheese'
+          mass: 450
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientAmount'
+        - name: 'Salt'
+          volume: 5
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientVolume'
+        - name: 'Black Pepper'
+          volume: 2.5
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientVolume'
+        - name: 'Dry Mustard Powder'
+          volume: 2.5
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientVolume'
+
+    - instruction: 'Pour the cheese sauce over the cooked macaroni and stir until everything is well-coated. Transfer the mixture to a 2.5-quart baking dish.'
+      duration: 3
+      temperature: 70
+      tools:
+        - name: 'Baking Dish'
+
+    - m_def: 'nomad_tajine_plugin.schema_packages.schema_package.HeatingCoolingStep'
+      instruction: 'In a small bowl, melt the remaining butter and toss with the breadcrumbs. Sprinkle evenly over the macaroni. Bake for 20-25 minutes, or until the topping is golden brown and the sauce is bubbly.'
+      duration: 25
+      temperature: 190
+      tools:
+        - name: 'Oven'
+        - name: 'Small Bowl'
+      ingredients:
+        - name: 'Panko Breadcrumbs'
+          volume: 60
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientVolume'
+        - name: 'Butter (for topping)'
+          mass: 30
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientAmount'
+
+    - instruction: 'Let it rest for 5 minutes before serving.'
+      duration: 5
+      temperature: 95
+      tools:
+        - name: 'Serving Spoon'

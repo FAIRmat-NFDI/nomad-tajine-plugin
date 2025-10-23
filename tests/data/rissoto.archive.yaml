@@ -1,0 +1,79 @@
+data:
+  m_def: 'nomad_tajine_plugin.schema_packages.schema_package.Recipe'
+  name: 'Risotto alla Milanese'
+  summary: 'A classic and elegant risotto from Milan, famous for its rich golden color from saffron and its creamy texture from slow-cooked Arborio rice and Parmesan cheese.'
+  cuisine: 'Italian'
+  number_of_servings: 4
+  difficulty: 'medium'
+  authors: 'Chef Lukas'
+
+  steps:
+    - m_def: 'nomad_tajine_plugin.schema_packages.schema_package.HeatingCoolingStep'
+      instruction: 'In a saucepan, bring the chicken broth to a simmer. Keep it warm over low heat. In a small bowl, steep the saffron threads in one ladle of the hot broth.'
+      duration: 10
+      temperature: 95
+      tools:
+        - name: 'Saucepan'
+        - name: 'Ladle'
+        - name: 'Small Bowl'
+      ingredients:
+        - name: 'Chicken Broth'
+          volume: 1500
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientVolume'
+        - name: 'Saffron Threads'
+          mass: 0.5
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientAmount'
+
+    - m_def: 'nomad_tajine_plugin.schema_packages.schema_package.HeatingCoolingStep'
+      instruction: 'In a large, heavy-bottomed pot, melt half the butter over medium heat. Add the onion and cook gently until soft and translucent, about 8 minutes (this is the soffritto).'
+      duration: 8
+      temperature: 140
+      tools:
+        - name: 'Heavy-bottomed Pot'
+        - name: 'Wooden Spoon'
+      ingredients:
+        - name: 'Butter'
+          mass: 90
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientAmount'
+        - name: 'Yellow Onion'
+          pieces: 1
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientPiece'
+
+    - m_def: 'nomad_tajine_plugin.schema_packages.schema_package.HeatingCoolingStep'
+      instruction: 'Add the rice to the pot and stir constantly for 2 minutes until the grains are toasted and translucent at the edges (tostatura). Pour in the white wine and cook, stirring, until it has fully evaporated.'
+      duration: 4
+      temperature: 160
+      tools:
+        - name: 'Heavy-bottomed Pot'
+      ingredients:
+        - name: 'Arborio Rice'
+          mass: 350
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientAmount'
+        - name: 'Dry White Wine'
+          volume: 120
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientVolume'
+
+    - m_def: 'nomad_tajine_plugin.schema_packages.schema_package.HeatingCoolingStep'
+      instruction: 'Add one ladle of hot broth to the rice and stir until it is almost fully absorbed. Continue adding the broth one ladle at a time, stirring frequently, for 18-20 minutes, until the rice is al dente.'
+      duration: 20
+      temperature: 90
+      tools:
+        - name: 'Heavy-bottomed Pot'
+        - name: 'Ladle'
+
+    - instruction: 'Remove the pot from the heat. Vigorously stir in the saffron-infused broth, the remaining cold butter, and the grated Parmesan cheese until the risotto is wonderfully creamy (mantecatura).'
+      duration: 2
+      temperature: 85
+      tools:
+        - name: 'Heavy-bottomed Pot'
+      ingredients:
+        - name: 'Parmigiano-Reggiano Cheese'
+          mass: 80
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientAmount'
+
+    - instruction: 'Season with salt to taste. Let it rest for a minute, then serve immediately.'
+      duration: 2
+      temperature: 80
+      tools:
+        - name: 'Plates'
+        - name: 'Spoon'

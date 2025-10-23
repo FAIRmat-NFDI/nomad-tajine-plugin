@@ -48,11 +48,13 @@ class Ingredient(Entity, Schema):
         type=float,
         a_eln=ELNAnnotation(component=ELNComponentEnum.NumberEditQuantity),
         unit='g/L',
+        default=1000.0,  # default to water density for now
     )
     weight_per_piece = Quantity(
         type=float,
         a_eln=ELNAnnotation(component=ELNComponentEnum.NumberEditQuantity),
         unit='g',
+        default=50.0,  # default to 50 g per piece for now
     )
     diet_type = Quantity(
         type=MEnum(
