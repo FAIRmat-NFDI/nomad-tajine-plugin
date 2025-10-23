@@ -2,10 +2,10 @@ import json
 
 import requests
 
-protein_id = 1003 # USDA Nutrient ID for Protein
-fat_id = 1004 # USDA Nutrient ID for Total lipid (fat)
-carb_id = 1005 # USDA Nutrient ID for Carbohydrate, by difference
-calorie_id = 1008 # USDA Nutrient ID for Energy (kcal)
+protein_id = 1003  # USDA Nutrient ID for Protein
+fat_id = 1004  # USDA Nutrient ID for Total lipid (fat)
+carb_id = 1005  # USDA Nutrient ID for Carbohydrate, by difference
+calorie_id = 1008  # USDA Nutrient ID for Energy (kcal)
 
 FOOD_CATEGORY_CLASSIFICATION = {
     # --------------------------------------------------------------------
@@ -107,9 +107,7 @@ def get_usda_data(
                 0
             ]  # Fallback to the first item if none processed
         food_category = food.get('foodCategory', 'Unknown')
-        diet_type = FOOD_CATEGORY_CLASSIFICATION.get(
-            food_category, 'AMBIGUOUS'
-        )
+        diet_type = FOOD_CATEGORY_CLASSIFICATION.get(food_category, 'AMBIGUOUS')
         result['food_category'] = food_category
         result['diet_type'] = diet_type
         fdc_id = food.get('fdcId')
