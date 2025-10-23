@@ -6,6 +6,7 @@ from nomad.config.models.ui import (
     Column,
     Dashboard,
     Layout,
+    Markers,
     Menu,
     MenuItemHistogram,
     MenuItemTerms,
@@ -167,8 +168,8 @@ recipe_app_entry_point = AppEntryPoint(
                     n_bins=100,
                     autorange=True,
                     layout={
-                        'md': Layout(w=6, h=4, x=0, y=0, minW=3, minH=3),
-                        'lg': Layout(w=6, h=5, x=0, y=0, minW=5, minH=4),
+                        'md': Layout(w=6, h=3, x=0, y=0, minW=3, minH=3),
+                        'lg': Layout(w=6, h=3, x=0, y=0, minW=5, minH=4),
                     },
                 ),
                 WidgetHistogram(
@@ -180,8 +181,8 @@ recipe_app_entry_point = AppEntryPoint(
                     n_bins=100,
                     autorange=True,
                     layout={
-                        'md': Layout(w=6, h=4, x=6, y=0, minW=3, minH=3),
-                        'lg': Layout(w=6, h=5, x=6, y=0, minW=5, minH=4),
+                        'md': Layout(w=6, h=3, x=0, y=3, minW=3, minH=3),
+                        'lg': Layout(w=6, h=3, x=0, y=3, minW=5, minH=4),
                     },
                 ),
                 WidgetScatterPlot(
@@ -197,10 +198,66 @@ recipe_app_entry_point = AppEntryPoint(
                         unit='kcal',
                     ),
                     size=100,
+                    markers=Markers(
+                        color=Axis(
+                            search_quantity=f'data.diet_type#{SCHEMA}',
+                            title='Diet (specifier)',
+                        )
+                    ),
                     autorange=True,
                     layout={
-                        'md': Layout(w=6, h=4, x=12, y=0, minW=3, minH=3),
-                        'lg': Layout(w=6, h=5, x=12, y=0, minW=6, minH=6),
+                        'md': Layout(w=6, h=6, x=6, y=0, minW=3, minH=3),
+                        'lg': Layout(w=6, h=6, x=6, y=0, minW=6, minH=6),
+                    },
+                ),
+                WidgetScatterPlot(
+                    title='Calories vs Protein (by Specifier)',
+                    x=Axis(
+                        search_quantity=f'data.protein_per_serving#{SCHEMA}',
+                        title='Protein',
+                        unit='g',
+                    ),
+                    y=Axis(
+                        search_quantity=f'data.calories_per_serving#{SCHEMA}',
+                        title='Calories',
+                        unit='kcal',
+                    ),
+                    size=100,
+                    markers=Markers(
+                        color=Axis(
+                            search_quantity=f'data.diet_type#{SCHEMA}',
+                            title='Diet (specifier)',
+                        )
+                    ),
+                    autorange=True,
+                    layout={
+                        'md': Layout(w=6, h=6, x=12, y=0, minW=3, minH=3),
+                        'lg': Layout(w=6, h=6, x=12, y=0, minW=6, minH=6),
+                    },
+                ),
+                WidgetScatterPlot(
+                    title='Protein vs Fat (by Specifier)',
+                    x=Axis(
+                        search_quantity=f'data.fat_per_serving#{SCHEMA}',
+                        title='Fat',
+                        unit='g',
+                    ),
+                    y=Axis(
+                        search_quantity=f'data.protein_per_serving#{SCHEMA}',
+                        title='Protein',
+                        unit='g',
+                    ),
+                    size=100,
+                    markers=Markers(
+                        color=Axis(
+                            search_quantity=f'data.diet_type#{SCHEMA}',
+                            title='Diet (specifier)',
+                        )
+                    ),
+                    autorange=True,
+                    layout={
+                        'md': Layout(w=6, h=6, x=18, y=0, minW=3, minH=3),
+                        'lg': Layout(w=6, h=6, x=18, y=0, minW=6, minH=6),
                     },
                 ),
             ],
