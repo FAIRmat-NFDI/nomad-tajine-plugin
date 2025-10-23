@@ -1,7 +1,11 @@
-import requests
 import json
-from rapidfuzz import fuzz
 
+import requests
+
+protein_id = 1003 # USDA Nutrient ID for Protein
+fat_id = 1004 # USDA Nutrient ID for Total lipid (fat)
+carb_id = 1005 # USDA Nutrient ID for Carbohydrate, by difference
+calorie_id = 1008 # USDA Nutrient ID for Energy (kcal)
 
 FOOD_CATEGORY_CLASSIFICATION = {
     # --------------------------------------------------------------------
@@ -17,7 +21,7 @@ FOOD_CATEGORY_CLASSIFICATION = {
     # VEGETARIAN: Non-meat animal products. Not vegan.
     # --------------------------------------------------------------------
     'Dairy and Egg Products': 'VEGETARIAN',
-    'Breakfast Cereals': 'VEGETARIAN',  # (May contain honey, milk, or Vit. D3 from lanolin)
+    'Breakfast Cereals': 'VEGETARIAN',  # (May contain honey, milk)
     'Beverages': 'VEGETARIAN',  # (e.g., soy milk vs. dairy milk)
     'Sweets': 'VEGETARIAN',  # (May contain gelatin, milk, eggs, honey) debatable
     'Cereal Grains and Pasta': 'VEGETARIAN',  # (e.g., plain pasta vs. egg pasta)
@@ -70,14 +74,14 @@ def get_usda_data(
     result = {}
     try:
         response = requests.get(search_url, params=search_params)
-        response.raise_for_status()  # Raise an exception for bad status codes (4xx or 5xx)
+        response.raise_for_status()  # Raise an exception for bad status codes
         search_data = response.json()
 
         if not search_data.get('foods'):
             print(f"Error: No food found for ingredient '{ingredient_name}'")
             return
         # Initialize variables to store the best match
-        best_score = -1  # Start with -1 so any score (0-100) will be higher
+        # best_score = -1  # Start with -1 so any score (0-100) will be higher
         best_food = None
 
         # The ingredient name to search for
@@ -115,23 +119,24 @@ def get_usda_data(
         # Get nutrients
         nutrients = food.get('foodNutrients', [])
         for nutrient in nutrients:
-            if nutrient.get('nutrientId') == 1003:  # 1003 is the ID for "Protein"
+            if nutrient.get('nutrientId') == protein_id:  # 1003 is the ID for "Protein"
                 result['protein'] = nutrient.get('value')
             elif (
-                nutrient.get('nutrientId') == 1004
+                nutrient.get('nutrientId') == fat_id
             ):  # 1004 is the ID for "Total lipid (fat)"
                 result['fat'] = nutrient.get('value')
             elif (
-                nutrient.get('nutrientId') == 1005
+                nutrient.get('nutrientId') == carb_id
             ):  # 1005 is the ID for "Carbohydrate, by difference"
                 result['carbohydrates'] = nutrient.get('value')
             elif (
-                nutrient.get('nutrientId') == 1008
+                nutrient.get('nutrientId') == calorie_id
             ):  # 1008 is the ID for energy in kcal
                 result['calories_kcal'] = nutrient.get('value')
         description = food.get('description')
         print(
-            f"Found Food: '{description}' with FDC ID: {fdc_id} and Category: {food_category},  diet type: {diet_type}"
+            f"Found Food: '{description}' with FDC ID: {fdc_id} \
+            and Category: {food_category},  diet type: {diet_type}"
         )
         return result
 
@@ -161,7 +166,7 @@ def get_usda_data(
 
 #     try:
 #         response = requests.get(search_url, params=search_params)
-#         response.raise_for_status()  # Raise an exception for bad status codes (4xx or 5xx)
+#         response.raise_for_status()  # Raise an exception for bad status codes
 #         search_data = response.json()
 
 #         # Check if any food was found
@@ -179,7 +184,8 @@ def get_usda_data(
 
 #         if not target_food:
 #             print(
-#                 f'Error: Could not find an exact match for NDB {ndb_number} in search results.'
+#                 f'Error: Could not find an exact match for\
+#                    NDB {ndb_number} in search results.'
 #             )
 #             return
 
