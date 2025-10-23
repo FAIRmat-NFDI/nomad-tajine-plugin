@@ -102,7 +102,6 @@ def get_usda_data(
 
         # After the loop, 'best_food' will be the item with the highest score
         if not best_food:
-            print('No food items were processed.')
             food = search_data['foods'][
                 0
             ]  # Fallback to the first item if none processed
