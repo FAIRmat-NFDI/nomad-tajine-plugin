@@ -1,7 +1,7 @@
 data:
   m_def: nomad_tajine_plugin.schema_packages.schema_package.Ingredient
   name: Ground Cumin
-  diet_type: VEGAN
+  diet_type: vegan
   density: 450
   calories_per_100_g: 375
   fat_per_100_g: 22

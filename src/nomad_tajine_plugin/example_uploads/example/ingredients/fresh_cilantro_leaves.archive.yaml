@@ -1,7 +1,7 @@
 data:
   m_def: nomad_tajine_plugin.schema_packages.schema_package.Ingredient
   name: Fresh Cilantro Leaves
-  diet_type: VEGAN
+  diet_type: vegan
   density: 110
   calories_per_100_g: 23
   fat_per_100_g: 0.5

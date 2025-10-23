@@ -1,7 +1,7 @@
 data:
   m_def: nomad_tajine_plugin.schema_packages.schema_package.Ingredient
   name: Honey
-  diet_type: VEGETARIAN
+  diet_type: vegetarian
   density: 1420
   calories_per_100_g: 304
   fat_per_100_g: 0

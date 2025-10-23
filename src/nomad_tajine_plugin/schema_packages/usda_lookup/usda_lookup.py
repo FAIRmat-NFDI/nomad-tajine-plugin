@@ -9,48 +9,48 @@ calorie_id = 1008  # USDA Nutrient ID for Energy (kcal)
 
 FOOD_CATEGORY_CLASSIFICATION = {
     # --------------------------------------------------------------------
-    # ANIMAL_PRODUCT: Categories that are inherently meat, poultry, or fish.
+    # omnivorous: Categories that are inherently meat, poultry, or fish.
     # --------------------------------------------------------------------
-    'Poultry Products': 'ANIMAL_PRODUCT',
-    'Sausages and Luncheon Meats': 'ANIMAL_PRODUCT',
-    'Pork Products': 'ANIMAL_PRODUCT',
-    'Beef Products': 'ANIMAL_PRODUCT',
-    'Finfish and Shellfish Products': 'ANIMAL_PRODUCT',
-    'Lamb, Veal, and Game Products': 'ANIMAL_PRODUCT',
+    'Poultry Products': 'omnivorous',
+    'Sausages and Luncheon Meats': 'omnivorous',
+    'Pork Products': 'omnivorous',
+    'Beef Products': 'omnivorous',
+    'Finfish and Shellfish Products': 'omnivorous',
+    'Lamb, Veal, and Game Products': 'omnivorous',
     # --------------------------------------------------------------------
-    # VEGETARIAN: Non-meat animal products. Not vegan.
+    # vegetarian: Non-meat animal products. Not vegan.
     # --------------------------------------------------------------------
-    'Dairy and Egg Products': 'VEGETARIAN',
-    'Breakfast Cereals': 'VEGETARIAN',  # (May contain honey, milk)
-    'Beverages': 'VEGETARIAN',  # (e.g., soy milk vs. dairy milk)
-    'Sweets': 'VEGETARIAN',  # (May contain gelatin, milk, eggs, honey) debatable
-    'Cereal Grains and Pasta': 'VEGETARIAN',  # (e.g., plain pasta vs. egg pasta)
-    'Alcoholic Beverages': 'VEGETARIAN',  # (May be fined with animal products)
+    'Dairy and Egg Products': 'vegetarian',
+    'Breakfast Cereals': 'vegetarian',  # (May contain honey, milk)
+    'Beverages': 'vegetarian',  # (e.g., soy milk vs. dairy milk)
+    'Sweets': 'vegetarian',  # (May contain gelatin, milk, eggs, honey) debatable
+    'Cereal Grains and Pasta': 'vegetarian',  # (e.g., plain pasta vs. egg pasta)
+    'Alcoholic Beverages': 'vegetarian',  # (May be fined with animal products)
     # --------------------------------------------------------------------
-    # VEGAN: Categories that are inherently plant-based.
+    # vegan: Categories that are inherently plant-based.
     # --------------------------------------------------------------------
-    'Spices and Herbs': 'VEGAN',
-    'Fruits and Fruit Juices': 'VEGAN',
-    'Vegetables and Vegetable Products': 'VEGAN',
-    'Nut and Seed Products': 'VEGAN',
-    'Legumes and Legume Products': 'VEGAN',
+    'Spices and Herbs': 'vegan',
+    'Fruits and Fruit Juices': 'vegan',
+    'Vegetables and Vegetable Products': 'vegan',
+    'Nut and Seed Products': 'vegan',
+    'Legumes and Legume Products': 'vegan',
     # --------------------------------------------------------------------
-    # AMBIGUOUS: These categories are too broad. A product from this
+    # ambiguous: These categories are too broad. A product from this
     # category could be vegan, vegetarian, or contain meat.
     # You MUST check the specific ingredients.
     # --------------------------------------------------------------------
-    'Baby Foods': 'AMBIGUOUS',
-    'Fats and Oils': 'AMBIGUOUS',  # (e.g., olive oil vs. lard)
-    'Soups, Sauces, and Gravies': 'AMBIGUOUS',  # (e.g., tomato soup vs. beef gravy)
-    'Baked Products': 'AMBIGUOUS',  # (May contain eggs, butter, milk)
-    'Fast Foods': 'AMBIGUOUS',
-    'Meals, Entrees, and Side Dishes': 'AMBIGUOUS',
-    'Snacks': 'AMBIGUOUS',
-    'American Indian/Alaska Native Foods': 'AMBIGUOUS',
-    'Restaurant Foods': 'AMBIGUOUS',
-    'Branded Food Products Database': 'AMBIGUOUS',
-    'Quality Control Materials': 'AMBIGUOUS',
-    'Unknown': 'AMBIGUOUS',
+    'Baby Foods': 'ambiguous',
+    'Fats and Oils': 'ambiguous',  # (e.g., olive oil vs. lard)
+    'Soups, Sauces, and Gravies': 'ambiguous',  # (e.g., tomato soup vs. beef gravy)
+    'Baked Products': 'ambiguous',  # (May contain eggs, butter, milk)
+    'Fast Foods': 'ambiguous',
+    'Meals, Entrees, and Side Dishes': 'ambiguous',
+    'Snacks': 'ambiguous',
+    'American Indian/Alaska Native Foods': 'ambiguous',
+    'Restaurant Foods': 'ambiguous',
+    'Branded Food Products Database': 'ambiguous',
+    'Quality Control Materials': 'ambiguous',
+    'Unknown': 'ambiguous',
 }
 
 
@@ -107,7 +107,7 @@ def get_usda_data(
                 0
             ]  # Fallback to the first item if none processed
         food_category = food.get('foodCategory', 'Unknown')
-        diet_type = FOOD_CATEGORY_CLASSIFICATION.get(food_category, 'AMBIGUOUS')
+        diet_type = FOOD_CATEGORY_CLASSIFICATION.get(food_category, 'ambiguous')
         result['food_category'] = food_category
         result['diet_type'] = diet_type
         fdc_id = food.get('fdcId')

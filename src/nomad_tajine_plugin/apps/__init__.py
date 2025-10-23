@@ -6,9 +6,11 @@ from nomad.config.models.ui import (
     Column,
     Dashboard,
     Layout,
+    Markers,
     Menu,
     MenuItemHistogram,
     MenuItemTerms,
+    MenuItemVisibility,
     SearchQuantities,
     WidgetHistogram,
     WidgetScatterPlot,
@@ -60,7 +62,7 @@ recipe_app_entry_point = AppEntryPoint(
             ),
             Column(
                 quantity=f'data.calories_per_serving#{SCHEMA}',
-                label='Calories',
+                label='Calories per serving',
                 selected=True,
                 unit='kcal',
             ),
@@ -68,27 +70,14 @@ recipe_app_entry_point = AppEntryPoint(
         menu=Menu(
             title='Recipe filters',
             items=[
-                # filter by how many toools or ingredients
-                # filter for ingredients
-                # menu=Menu(
-                #     title='Ingredients',
-                #     items=[
-                #         # filter by diet
-                #         MenuItemTerms(
-                #             quantity=f'data.ingredients#{SCHEMA}',
-                #             title='Ingredients',
-                #             show_input=True,
-                #         ),
-                #     ],
-                # ),
                 Menu(
-                    title='Dietary restrictions',
+                    title='Dietary preferences',
                     items=[
                         # filter by diet
                         MenuItemTerms(
-                            quantity=f'data.diet#{SCHEMA}',
+                            quantity=f'data.diet_type#{SCHEMA}',
                             title='Diet',
-                            show_input=True,
+                            show_input=False,
                         ),
                         # filter by cuisine
                         MenuItemTerms(
@@ -99,6 +88,57 @@ recipe_app_entry_point = AppEntryPoint(
                         MenuItemTerms(
                             quantity=f'data.difficulty#{SCHEMA}',
                             title='Difficulty',
+                            show_input=False,
+                        ),
+                    ],
+                ),
+                Menu(
+                    title='Macronutrients',
+                    size='md',
+                    items=[
+                        MenuItemHistogram(
+                            title='Protein per serving',
+                            x={
+                                'search_quantity': f'data.protein_per_serving#{SCHEMA}',
+                            },
+                            n_bins=100,
+                            autorange=True,
+                        ),
+                        MenuItemHistogram(
+                            title='Fat per serving',
+                            x={
+                                'search_quantity': f'data.fat_per_serving#{SCHEMA}',
+                            },
+                            n_bins=100,
+                            autorange=True,
+                        ),
+                        MenuItemHistogram(
+                            title='Carbohydrates per serving',
+                            x={
+                                'search_quantity': f'data.carbohydrates_per_serving#{SCHEMA}',  # noqa: E501
+                            },
+                            n_bins=100,
+                            autorange=True,
+                        ),
+                    ],
+                ),
+                Menu(
+                    title='Ingredients',
+                    items=[
+                        MenuItemTerms(
+                            quantity=f'data.ingredients.name#{SCHEMA}',
+                            title='Ingredient name',
+                            show_input=True,
+                            options=8,
+                        ),
+                    ],
+                ),
+                Menu(
+                    title='Kitchen tools',
+                    items=[
+                        MenuItemTerms(
+                            quantity=f'data.tools.name#{SCHEMA}',
+                            title='Tool name',
                             show_input=True,
                         ),
                     ],
@@ -108,7 +148,11 @@ recipe_app_entry_point = AppEntryPoint(
                     size='md',
                     items=[
                         MenuItemTerms(search_quantity=f'data.authors#{SCHEMA}'),
-                        MenuItemHistogram(x={'search_quantity': 'upload_create_time'}),
+                        MenuItemHistogram(
+                            title='Created on',
+                            x={'search_quantity': 'upload_create_time'},
+                        ),
+                        MenuItemVisibility(title='Visibility'),
                     ],
                 ),
             ],
@@ -124,8 +168,8 @@ recipe_app_entry_point = AppEntryPoint(
                     n_bins=100,
                     autorange=True,
                     layout={
-                        'md': Layout(w=6, h=4, x=0, y=0, minW=3, minH=3),
-                        'lg': Layout(w=6, h=5, x=0, y=0, minW=5, minH=4),
+                        'md': Layout(w=6, h=3, x=0, y=0, minW=3, minH=3),
+                        'lg': Layout(w=6, h=3, x=0, y=0, minW=5, minH=4),
                     },
                 ),
                 WidgetHistogram(
@@ -137,8 +181,8 @@ recipe_app_entry_point = AppEntryPoint(
                     n_bins=100,
                     autorange=True,
                     layout={
-                        'md': Layout(w=6, h=4, x=6, y=0, minW=3, minH=3),
-                        'lg': Layout(w=6, h=5, x=6, y=0, minW=5, minH=4),
+                        'md': Layout(w=6, h=3, x=0, y=3, minW=3, minH=3),
+                        'lg': Layout(w=6, h=3, x=0, y=3, minW=5, minH=4),
                     },
                 ),
                 WidgetScatterPlot(
@@ -154,10 +198,66 @@ recipe_app_entry_point = AppEntryPoint(
                         unit='kcal',
                     ),
                     size=100,
+                    markers=Markers(
+                        color=Axis(
+                            search_quantity=f'data.diet_type#{SCHEMA}',
+                            title='Diet (specifier)',
+                        )
+                    ),
                     autorange=True,
                     layout={
-                        'md': Layout(w=6, h=4, x=12, y=0, minW=3, minH=3),
-                        'lg': Layout(w=6, h=5, x=12, y=0, minW=6, minH=6),
+                        'md': Layout(w=6, h=6, x=6, y=0, minW=3, minH=3),
+                        'lg': Layout(w=6, h=6, x=6, y=0, minW=6, minH=6),
+                    },
+                ),
+                WidgetScatterPlot(
+                    title='Calories vs Protein (by Specifier)',
+                    x=Axis(
+                        search_quantity=f'data.protein_per_serving#{SCHEMA}',
+                        title='Protein',
+                        unit='g',
+                    ),
+                    y=Axis(
+                        search_quantity=f'data.calories_per_serving#{SCHEMA}',
+                        title='Calories',
+                        unit='kcal',
+                    ),
+                    size=100,
+                    markers=Markers(
+                        color=Axis(
+                            search_quantity=f'data.diet_type#{SCHEMA}',
+                            title='Diet (specifier)',
+                        )
+                    ),
+                    autorange=True,
+                    layout={
+                        'md': Layout(w=6, h=6, x=12, y=0, minW=3, minH=3),
+                        'lg': Layout(w=6, h=6, x=12, y=0, minW=6, minH=6),
+                    },
+                ),
+                WidgetScatterPlot(
+                    title='Protein vs Fat (by Specifier)',
+                    x=Axis(
+                        search_quantity=f'data.fat_per_serving#{SCHEMA}',
+                        title='Fat',
+                        unit='g',
+                    ),
+                    y=Axis(
+                        search_quantity=f'data.protein_per_serving#{SCHEMA}',
+                        title='Protein',
+                        unit='g',
+                    ),
+                    size=100,
+                    markers=Markers(
+                        color=Axis(
+                            search_quantity=f'data.diet_type#{SCHEMA}',
+                            title='Diet (specifier)',
+                        )
+                    ),
+                    autorange=True,
+                    layout={
+                        'md': Layout(w=6, h=6, x=18, y=0, minW=3, minH=3),
+                        'lg': Layout(w=6, h=6, x=18, y=0, minW=6, minH=6),
                     },
                 ),
             ],

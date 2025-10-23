@@ -18,7 +18,7 @@ INGREDIENTS = {
         'fat': 1,
         'protein': 10,
         'carbs': 76,
-        'diet_type': 'VEGETARIAN',
+        'diet_type': 'vegetarian',
     },
     'Bone-in Skin-on Chicken Thighs': {
         'density': 1050,
@@ -26,7 +26,7 @@ INGREDIENTS = {
         'fat': 11,
         'protein': 26,
         'carbs': 0,
-        'diet_type': 'ANIMAL_PRODUCT',
+        'diet_type': 'omnivorous',
     },
     'Carrots': {
         'density': 640,
@@ -34,7 +34,7 @@ INGREDIENTS = {
         'fat': 0.2,
         'protein': 0.9,
         'carbs': 10,
-        'diet_type': 'VEGAN',
+        'diet_type': 'vegan',
     },
     'Cayenne Pepper': {
         'density': 510,
@@ -42,7 +42,7 @@ INGREDIENTS = {
         'fat': 17,
         'protein': 12,
         'carbs': 56,
-        'diet_type': 'VEGAN',
+        'diet_type': 'vegan',
     },
     'Chicken Broth': {
         'density': 1010,
@@ -50,7 +50,7 @@ INGREDIENTS = {
         'fat': 0,
         'protein': 1,
         'carbs': 0.3,
-        'diet_type': 'ANIMAL_PRODUCT',
+        'diet_type': 'omnivorous',
     },
     'Fresh Cilantro Leaves': {
         'density': 110,
@@ -58,7 +58,7 @@ INGREDIENTS = {
         'fat': 0.5,
         'protein': 2.1,
         'carbs': 3.7,
-        'diet_type': 'VEGAN',
+        'diet_type': 'vegan',
     },
     'Garlic': {
         'density': 640,
@@ -66,7 +66,7 @@ INGREDIENTS = {
         'fat': 0.5,
         'protein': 6.4,
         'carbs': 33,
-        'diet_type': 'VEGAN',
+        'diet_type': 'vegan',
     },
     'Greek Cracked Green Olives': {
         'density': 920,
@@ -74,7 +74,7 @@ INGREDIENTS = {
         'fat': 15,
         'protein': 1,
         'carbs': 4,
-        'diet_type': 'VEGAN',
+        'diet_type': 'vegan',
     },
     'Ground Black Pepper': {
         'density': 560,
@@ -82,7 +82,7 @@ INGREDIENTS = {
         'fat': 3,
         'protein': 10,
         'carbs': 64,
-        'diet_type': 'VEGAN',
+        'diet_type': 'vegan',
     },
     'Ground Cinnamon': {
         'density': 560,
@@ -90,7 +90,7 @@ INGREDIENTS = {
         'fat': 1,
         'protein': 4,
         'carbs': 81,
-        'diet_type': 'VEGAN',
+        'diet_type': 'vegan',
     },
     'Ground Coriander': {
         'density': 500,
@@ -98,7 +98,7 @@ INGREDIENTS = {
         'fat': 13,
         'protein': 12,
         'carbs': 55,
-        'diet_type': 'VEGAN',
+        'diet_type': 'vegan',
     },
     'Ground Cumin': {
         'density': 450,
@@ -106,7 +106,7 @@ INGREDIENTS = {
         'fat': 22,
         'protein': 18,
         'carbs': 44,
-        'diet_type': 'VEGAN',
+        'diet_type': 'vegan',
     },
     'Ground Ginger': {
         'density': 470,
@@ -114,7 +114,7 @@ INGREDIENTS = {
         'fat': 6,
         'protein': 8,
         'carbs': 71,
-        'diet_type': 'VEGAN',
+        'diet_type': 'vegan',
     },
     'Honey': {
         'density': 1420,
@@ -122,7 +122,7 @@ INGREDIENTS = {
         'fat': 0,
         'protein': 0.3,
         'carbs': 82,
-        'diet_type': 'VEGETARIAN',
+        'diet_type': 'vegetarian',
     },
     'Large Yellow Onion': {
         'density': 630,
@@ -130,7 +130,7 @@ INGREDIENTS = {
         'fat': 0.1,
         'protein': 1.1,
         'carbs': 9,
-        'diet_type': 'VEGAN',
+        'diet_type': 'vegan',
     },
     'Lemon': {
         'density': 980,
@@ -138,7 +138,7 @@ INGREDIENTS = {
         'fat': 0.3,
         'protein': 1.1,
         'carbs': 9,
-        'diet_type': 'VEGAN',
+        'diet_type': 'vegan',
     },
     'Olive Oil': {
         'density': 910,
@@ -146,7 +146,7 @@ INGREDIENTS = {
         'fat': 100,
         'protein': 0,
         'carbs': 0,
-        'diet_type': 'VEGAN',
+        'diet_type': 'vegan',
     },
     'Paprika': {
         'density': 560,
@@ -154,7 +154,7 @@ INGREDIENTS = {
         'fat': 13,
         'protein': 14,
         'carbs': 54,
-        'diet_type': 'VEGAN',
+        'diet_type': 'vegan',
     },
     'Salt': {
         'density': 1200,
@@ -162,7 +162,7 @@ INGREDIENTS = {
         'fat': 0,
         'protein': 0,
         'carbs': 0,
-        'diet_type': 'VEGAN',
+        'diet_type': 'vegan',
     },
 }
 

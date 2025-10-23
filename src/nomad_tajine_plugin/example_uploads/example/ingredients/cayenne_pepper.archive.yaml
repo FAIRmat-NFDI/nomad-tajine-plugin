@@ -1,7 +1,7 @@
 data:
   m_def: nomad_tajine_plugin.schema_packages.schema_package.Ingredient
   name: Cayenne Pepper
-  diet_type: VEGAN
+  diet_type: vegan
   density: 510
   calories_per_100_g: 318
   fat_per_100_g: 17
