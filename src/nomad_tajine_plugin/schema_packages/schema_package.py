@@ -13,6 +13,7 @@ from nomad.metainfo import MEnum, Quantity, SchemaPackage
 from nomad.metainfo.metainfo import Section, SubSection
 from nomad.units import ureg
 
+from nomad_tajine_plugin.schema_packages.usda_lookup.usda_lookup import get_usda_data
 from nomad_tajine_plugin.utils import create_archive
 
 if TYPE_CHECKING:
@@ -112,6 +113,16 @@ class Ingredient(Entity, Schema):
                 self.lab_id = format_lab_id(self.name)
         else:
             self.lab_id = format_lab_id(self.lab_id)
+
+        usda_query_result = get_usda_data(self.name, configuration.usda_api_key)
+        if usda_query_result:
+            self.protein_per_100_g = usda_query_result.get('protein')
+            self.fat_per_100_g = usda_query_result.get('fat')
+            self.carbohydrates_per_100_g = usda_query_result.get('carbohydrates')
+            self.calories_per_100_g = usda_query_result.get('calories_kcal')
+            self.diet_type = usda_query_result.get('diet_type')
+            self.fdc_id = usda_query_result.get('fdc_id')
+            self.ndb_id = usda_query_result.get('ndb_id')
 
         super().normalize(archive, logger)
 
