@@ -217,7 +217,7 @@ class IngredientAmount(EntityReference):
             not self.reference
             and self.lab_id
             and hasattr(archive.data, '_normalization_delay')
-        ): # Wait and search again for ingredient if _normalization_delay is set
+        ):  # Wait and search again for ingredient if _normalization_delay is set
             time.sleep(archive.data._normalization_delay)
             super().normalize(archive, logger)
 
