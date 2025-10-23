@@ -59,10 +59,10 @@ class Ingredient(Entity, Schema):
     )
     diet_type = Quantity(
         type=MEnum(
-            'ANIMAL_PRODUCT',
-            'VEGETARIAN',
-            'VEGAN',
-            'AMBIGUOUS',
+            'omnivorous',
+            'vegetarian',
+            'vegan',
+            'ambiguous',
         ),
         a_eln=ELNAnnotation(component=ELNComponentEnum.EnumEditQuantity),
     )
@@ -157,10 +157,10 @@ class IngredientAmount(EntityReference):
     )
     diet_type = Quantity(
         type=MEnum(
-            'ANIMAL_PRODUCT',
-            'VEGETARIAN',
-            'VEGAN',
-            'AMBIGUOUS',
+            'omnivorous',
+            'vegetarian',
+            'vegan',
+            'ambiguous',
         ),
         a_eln=ELNAnnotation(component=ELNComponentEnum.EnumEditQuantity),
     )
@@ -400,10 +400,10 @@ class Recipe(BaseSection, Schema):
     )
     diet_type = Quantity(
         type=MEnum(
-            'ANIMAL_PRODUCT',
-            'VEGETARIAN',
-            'VEGAN',
-            'AMBIGUOUS',
+            'omnivorous',
+            'vegetarian',
+            'vegan',
+            'ambiguous',
         ),
         a_eln=ELNAnnotation(component=ELNComponentEnum.EnumEditQuantity),
     )
@@ -597,21 +597,21 @@ class Recipe(BaseSection, Schema):
             logger.warning('recipe_duration_sum_failed', error=str(e))
 
         ingredient_diets = [
-            (ingredient.diet_type or 'AMBIGUOUS')
+            (ingredient.diet_type or 'ambiguous')
             for ingredient in (self.ingredients or [])
         ]
 
         # --- Find the diet type ---
         if not ingredient_diets:
-            self.diet_type = 'AMBIGUOUS'
-        elif 'ANIMAL_PRODUCT' in ingredient_diets:
-            self.diet_type = 'ANIMAL_PRODUCT'
-        elif all(d == 'VEGAN' for d in ingredient_diets):
-            self.diet_type = 'VEGAN'
-        elif 'VEGETARIAN' in ingredient_diets:
-            self.diet_type = 'VEGETARIAN'
+            self.diet_type = 'ambiguous'
+        elif 'omnivorous' in ingredient_diets:
+            self.diet_type = 'omnivorous'
+        elif all(d == 'vegan' for d in ingredient_diets):
+            self.diet_type = 'vegan'
+        elif 'vegetarian' in ingredient_diets:
+            self.diet_type = 'vegetarian'
         else:
-            self.diet_type = 'AMBIGUOUS'
+            self.diet_type = 'ambiguous'
 
         self.generate_description()
 

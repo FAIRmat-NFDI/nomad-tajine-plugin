@@ -1,7 +1,7 @@
 data:
   m_def: nomad_tajine_plugin.schema_packages.schema_package.Ingredient
   name: Chicken Broth
-  diet_type: ANIMAL_PRODUCT
+  diet_type: omnivorous
   density: 1010
   calories_per_100_g: 5
   fat_per_100_g: 0

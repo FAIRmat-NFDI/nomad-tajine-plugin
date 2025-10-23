@@ -1,10 +1,9 @@
 data:
   m_def: nomad_tajine_plugin.schema_packages.schema_package.Ingredient
   name: Carrots
-  diet_type: VEGAN
+  diet_type: vegan
   density: 640
   calories_per_100_g: 41
   fat_per_100_g: 0.2
   protein_per_100_g: 0.9
   carbohydrates_per_100_g: 10
-  weight_per_piece: 65
