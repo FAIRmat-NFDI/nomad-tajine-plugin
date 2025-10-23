@@ -6,7 +6,7 @@ data:
   number_of_servings: 5
   difficulty: 'medium'
   authors: 'Chef Uday'
-  _normalization_delay: 20
+  _normalization_delay: 10
   # duration: 60  # total prep + cooking time
   # diet_type: 'non-vegetarian'
 

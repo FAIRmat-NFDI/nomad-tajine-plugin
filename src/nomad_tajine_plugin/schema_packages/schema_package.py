@@ -1,3 +1,4 @@
+import time
 from typing import TYPE_CHECKING
 
 from nomad.config import config
@@ -212,12 +213,15 @@ class IngredientAmount(EntityReference):
             self.lab_id = format_lab_id(self.lab_id)
 
         super().normalize(archive, logger)
+        if (
+            not self.reference
+            and self.lab_id
+            and hasattr(archive.data, '_normalization_delay')
+        ): # Wait and search again for ingredient if _normalization_delay is set
+            time.sleep(archive.data._normalization_delay)
+            super().normalize(archive, logger)
 
         if not self.reference and self.lab_id:
-            if hasattr(archive.data, '_normalization_delay'):
-                import time
-
-                time.sleep(archive.data._normalization_delay)
             logger.debug('Ingredient entry not found. Creating a new one.')
             try:
                 ingredient = Ingredient(
