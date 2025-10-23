@@ -7,3 +7,4 @@ data:
   fat_per_100_g: 0.3
   protein_per_100_g: 1.1
   carbohydrates_per_100_g: 9
+  weight_per_piece: 100
