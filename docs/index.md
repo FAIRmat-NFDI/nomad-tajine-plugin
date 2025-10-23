@@ -4,12 +4,13 @@ An example plugin showing how NOMAD can be used outside of material science for 
 
 !!! attention
     This is the documentation for the **NOMAD plugin for food recipes**, developed as part of the nomad-tajine hackathon. It provides a guide on how to use the plugin effectively to manage and share food recipe data in NOMAD.
-    This plugin was developed to demonstrate that [**NOMAD Oasis**](https://nomad-lab.eu/nomad-lab/nomad-oasis.html) can serve as a domain-agnostic data management platform.  
-    As part of this demonstration, we created a dedicated instance of NOMAD Oasis — [**nomad-tajine-distro**](https://github.com/FAIRmat-NFDI/nomad-tajine-distro) — and this accompanying plugin, [**nomad-tajine-plugin**](https://github.com/FAIRmat-NFDI/nomad-tajine-plugin).
+    This plugin was developed to demonstrate that [**NOMAD Oasis**](https://nomad-lab.eu/nomad-lab/nomad-oasis.html) can serve as a domain-agnostic data management platform.
+    As part of this demonstration, we created a dedicated instance of Oasis —
+    [**NOMAD Tajine Example Oasis**](https://nomad-lab.eu/prod/v1/tajine/gui/about/information) — and this accompanying plugin, [**nomad-tajine-plugin**](https://github.com/FAIRmat-NFDI/nomad-tajine-plugin).
 
 
-We hope this documentation helps you enjoy exploring and using the nomad-tajine-plugin.  
-This plugin was created as a fun and creative experiment to show how NOMAD can be customized beyond science, in this case, to curate and share delicious food recipes!  
+We hope this documentation helps you enjoy exploring and using the nomad-tajine-plugin.
+This plugin was created as a fun and creative experiment to show how NOMAD can be customized beyond science, in this case, to curate and share delicious food recipes!
 For questions or feedback, feel free to open an issue in the [GitHub repository](https://github.com/FAIRmat-NFDI/nomad-tajine-plugin), join the NOMAD Discord channel, or reach out directly to the [FAIRmat project](https://www.fairmat-nfdi.eu/fairmat/about-fairmat/contact-fairmat).
 
 *Last updated: 25.10.2025 v1.0*
@@ -20,7 +21,10 @@ For questions or feedback, feel free to open an issue in the [GitHub repository]
 
 ### Tutorial
 
-- [Tutorial](tutorial/tutorial.md)
+The tutorial provides quick steps to start using the plugin:
+
+- [Create recipe entries](tutorial/tutorial.md#create-recipe-entries-manually)
+- [Search recipes](tutorial/tutorial.md#search-recipes)
 
 </div>
 <div markdown="block">
@@ -30,7 +34,6 @@ For questions or feedback, feel free to open an issue in the [GitHub repository]
 How-to guides provide step-by-step instructions for a wide range of tasks, with the overarching topics:
 
 - [Install this plugin](how_to/install_this_plugin.md)
-- [Use this plugin](how_to/use_this_plugin.md)
 - [Contribute to this plugin](how_to/contribute_to_this_plugin.md)
 - [Contribute to the documentation](how_to/contribute_to_the_documentation.md)
 
@@ -47,8 +50,7 @@ The explanation [section](explanation/explanation.md) provides background knowle
 
 ### Reference
 
-The reference [section](reference/references.md) includes all CLI commands and arguments, all configuration options,
-the possible schema annotations and their arguments, and a glossary of used terms.
+The reference section includes [schema documentation](reference/schemas.md#schemas) and a [glossary](reference/references.md#glossary) of used terms.
 
 </div>
 </div>
