@@ -85,20 +85,20 @@ def _split_ingredients(ingredients_raw: Any) -> list[str]:
 
     if isinstance(ingredients_raw, list):
         for line in ingredients_raw:
-            s = str(line).strip()  
+            s = str(line).strip()
             if s and not (s.startswith('===') and s.endswith('===')):
                 parts.append(s)
 
     elif isinstance(ingredients_raw, str):
         for chunk in ingredients_raw.split('|'):
-            stripped_chunk = chunk.strip() 
-            
+            stripped_chunk = chunk.strip()
+
             if not stripped_chunk:
                 continue
             if stripped_chunk.startswith('===') and stripped_chunk.endswith('==='):
                 continue
 
-            for sub in stripped_chunk.split('\n'): 
+            for sub in stripped_chunk.split('\n'):
                 s = sub.strip()
                 if s:
                     parts.append(s)
@@ -249,8 +249,7 @@ def populate_recipe_if_empty(
     if steps and ingredients:
         steps[0].setdefault('ingredients', ingredients)
     elif ingredients:
-        steps = [{'instruction': instructions_raw or title, 
-                  'ingredients': ingredients}]
+        steps = [{'instruction': instructions_raw or title, 'ingredients': ingredients}]
 
     # populate top-level fields conservatively
     if title and not data.get('summary'):
