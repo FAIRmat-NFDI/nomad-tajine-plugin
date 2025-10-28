@@ -531,8 +531,7 @@ class Recipe(BaseSection, Schema):
             ):
                 data = {
                     'm_def': (
-                        'nomad_tajine_plugin.schema_packages.'
-                        'schema_package.Recipe'
+                        'nomad_tajine_plugin.schema_packages.schema_package.Recipe'
                     ),
                     'name': self.fetch_recipe_by_name,
                     'steps': [],
