@@ -1,3 +1,4 @@
+import re
 import time
 from typing import TYPE_CHECKING
 
@@ -16,6 +17,8 @@ from nomad.units import ureg
 from nomad_tajine_plugin.schema_packages.usda_lookup.usda_lookup import get_usda_data
 from nomad_tajine_plugin.utils import create_archive
 
+from .recipe_fetcher import populate_recipe_if_empty
+
 if TYPE_CHECKING:
     from nomad.datamodel.datamodel import (
         EntryArchive,
@@ -33,7 +36,11 @@ m_package = SchemaPackage()
 
 
 def format_lab_id(lab_id: str):
-    return lab_id.lower().replace(' ', '_').replace(',', '')
+    if not lab_id:
+        return 'unknown_ingredient'
+    s = str(lab_id).lower().replace(' ', '_')
+    s = re.sub(r'[^a-z0-9_]', '', s)
+    return s or 'ingredient'
 
 
 class Ingredient(Entity, Schema):
@@ -371,6 +378,13 @@ class Recipe(BaseSection, Schema):
     name = Quantity(
         type=str, a_eln=ELNAnnotation(component=ELNComponentEnum.StringEditQuantity)
     )
+    fetch_recipe_by_name = Quantity(
+        type=str,
+        description='Type a recipe name here to fetch it from the API. '
+        'This will only run if the "Steps" section is empty. '
+        'This field will be cleared after a successful fetch.',
+        a_eln=ELNAnnotation(component=ELNComponentEnum.StringEditQuantity),
+    )
     duration = Quantity(
         type=float,
         a_eln=ELNAnnotation(
@@ -513,16 +527,76 @@ class Recipe(BaseSection, Schema):
             self.description += f'<li>{step.instruction}</li>'
         self.description += '</ol>'
 
-    def normalize(self, archive: 'EntryArchive', logger: 'BoundLogger') -> None:  # noqa: PLR0912
-        """
-        Collects all ingredients and tools from steps and adds them to the recipe's
-        ingredients and tools lists.
-        """
+    def normalize(self, archive: 'EntryArchive', # noqa: PLR0912, PLR0915
+                  logger: 'BoundLogger') -> None:  
+        try:
+            # Check if the fetch field is set and if there are no steps
+            if getattr(self, 'fetch_recipe_by_name', None) and not (
+                self.steps and len(self.steps) > 0
+            ):
+                data = {
+                    'm_def':'nomad_tajine_plugin.schema_packages.schema_package.Recipe',
+                    'name': self.fetch_recipe_by_name,  
+                    'steps': [],
+                }
+                populated = populate_recipe_if_empty(
+                    data, api_key=configuration.ninja_api_key
+                )
+
+                if not getattr(self, 'name', None):
+                    self.name = self.fetch_recipe_by_name
+
+                if not getattr(self, 'summary', None) and populated.get('summary'):
+                    self.summary = populated.get('summary')
+                if not getattr(self, 'number_of_servings', None) and populated.get(
+                    'number_of_servings'
+                ):
+                    self.number_of_servings = populated.get('number_of_servings')
+
+                for step_dict in populated.get('steps', []):
+                    step_obj = None
+                    try:
+                        mdef = step_dict.get('m_def', '') or ''
+                        if 'HeatingCoolingStep' in mdef:
+                            step_obj = HeatingCoolingStep.m_from_dict(step_dict)
+                        else:
+                            step_obj = RecipeStep.m_from_dict(step_dict)
+                    except Exception:
+                        step_obj = RecipeStep(
+                            instruction=step_dict.get('instruction', '')
+                        )
+                        if 'ingredients' in step_dict:
+                            for ing in step_dict.get('ingredients', []):
+                                try:
+                                    ing_mdef = ing.get('m_def', '') or ''
+                                    if 'IngredientVolume' in ing_mdef:
+                                        ing_obj = IngredientVolume.m_from_dict(ing)
+                                    elif 'IngredientPiece' in ing_mdef:
+                                        ing_obj = IngredientPiece.m_from_dict(ing)
+                                    else:
+                                        ing_obj = IngredientAmount.m_from_dict(ing)
+                                    step_obj.ingredients.append(ing_obj)
+                                except Exception:
+                                    # skip problematic ingredient entries
+                                    logger.debug(
+                                        'ingredient_convert_failed', ingredient=ing
+                                    )
+                    # finally append to the recipe steps
+                    if step_obj is not None:
+                        self.steps.append(step_obj)
+
+                self.fetch_recipe_by_name = None
+
+        except Exception:
+            logger.exception(
+                'recipe_fetch_and_populate_failed',
+                name=getattr(self, 'fetch_recipe_by_name', None),
+            )
+
         super().normalize(archive, logger)
 
         all_ingredients = []
         all_tools = []
-
         for step in self.steps:
             for ingredient in step.ingredients:
                 # Check if ingredient with the same name exists
@@ -530,12 +604,10 @@ class Recipe(BaseSection, Schema):
                     (ing for ing in all_ingredients if ing.name == ingredient.name),
                     None,
                 )
-
                 if existing is None:
                     all_ingredients.append(ingredient)
                 else:
-                    # Sum quantities
-                    new_quantity = (existing.quantity or 0) + (ingredient.quantity or 0)
+                    new_mass = (existing.mass or 0) + (ingredient.mass or 0)
 
                     # Sum nutrient values safely
                     nutrients = {}
@@ -547,9 +619,7 @@ class Recipe(BaseSection, Schema):
                     # Create a new ingredient with summed values
                     ingredient_summed = IngredientAmount(
                         name=existing.name,
-                        quantity=new_quantity,
-                        unit=existing.unit,
-                        mass=None,  # optionally recalc
+                        mass=new_mass,
                         lab_id=existing.lab_id,
                         reference=existing.reference,
                         **nutrients,
