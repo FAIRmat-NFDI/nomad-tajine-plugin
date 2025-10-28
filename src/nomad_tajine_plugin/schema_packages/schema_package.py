@@ -490,14 +490,6 @@ class Recipe(BaseSection, Schema):
             defaultDisplayUnit='g',
         ),
     )
-    duration = Quantity(
-        type=float,
-        a_eln=ELNAnnotation(
-            component=ELNComponentEnum.NumberEditQuantity,
-            defaultDisplayUnit='minute',
-        ),
-        unit='minute',
-    )
     tools = SubSection(
         section_def=Tool,
         description='',
@@ -527,16 +519,19 @@ class Recipe(BaseSection, Schema):
             self.description += f'<li>{step.instruction}</li>'
         self.description += '</ol>'
 
-    def normalize(self, archive: 'EntryArchive', # noqa: PLR0912, PLR0915
-                  logger: 'BoundLogger') -> None:  
+    def normalize(
+        self,
+        archive: 'EntryArchive',  # noqa: PLR0912, PLR0915
+        logger: 'BoundLogger',
+    ) -> None:
         try:
             # Check if the fetch field is set and if there are no steps
             if getattr(self, 'fetch_recipe_by_name', None) and not (
                 self.steps and len(self.steps) > 0
             ):
                 data = {
-                    'm_def':'nomad_tajine_plugin.schema_packages.schema_package.Recipe',
-                    'name': self.fetch_recipe_by_name,  
+                    'm_def': 'nomad_tajine_plugin.schema_packages.schema_package.Recipe',
+                    'name': self.fetch_recipe_by_name,
                     'steps': [],
                 }
                 populated = populate_recipe_if_empty(
