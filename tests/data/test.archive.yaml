@@ -7,87 +7,8 @@ data:
   number_of_servings: 5
   difficulty: 'medium'
   authors: 'Chef Uday'
-  diet: 'non-vegetarian'
-  nutrition_value: 480  # estimated kcal per serving
-
-  ingredients:
-    - name: 'Paprika'
-      quantity: 1
-      semantic_concept: 'Spice'
-    - name: 'Ground Cumin'
-      quantity: 1
-      semantic_concept: 'Spice'
-    - name: 'Cayenne Pepper'
-      quantity: 0.25
-      semantic_concept: 'Spice'
-    - name: 'Ground Ginger'
-      quantity: 0.5
-      semantic_concept: 'Spice'
-    - name: 'Ground Coriander'
-      quantity: 0.5
-      semantic_concept: 'Spice'
-    - name: 'Ground Cinnamon'
-      quantity: 0.25
-      semantic_concept: 'Spice'
-    - name: 'Lemon'
-      quantity: 1
-      semantic_concept: 'Fruit'
-    - name: 'Garlic'
-      quantity: 5
-      semantic_concept: 'Vegetable'
-    - name: 'Bone-in, skin-on chicken thighs'
-      quantity: 1800
-      semantic_concept: 'Meat'
-    - name: 'Salt'
-      quantity: 2.25
-      semantic_concept: 'Seasoning'
-    - name: 'Ground black pepper'
-      quantity: 0.5
-      semantic_concept: 'Seasoning'
-    - name: 'Olive Oil'
-      quantity: 1
-      semantic_concept: 'Oil'
-    - name: 'Large Yellow Onion'
-      quantity: 1
-      semantic_concept: 'Vegetable'
-    - name: 'All-purpose Flour'
-      quantity: 2
-      semantic_concept: 'Thickener'
-    - name: 'Chicken Broth'
-      quantity: 415
-      semantic_concept: 'Liquid base'
-    - name: 'Honey'
-      quantity: 2
-      semantic_concept: 'Sweetener'
-    - name: 'Carrots'
-      quantity: 2
-      semantic_concept: 'Vegetable'
-    - name: 'Greek cracked green olives'
-      quantity: 0.5
-      semantic_concept: 'Condiment'
-    - name: 'Fresh Cilantro Leaves'
-      quantity: 2
-      semantic_concept: 'Herb'
-
-  tools:
-    - name: 'Dutch oven or large pan'
-      type: 'Cookware'
-      description: 'Large, heavy-bottomed for braising'
-    - name: 'Small Bowl'
-      type: 'Utensil'
-      description: 'Used for mixing spices'
-    - name: 'Tongs'
-      type: 'Utensil'
-      description: 'Used for flipping chicken'
-    - name: 'Wooden Spoon'
-      type: 'Utensil'
-      description: 'For stirring the sauce'
-    - name: 'Knife'
-      type: 'Utensil'
-      description: 'For cutting vegetables'
-    - name: 'Cutting Board'
-      type: 'Utensil'
-      description: 'Used for ingredient preparation'
+  diet_type: 'omnivorous' #  from 'diet'
+  calories_per_serving: 480 #  from 'nutrition_value'
 
   steps:
     - instruction: 'Combine all dry spices in a bowl. Zest the lemon and set aside 1 tsp mixed with 1 minced garlic clove.'
@@ -101,10 +22,12 @@ data:
           type: 'Cookware'
           description: 'Used for browning chicken'
       ingredients:
-        - name: 'Olive Oil'
-          quantity: 1
-        - name: 'Chicken Thighs'
-          quantity: 1800
+        - m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientPiece'
+          name: 'Olive Oil'
+          pieces: 1 
+        - m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientAmount'
+          name: 'Chicken Thighs'
+          mass: 1800 
     - instruction: 'Flip chicken pieces and brown other side, about 4 minutes more. Transfer to plate and remove skin.'
       duration: 5
       temperature: 180

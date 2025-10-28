@@ -731,15 +731,9 @@ class RecipeScaler(BaseSection, Schema):
         # Scale ingredients in steps
         for step in scaled_recipe.steps:
             for ingredient in step.ingredients:
-                if isinstance(ingredient, IngredientVolume):
-                    if ingredient.volume:
-                        ingredient.volume = ingredient.volume * scaling_factor
-                elif isinstance(ingredient, IngredientPiece):
-                    if ingredient.pieces:
-                        ingredient.pieces = ingredient.pieces * scaling_factor
-                elif isinstance(ingredient, IngredientAmount):
-                    if ingredient.mass:
-                        ingredient.mass = ingredient.mass * scaling_factor
+                ingredient.quantity *= scaling_factor
+                if ingredient.quantity_si:
+                    ingredient.quantity_si *= scaling_factor
 
         file_name = (
             (f'{recipe.name} scaled x{scaling_factor:.2f}.archive.json')
