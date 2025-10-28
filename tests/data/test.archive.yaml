@@ -6,56 +6,143 @@ data:
   number_of_servings: 5
   difficulty: 'medium'
   authors: 'Chef Uday'
-  
-  diet_type: 'omnivorous'
-  calories_per_serving: 480
+  _normalization_delay: 20
+  # duration: 60  # total prep + cooking time
+  # diet_type: 'non-vegetarian'
 
   steps:
-    - m_def: 'nomad_tajine_plugin.schema_packages.schema_package.HeatingCoolingStep'
-      instruction: 'Combine all dry spices in a bowl. Zest the lemon and set aside 1 tsp mixed with 1 minced garlic clove.'
+    - instruction: 'Combine all dry spices in a bowl.'
       duration: 5
       temperature: 25
+      tools:
+        - name: 'Small Bowl'
+        - name: 'Wooden Spoon'
+      ingredients:
+        - name: 'Paprika'
+          volume: 15
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientVolume'
+        - name: 'Ground Cumin'
+          volume: 15
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientVolume'
+        - name: 'Cayenne Pepper'
+          volume: 1.25
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientVolume'
+        - name: 'Ground Ginger'
+          volume: 2.5
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientVolume'
+        - name: 'Ground Coriander'
+          volume: 2.5
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientVolume'
+        - name: 'Ground Cinnamon'
+          volume: 1.25
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientVolume'
+
+    - instruction: 'Zest the lemon and set aside 1 tsp mixed with 1 minced garlic clove.'
+      duration: 2
+      temperature: 25
+      tools:
+        - name: 'Knife'
+        - name: 'Cutting Board'
+      ingredients:
+        - name: 'Lemon'
+          pieces: 1
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientPiece'
+        - name: 'Garlic'
+          pieces: 5
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientPiece'
+
+    - instruction: 'Season both sides of chicken with salt and pepper.'
+      duration: 2
+      temperature: 25
+      tools:
+        - name: 'Tongs'
+      ingredients:
+        - name: 'Bone-in, skin-on chicken thighs'
+          mass: 1800
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientAmount'
+        - name: 'Salt'
+          volume: 11.25
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientVolume'
+        - name: 'Ground black pepper'
+          volume: 2.5
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientVolume'
 
     - m_def: 'nomad_tajine_plugin.schema_packages.schema_package.HeatingCoolingStep'
-      instruction: 'Season both sides of chicken with salt and pepper. Heat oil in Dutch oven over medium-high heat and brown chicken skin side down until golden, about 5 minutes.'
+      instruction: 'Heat oil in Dutch oven over medium-high heat and brown chicken skin side down until golden.'
       duration: 5
       temperature: 180
       tools:
         - name: 'Dutch oven'
       ingredients:
         - name: 'Olive Oil'
-          mass: 1 
-          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientAmount'
-        - name: 'Chicken Thighs'
-          mass: 1800
-          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientAmount'
+          volume: 15
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientVolume'
 
     - m_def: 'nomad_tajine_plugin.schema_packages.schema_package.HeatingCoolingStep'
       instruction: 'Flip chicken pieces and brown other side, about 4 minutes more. Transfer to plate and remove skin.'
       duration: 5
       temperature: 180
+      tools:
+        - name: 'Tongs'
+        - name: 'Dutch oven'
 
     - m_def: 'nomad_tajine_plugin.schema_packages.schema_package.HeatingCoolingStep'
-      instruction: 'Add onions to pot and sauté until browned at edges, 5–7 minutes. Add garlic and cook for 30 seconds.'
+      instruction: 'Add onions to pot and sauté until browned at edges, 5-7 minutes. Add garlic and cook for 30 seconds.'
       duration: 8
       temperature: 100
+      tools:
+        - name: 'Dutch oven'
+        - name: 'Wooden Spoon'
+      ingredients:
+        - name: 'Large Yellow Onion'
+          pieces: 1
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientPiece'
 
     - m_def: 'nomad_tajine_plugin.schema_packages.schema_package.HeatingCoolingStep'
       instruction: 'Add spices and flour, cook 30 seconds. Stir in broth, honey, lemon zest, and salt. Add chicken, reduce heat, cover, and simmer for 10 minutes.'
       duration: 11
       temperature: 90
+      tools:
+        - name: 'Dutch oven'
+        - name: 'Wooden Spoon'
+      ingredients:
+        - name: 'All-purpose Flour'
+          volume: 30
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientVolume'
+        - name: 'Chicken Broth'
+          volume: 415
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientVolume'
+        - name: 'Honey'
+          volume: 30
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientVolume'
 
     - m_def: 'nomad_tajine_plugin.schema_packages.schema_package.HeatingCoolingStep'
       instruction: 'Add carrots, cover, and simmer until chicken cooked through and carrots tender, about 10 minutes.'
       duration: 10
       temperature: 85
+      tools:
+        - name: 'Dutch oven'
+      ingredients:
+        - name: 'Carrots'
+          pieces: 2
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientPiece'
 
     - m_def: 'nomad_tajine_plugin.schema_packages.schema_package.HeatingCoolingStep'
       instruction: 'Add olives, lemon mixture, cilantro, and lemon juice. Adjust seasoning as needed.'
       duration: 2
       temperature: 80
+      tools:
+        - name: 'Dutch oven'
+      ingredients:
+        - name: 'Greek cracked green olives'
+          volume: 120
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientVolume'
+        - name: 'Fresh Cilantro Leaves'
+          volume: 30
+          m_def: 'nomad_tajine_plugin.schema_packages.schema_package.IngredientVolume'
 
-    - m_def: 'nomad_tajine_plugin.schema_packages.schema_package.HeatingCoolingStep'
-      instruction: 'Serve hot with couscous.'
+    - instruction: 'Serve hot with couscous.'
       duration: 1
       temperature: 70
+      tools:
+        - name: 'Dutch oven' 
