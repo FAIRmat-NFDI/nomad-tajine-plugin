@@ -378,13 +378,6 @@ class Recipe(BaseSection, Schema):
     name = Quantity(
         type=str, a_eln=ELNAnnotation(component=ELNComponentEnum.StringEditQuantity)
     )
-    fetch_recipe_by_name = Quantity(
-        type=str,
-        description='Type a recipe name here to fetch it from the API. '
-        'This will only run if the "Steps" section is empty. '
-        'This field will be cleared after a successful fetch.',
-        a_eln=ELNAnnotation(component=ELNComponentEnum.StringEditQuantity),
-    )
     duration = Quantity(
         type=float,
         a_eln=ELNAnnotation(
@@ -524,72 +517,10 @@ class Recipe(BaseSection, Schema):
         archive: 'EntryArchive',
         logger: 'BoundLogger',
     ) -> None:
-        try:
-            # Check if the fetch field is set and if there are no steps
-            if getattr(self, 'fetch_recipe_by_name', None) and not (
-                self.steps and len(self.steps) > 0
-            ):
-                data = {
-                    'm_def': (
-                        'nomad_tajine_plugin.schema_packages.schema_package.Recipe'
-                    ),
-                    'name': self.fetch_recipe_by_name,
-                    'steps': [],
-                }
-                populated = populate_recipe_if_empty(
-                    data, api_key=configuration.ninja_api_key
-                )
-
-                if not getattr(self, 'name', None):
-                    self.name = self.fetch_recipe_by_name
-
-                if not getattr(self, 'summary', None) and populated.get('summary'):
-                    self.summary = populated.get('summary')
-                if not getattr(self, 'number_of_servings', None) and populated.get(
-                    'number_of_servings'
-                ):
-                    self.number_of_servings = populated.get('number_of_servings')
-
-                for step_dict in populated.get('steps', []):
-                    step_obj = None
-                    try:
-                        mdef = step_dict.get('m_def', '') or ''
-                        if 'HeatingCoolingStep' in mdef:
-                            step_obj = HeatingCoolingStep.m_from_dict(step_dict)
-                        else:
-                            step_obj = RecipeStep.m_from_dict(step_dict)
-                    except Exception:
-                        step_obj = RecipeStep(
-                            instruction=step_dict.get('instruction', '')
-                        )
-                        if 'ingredients' in step_dict:
-                            for ing in step_dict.get('ingredients', []):
-                                try:
-                                    ing_mdef = ing.get('m_def', '') or ''
-                                    if 'IngredientVolume' in ing_mdef:
-                                        ing_obj = IngredientVolume.m_from_dict(ing)
-                                    elif 'IngredientPiece' in ing_mdef:
-                                        ing_obj = IngredientPiece.m_from_dict(ing)
-                                    else:
-                                        ing_obj = IngredientAmount.m_from_dict(ing)
-                                    step_obj.ingredients.append(ing_obj)
-                                except Exception:
-                                    # skip problematic ingredient entries
-                                    logger.debug(
-                                        'ingredient_convert_failed', ingredient=ing
-                                    )
-                    # finally append to the recipe steps
-                    if step_obj is not None:
-                        self.steps.append(step_obj)
-
-                self.fetch_recipe_by_name = None
-
-        except Exception:
-            logger.exception(
-                'recipe_fetch_and_populate_failed',
-                name=getattr(self, 'fetch_recipe_by_name', None),
-            )
-
+        """
+        This method aggregates ingredients/tools from steps, calculates
+        total nutrients, and determines the diet type.
+        """
         super().normalize(archive, logger)
 
         all_ingredients = []
@@ -632,6 +563,9 @@ class Recipe(BaseSection, Schema):
                 existing = next((tl for tl in all_tools if tl.name == tool.name), None)
                 if existing is None:
                     all_tools.append(tool)
+
+        self.ingredients = []
+        self.tools = []
 
         self.ingredients.extend(
             IngredientAmount.m_from_dict(ingredient.m_to_dict())
@@ -763,5 +697,100 @@ class RecipeScaler(BaseSection, Schema):
             except Exception as e:
                 logger.error('Error while scaling recipe.', exc_info=True, error=e)
 
+class RecipeFetcher(BaseSection, Schema):
+    """
+    Fetches a recipe from the Ninja API by name and creates a new Recipe entry.
+    This acts as a "factory" for creating new Recipe entries from the API.
+    """
 
+    m_def = Section(
+        label='Fetch Recipe from Ninja API',
+        categories=[UseCaseElnCategory],
+        description='Fetches a recipe from an external API and creates a new Recipe entry.',
+        a_eln=ELNAnnotation(hide=['_normalization_delay']),
+    )
+
+    recipe_name_to_fetch = Quantity(
+        type=str,
+        description='Type a recipe name here to fetch it from the API.',
+        a_eln=ELNAnnotation(component=ELNComponentEnum.StringEditQuantity),
+    )
+
+    resulting_recipe = Quantity(
+        type=Recipe, 
+        description='The new Recipe entry created from the fetched data.',
+        a_eln=ELNAnnotation(
+            component=ELNComponentEnum.ReferenceEditQuantity,
+            label='Resulting Recipe',
+        ),
+    )
+
+    _normalization_delay = Quantity(
+        type=float,
+        default=0.0,
+        description='Delay to help ingredient normalization find new entries.',
+    )
+
+    def normalize(self, archive: 'EntryArchive', logger: 'BoundLogger') -> None:
+        """
+        When 'recipe_name_to_fetch' is set, this runs, calls the API,
+        creates a new Recipe entry, and saves it.
+        """
+        super().normalize(archive, logger)
+
+        # Only run if a name is provided and we haven't already created a recipe
+        if not self.recipe_name_to_fetch or self.resulting_recipe:
+            return
+
+        logger.info('recipe_fetcher_invoked', name=self.recipe_name_to_fetch)
+
+        try:
+            delay = 0.0
+            if hasattr(archive, 'data'):
+                delay = getattr(archive.data, '_normalization_delay', 0.0)
+            
+            data = {
+                'm_def': 'nomad_tajine_plugin.schema_packages.schema_package.Recipe',
+                'name': self.recipe_name_to_fetch,
+                'steps': [],  # Required by populate_recipe_if_empty
+                '_normalization_delay': delay or self._normalization_delay or 0.0,
+            }
+
+            populated_data = populate_recipe_if_empty(
+                data, api_key=configuration.ninja_api_key
+            )
+
+            if not populated_data.get('steps'):
+                logger.warning(
+                    'recipe_fetch_failed_or_empty', name=self.recipe_name_to_fetch
+                )
+                return
+
+            recipe_obj = Recipe.m_from_dict(populated_data)
+
+            if not recipe_obj.lab_id:
+                recipe_obj.lab_id = format_lab_id(
+                    recipe_obj.name or self.recipe_name_to_fetch
+                )
+
+            file_name = f'{format_lab_id(recipe_obj.name)}.archive.json'
+
+            self.resulting_recipe = create_archive(
+                recipe_obj,
+                archive,
+                file_name,
+                overwrite=False,  
+            )
+            logger.info(
+                'recipe_fetch_success',
+                name=self.recipe_name_to_fetch,
+                new_entry_id=self.resulting_recipe.m_proxy.m_proxy_value,
+            )
+
+        except Exception:
+            logger.exception(
+                'recipe_fetch_and_create_failed',
+                name=self.recipe_name_to_fetch,
+            )
+        
 m_package.__init_metainfo__()
