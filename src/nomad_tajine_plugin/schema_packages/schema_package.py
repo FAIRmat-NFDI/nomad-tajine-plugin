@@ -697,6 +697,7 @@ class RecipeScaler(BaseSection, Schema):
             except Exception as e:
                 logger.error('Error while scaling recipe.', exc_info=True, error=e)
 
+
 class RecipeFetcher(BaseSection, Schema):
     """
     Fetches a recipe from the Ninja API by name and creates a new Recipe entry.
@@ -706,7 +707,7 @@ class RecipeFetcher(BaseSection, Schema):
     m_def = Section(
         label='Fetch Recipe from Ninja API',
         categories=[UseCaseElnCategory],
-        description='Fetches a recipe from an external API and creates a new Recipe entry.',
+        description='Fetches a recipe from Ninja API and creates a new Recipe entry.',
         a_eln=ELNAnnotation(hide=['_normalization_delay']),
     )
 
@@ -717,7 +718,7 @@ class RecipeFetcher(BaseSection, Schema):
     )
 
     resulting_recipe = Quantity(
-        type=Recipe, 
+        type=Recipe,
         description='The new Recipe entry created from the fetched data.',
         a_eln=ELNAnnotation(
             component=ELNComponentEnum.ReferenceEditQuantity,
@@ -748,7 +749,7 @@ class RecipeFetcher(BaseSection, Schema):
             delay = 0.0
             if hasattr(archive, 'data'):
                 delay = getattr(archive.data, '_normalization_delay', 0.0)
-            
+
             data = {
                 'm_def': 'nomad_tajine_plugin.schema_packages.schema_package.Recipe',
                 'name': self.recipe_name_to_fetch,
@@ -779,7 +780,7 @@ class RecipeFetcher(BaseSection, Schema):
                 recipe_obj,
                 archive,
                 file_name,
-                overwrite=False,  
+                overwrite=False,
             )
             logger.info(
                 'recipe_fetch_success',
@@ -792,5 +793,6 @@ class RecipeFetcher(BaseSection, Schema):
                 'recipe_fetch_and_create_failed',
                 name=self.recipe_name_to_fetch,
             )
-        
+
+
 m_package.__init_metainfo__()
