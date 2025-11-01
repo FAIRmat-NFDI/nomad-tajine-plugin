@@ -78,8 +78,7 @@ class Ingredient(Entity, Schema):
         unit='kcal',
         description='Nutrients per 100 g for this ingredient type imported from USDA.',
         a_eln=ELNAnnotation(
-            component=ELNComponentEnum.NumberEditQuantity, 
-            defaultDisplayUnit='kcal'
+            component=ELNComponentEnum.NumberEditQuantity, defaultDisplayUnit='kcal'
         ),
     )
     fat_per_100_g = Quantity(
@@ -87,8 +86,7 @@ class Ingredient(Entity, Schema):
         unit='g',
         description='Nutrients per 100 g for this ingredient type imported from USDA.',
         a_eln=ELNAnnotation(
-            component=ELNComponentEnum.NumberEditQuantity, 
-            defaultDisplayUnit='g'
+            component=ELNComponentEnum.NumberEditQuantity, defaultDisplayUnit='g'
         ),
     )
     protein_per_100_g = Quantity(
@@ -96,8 +94,7 @@ class Ingredient(Entity, Schema):
         unit='g',
         description='Nutrients per 100 g for this ingredient type imported from USDA.',
         a_eln=ELNAnnotation(
-            component=ELNComponentEnum.NumberEditQuantity, 
-            defaultDisplayUnit='g'
+            component=ELNComponentEnum.NumberEditQuantity, defaultDisplayUnit='g'
         ),
     )
     carbohydrates_per_100_g = Quantity(
@@ -105,8 +102,7 @@ class Ingredient(Entity, Schema):
         unit='g',
         description='Nutrients per 100 g for this ingredient type imported from USDA.',
         a_eln=ELNAnnotation(
-            component=ELNComponentEnum.NumberEditQuantity, 
-            defaultDisplayUnit='g'
+            component=ELNComponentEnum.NumberEditQuantity, defaultDisplayUnit='g'
         ),
     )
     fdc_id = Quantity(
@@ -144,8 +140,7 @@ class IngredientAmount(EntityReference):
     """
 
     name = Quantity(
-        type=str, 
-        a_eln=ELNAnnotation(component=ELNComponentEnum.StringEditQuantity)
+        type=str, a_eln=ELNAnnotation(component=ELNComponentEnum.StringEditQuantity)
     )
     mass = Quantity(
         type=float,
@@ -190,8 +185,7 @@ class IngredientAmount(EntityReference):
         unit='g',
         description='Total fat of this ingredient.',
         a_eln=ELNAnnotation(
-            component=ELNComponentEnum.NumberEditQuantity, 
-            defaultDisplayUnit='g'
+            component=ELNComponentEnum.NumberEditQuantity, defaultDisplayUnit='g'
         ),
     )
     protein = Quantity(
@@ -199,8 +193,7 @@ class IngredientAmount(EntityReference):
         unit='g',
         description='Total proteins of this ingredient.',
         a_eln=ELNAnnotation(
-            component=ELNComponentEnum.NumberEditQuantity, 
-            defaultDisplayUnit='g'
+            component=ELNComponentEnum.NumberEditQuantity, defaultDisplayUnit='g'
         ),
     )
     carbohydrates = Quantity(
@@ -208,8 +201,7 @@ class IngredientAmount(EntityReference):
         unit='g',
         description='Total carbohydrates of this ingredient.',
         a_eln=ELNAnnotation(
-            component=ELNComponentEnum.NumberEditQuantity, 
-            defaultDisplayUnit='g'
+            component=ELNComponentEnum.NumberEditQuantity, defaultDisplayUnit='g'
         ),
     )
 
@@ -264,8 +256,7 @@ class IngredientAmount(EntityReference):
                 )
             except Exception as e:
                 logger.error(
-                    'Failed to create Ingredient entry.', 
-                    exc_info=True, error=e
+                    'Failed to create Ingredient entry.', exc_info=True, error=e
                 )
 
         if self.reference:
@@ -322,16 +313,13 @@ class Tool(ArchiveSection):
     """
 
     name = Quantity(
-        type=str, 
-        a_eln=ELNAnnotation(component=ELNComponentEnum.StringEditQuantity)
+        type=str, a_eln=ELNAnnotation(component=ELNComponentEnum.StringEditQuantity)
     )
     type = Quantity(
-        type=str, 
-        a_eln=ELNAnnotation(component=ELNComponentEnum.StringEditQuantity)
+        type=str, a_eln=ELNAnnotation(component=ELNComponentEnum.StringEditQuantity)
     )
     description = Quantity(
-        type=str, 
-        a_eln=ELNAnnotation(component=ELNComponentEnum.StringEditQuantity)
+        type=str, a_eln=ELNAnnotation(component=ELNComponentEnum.StringEditQuantity)
     )
 
 
@@ -343,8 +331,7 @@ class RecipeStep(ArchiveSection):
     duration = Quantity(
         type=float,
         a_eln=ELNAnnotation(
-            component=ELNComponentEnum.NumberEditQuantity, 
-            defaultDisplayUnit='minute'
+            component=ELNComponentEnum.NumberEditQuantity, defaultDisplayUnit='minute'
         ),
         unit='minute',
     )
@@ -359,8 +346,7 @@ class RecipeStep(ArchiveSection):
         repeats=True,
     )
     instruction = Quantity(
-        type=str, 
-        a_eln=ELNAnnotation(component=ELNComponentEnum.RichTextEditQuantity)
+        type=str, a_eln=ELNAnnotation(component=ELNComponentEnum.RichTextEditQuantity)
     )
 
 
@@ -373,8 +359,7 @@ class HeatingCoolingStep(RecipeStep):
         type=float,
         default=20.0,
         a_eln=ELNAnnotation(
-            component=ELNComponentEnum.NumberEditQuantity, 
-            defaultDisplayUnit='celsius'
+            component=ELNComponentEnum.NumberEditQuantity, defaultDisplayUnit='celsius'
         ),
         unit='celsius',
     )
@@ -391,20 +376,17 @@ class Recipe(BaseSection, Schema):
         a_eln=ELNAnnotation(hide=['_normalization_delay']),
     )
     name = Quantity(
-        type=str, 
-        a_eln=ELNAnnotation(component=ELNComponentEnum.StringEditQuantity)
+        type=str, a_eln=ELNAnnotation(component=ELNComponentEnum.StringEditQuantity)
     )
     duration = Quantity(
         type=float,
         a_eln=ELNAnnotation(
-            component=ELNComponentEnum.NumberEditQuantity, 
-            defaultDisplayUnit='minute'
+            component=ELNComponentEnum.NumberEditQuantity, defaultDisplayUnit='minute'
         ),
         unit='minute',
     )
     authors = Quantity(
-        type=str, 
-        a_eln=ELNAnnotation(component=ELNComponentEnum.StringEditQuantity)
+        type=str, a_eln=ELNAnnotation(component=ELNComponentEnum.StringEditQuantity)
     )
     difficulty = Quantity(
         type=MEnum(
@@ -415,16 +397,13 @@ class Recipe(BaseSection, Schema):
         a_eln=ELNAnnotation(component=ELNComponentEnum.EnumEditQuantity),
     )
     number_of_servings = Quantity(
-        type=int, 
-        a_eln=ELNAnnotation(component=ELNComponentEnum.NumberEditQuantity)
+        type=int, a_eln=ELNAnnotation(component=ELNComponentEnum.NumberEditQuantity)
     )
     summary = Quantity(
-        type=str, 
-        a_eln=ELNAnnotation(component=ELNComponentEnum.RichTextEditQuantity)
+        type=str, a_eln=ELNAnnotation(component=ELNComponentEnum.RichTextEditQuantity)
     )
     cuisine = Quantity(
-        type=str, 
-        a_eln=ELNAnnotation(component=ELNComponentEnum.StringEditQuantity)
+        type=str, a_eln=ELNAnnotation(component=ELNComponentEnum.StringEditQuantity)
     )
     diet_type = Quantity(
         type=MEnum(
@@ -449,8 +428,7 @@ class Recipe(BaseSection, Schema):
         unit='g',
         description='Total fat of this recipe.',
         a_eln=ELNAnnotation(
-            component=ELNComponentEnum.NumberEditQuantity, 
-            defaultDisplayUnit='g'
+            component=ELNComponentEnum.NumberEditQuantity, defaultDisplayUnit='g'
         ),
     )
     protein = Quantity(
@@ -458,8 +436,7 @@ class Recipe(BaseSection, Schema):
         unit='g',
         description='Total proteins of this recipe.',
         a_eln=ELNAnnotation(
-            component=ELNComponentEnum.NumberEditQuantity, 
-            defaultDisplayUnit='g'
+            component=ELNComponentEnum.NumberEditQuantity, defaultDisplayUnit='g'
         ),
     )
     carbohydrates = Quantity(
@@ -467,8 +444,7 @@ class Recipe(BaseSection, Schema):
         unit='g',
         description='Total carbohydrates of this recipe.',
         a_eln=ELNAnnotation(
-            component=ELNComponentEnum.NumberEditQuantity, 
-            defaultDisplayUnit='g'
+            component=ELNComponentEnum.NumberEditQuantity, defaultDisplayUnit='g'
         ),
     )
     calories_per_serving = Quantity(
