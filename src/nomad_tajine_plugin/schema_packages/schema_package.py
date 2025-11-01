@@ -1,3 +1,4 @@
+import re
 import time
 from typing import TYPE_CHECKING
 
@@ -16,6 +17,8 @@ from nomad.units import ureg
 from nomad_tajine_plugin.schema_packages.usda_lookup.usda_lookup import get_usda_data
 from nomad_tajine_plugin.utils import create_archive
 
+from .recipe_fetcher import populate_recipe_if_empty
+
 if TYPE_CHECKING:
     from nomad.datamodel.datamodel import (
         EntryArchive,
@@ -33,7 +36,11 @@ m_package = SchemaPackage()
 
 
 def format_lab_id(lab_id: str):
-    return lab_id.lower().replace(' ', '_').replace(',', '')
+    if not lab_id:
+        return 'unknown_ingredient'
+    s = str(lab_id).lower().replace(' ', '_')
+    s = re.sub(r'[^a-z0-9_]', '', s)
+    return s or 'ingredient'
 
 
 class Ingredient(Entity, Schema):
@@ -143,8 +150,8 @@ class IngredientAmount(EntityReference):
     )
     lab_id = Quantity(
         type=str,
-        description="""An ID string that is unique at least for the lab that produced
-            this data.""",
+        description="""An ID string that is unique at least for 
+            the lab that produced this data.""",
         a_eln=dict(component='StringEditQuantity', label='ingredient ID'),
     )
     reference = Quantity(
@@ -476,14 +483,6 @@ class Recipe(BaseSection, Schema):
             defaultDisplayUnit='g',
         ),
     )
-    duration = Quantity(
-        type=float,
-        a_eln=ELNAnnotation(
-            component=ELNComponentEnum.NumberEditQuantity,
-            defaultDisplayUnit='minute',
-        ),
-        unit='minute',
-    )
     tools = SubSection(
         section_def=Tool,
         description='',
@@ -513,16 +512,19 @@ class Recipe(BaseSection, Schema):
             self.description += f'<li>{step.instruction}</li>'
         self.description += '</ol>'
 
-    def normalize(self, archive: 'EntryArchive', logger: 'BoundLogger') -> None:  # noqa: PLR0912
+    def normalize(  # noqa: PLR0912, PLR0915
+        self,
+        archive: 'EntryArchive',
+        logger: 'BoundLogger',
+    ) -> None:
         """
-        Collects all ingredients and tools from steps and adds them to the recipe's
-        ingredients and tools lists.
+        This method aggregates ingredients/tools from steps, calculates
+        total nutrients, and determines the diet type.
         """
         super().normalize(archive, logger)
 
         all_ingredients = []
         all_tools = []
-
         for step in self.steps:
             for ingredient in step.ingredients:
                 # Check if ingredient with the same name exists
@@ -530,12 +532,10 @@ class Recipe(BaseSection, Schema):
                     (ing for ing in all_ingredients if ing.name == ingredient.name),
                     None,
                 )
-
                 if existing is None:
                     all_ingredients.append(ingredient)
                 else:
-                    # Sum quantities
-                    new_quantity = (existing.quantity or 0) + (ingredient.quantity or 0)
+                    new_mass = (existing.mass or 0) + (ingredient.mass or 0)
 
                     # Sum nutrient values safely
                     nutrients = {}
@@ -547,9 +547,7 @@ class Recipe(BaseSection, Schema):
                     # Create a new ingredient with summed values
                     ingredient_summed = IngredientAmount(
                         name=existing.name,
-                        quantity=new_quantity,
-                        unit=existing.unit,
-                        mass=None,  # optionally recalc
+                        mass=new_mass,
                         lab_id=existing.lab_id,
                         reference=existing.reference,
                         **nutrients,
@@ -565,6 +563,9 @@ class Recipe(BaseSection, Schema):
                 existing = next((tl for tl in all_tools if tl.name == tool.name), None)
                 if existing is None:
                     all_tools.append(tool)
+
+        self.ingredients = []
+        self.tools = []
 
         self.ingredients.extend(
             IngredientAmount.m_from_dict(ingredient.m_to_dict())
@@ -695,6 +696,103 @@ class RecipeScaler(BaseSection, Schema):
                 self.scale_recipe(self.original_recipe, scaling_factor, archive, logger)
             except Exception as e:
                 logger.error('Error while scaling recipe.', exc_info=True, error=e)
+
+
+class RecipeFetcher(BaseSection, Schema):
+    """
+    Fetches a recipe from the Ninja API by name and creates a new Recipe entry.
+    This acts as a "factory" for creating new Recipe entries from the API.
+    """
+
+    m_def = Section(
+        label='Fetch Recipe from Ninja API',
+        categories=[UseCaseElnCategory],
+        description='Fetches a recipe from Ninja API and creates a new Recipe entry.',
+        a_eln=ELNAnnotation(hide=['_normalization_delay']),
+    )
+
+    recipe_name_to_fetch = Quantity(
+        type=str,
+        description='Type a recipe name here to fetch it from the API.',
+        a_eln=ELNAnnotation(component=ELNComponentEnum.StringEditQuantity),
+    )
+
+    resulting_recipe = Quantity(
+        type=Recipe,
+        description='The new Recipe entry created from the fetched data.',
+        a_eln=ELNAnnotation(
+            component=ELNComponentEnum.ReferenceEditQuantity,
+            label='Resulting Recipe',
+        ),
+    )
+
+    _normalization_delay = Quantity(
+        type=float,
+        default=0.0,
+        description='Delay to help ingredient normalization find new entries.',
+    )
+
+    def normalize(self, archive: 'EntryArchive', logger: 'BoundLogger') -> None:
+        """
+        When 'recipe_name_to_fetch' is set, this runs, calls the API,
+        creates a new Recipe entry, and saves it.
+        """
+        super().normalize(archive, logger)
+
+        # Only run if a name is provided and we haven't already created a recipe
+        if not self.recipe_name_to_fetch or self.resulting_recipe:
+            return
+
+        logger.info('recipe_fetcher_invoked', name=self.recipe_name_to_fetch)
+
+        try:
+            delay = 0.0
+            if hasattr(archive, 'data'):
+                delay = getattr(archive.data, '_normalization_delay', 0.0)
+
+            data = {
+                'm_def': 'nomad_tajine_plugin.schema_packages.schema_package.Recipe',
+                'name': self.recipe_name_to_fetch,
+                'steps': [],  # Required by populate_recipe_if_empty
+                '_normalization_delay': delay or self._normalization_delay or 0.0,
+            }
+
+            populated_data = populate_recipe_if_empty(
+                data, api_key=configuration.ninja_api_key
+            )
+
+            if not populated_data.get('steps'):
+                logger.warning(
+                    'recipe_fetch_failed_or_empty', name=self.recipe_name_to_fetch
+                )
+                return
+
+            recipe_obj = Recipe.m_from_dict(populated_data)
+
+            if not recipe_obj.lab_id:
+                recipe_obj.lab_id = format_lab_id(
+                    recipe_obj.name or self.recipe_name_to_fetch
+                )
+
+            file_name = f'{format_lab_id(recipe_obj.name)}.archive.json'
+
+            self.resulting_recipe = create_archive(
+                recipe_obj,
+                archive,
+                file_name,
+                overwrite=False,
+            )
+            logger.info(
+                'recipe_fetch_success',
+                name=self.recipe_name_to_fetch,
+                new_entry_id=self.resulting_recipe.m_proxy.m_proxy_value,
+            )
+
+        except Exception:
+            logger.exception(
+                'recipe_fetch_and_create_failed',
+                name=self.recipe_name_to_fetch,
+            )
 
 
 m_package.__init_metainfo__()
