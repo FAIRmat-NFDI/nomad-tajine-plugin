@@ -113,16 +113,18 @@ class Ingredient(Entity, Schema):
                 self.lab_id = format_lab_id(self.name)
         else:
             self.lab_id = format_lab_id(self.lab_id)
-
-        usda_query_result = get_usda_data(self.name, configuration.usda_api_key)
-        if usda_query_result:
-            self.protein_per_100_g = usda_query_result.get('protein')
-            self.fat_per_100_g = usda_query_result.get('fat')
-            self.carbohydrates_per_100_g = usda_query_result.get('carbohydrates')
-            self.calories_per_100_g = usda_query_result.get('calories_kcal')
-            self.diet_type = usda_query_result.get('diet_type')
-            self.fdc_id = usda_query_result.get('fdc_id')
-            self.ndb_id = usda_query_result.get('ndb_id')
+        if configuration.usda_api_key:
+            usda_query_result = get_usda_data(self.name, configuration.usda_api_key)
+            if usda_query_result:
+                self.protein_per_100_g = usda_query_result.get('protein')
+                self.fat_per_100_g = usda_query_result.get('fat')
+                self.carbohydrates_per_100_g = usda_query_result.get('carbohydrates')
+                self.calories_per_100_g = usda_query_result.get('calories_kcal')
+                self.diet_type = usda_query_result.get('diet_type')
+                self.fdc_id = usda_query_result.get('fdc_id')
+                self.ndb_id = usda_query_result.get('ndb_id')
+        else:
+            print('No API key provided for USDA lookup. Skipping nutrient fetch.')
 
         super().normalize(archive, logger)
 
