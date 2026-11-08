@@ -39,6 +39,7 @@ Homepage = "https://fairmat-nfdi.github.io/nomad-tajine-plugin/"
 Documentation = "https://fairmat-nfdi.github.io/nomad-tajine-plugin/"
 
 [project.optional-dependencies]
+ontology = ["nomad-ontology-service"]
 dev = [
     "ruff",
     "pytest",
